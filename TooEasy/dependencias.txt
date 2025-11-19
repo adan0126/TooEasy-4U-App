@@ -1,0 +1,6 @@
+Dentro de bash instalen los siguiente:
+
+npm install @react-navigation/native
+npm install @react-navigation/native-stack
+npx expo install react-native-screens react-native-safe-area-context
+npx expo install expo-linear-gradient
