@@ -1,29 +1,23 @@
-// Aqui va la pantalla para crear una nueva cuenta
+// Pantalla para iniciar sesión
 
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, CheckBox } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
-export default function RegisterScreen() {
-  const [terms, setTerms] = useState(false);
-
+export default function LoginScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>REGÍSTRATE</Text>
+      <Text style={styles.title}>INICIA SESIÓN</Text>
 
       <View style={styles.avatarCircle}></View>
 
       <TextInput style={styles.input} placeholder="Nombre de usuario" />
       <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
-      <TextInput style={styles.input} placeholder="Palabra de seguridad" />
-
-      <View style={styles.checkboxContainer}>
-        <CheckBox value={terms} onValueChange={setTerms} />
-        <Text style={styles.checkboxText}>Términos y condiciones</Text>
-      </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnTxt}>CREAR CUENTA</Text>
+        <Text style={styles.btnTxt}>INICIAR SESIÓN</Text>
       </TouchableOpacity>
+
+      <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
     </View>
   );
 }
@@ -37,7 +31,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "800",
+    fontWeight: "900",
     marginBottom: 30,
   },
   avatarCircle: {
@@ -55,22 +49,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 15,
   },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 25,
-  },
-  checkboxText: {
-    marginLeft: 8,
-  },
   btn: {
     backgroundColor: "#B6823E",
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 20,
+    marginTop: 10,
   },
   btnTxt: {
     fontWeight: "700",
     color: "white",
+  },
+  link: {
+    color: "#203A53",
+    marginTop: 20,
+    fontWeight: "600",
   },
 });
