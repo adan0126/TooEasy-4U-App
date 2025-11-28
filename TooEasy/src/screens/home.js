@@ -20,14 +20,14 @@ export default function HomeScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => navigation.navigate("Register")}
+        onPress={() => navigation.navigate("CrearAcc")}
       >
         <Text style={styles.btnTxt}>CREAR CUENTA</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate("IniciarAcc")}
       >
         <Text style={styles.btnTxt}>INICIAR SESIÓN</Text>
       </TouchableOpacity>

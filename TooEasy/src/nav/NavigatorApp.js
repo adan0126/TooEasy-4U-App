@@ -9,8 +9,6 @@ import IniciarSesion from '../screens/login';
 import CrearCuenta from '../screens/cuenta';
 import Main from '../screens/home';
 import Lecciones from '../screens/lecciones';
-import Biblioteca from '../screens/Biblioteca';
-import Prestamos from '../screens/Prestamos';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,8 +32,6 @@ const AppNavigator = () => {
         <Stack.Screen name="CrearAcc" component={CrearCuenta} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Lecciones" component={Lecciones} />
-        <Stack.Screen name="Biblioteca" component={Biblioteca} />
-        <Stack.Screen name="Prestamos" component={Prestamos} />
       </Stack.Navigator>
     </NavigationContainer>
   );

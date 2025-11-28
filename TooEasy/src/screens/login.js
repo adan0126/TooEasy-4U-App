@@ -3,7 +3,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {   // ← AGREGADO
   return (
     <View style={styles.container}>
       <Text style={styles.title}>INICIA SESIÓN</Text>
@@ -13,7 +13,10 @@ export default function LoginScreen() {
       <TextInput style={styles.input} placeholder="Nombre de usuario" />
       <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
 
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => navigation.navigate("Lecciones")}  // ← AGREGADO
+      >
         <Text style={styles.btnTxt}>INICIAR SESIÓN</Text>
       </TouchableOpacity>
 
