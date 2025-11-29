@@ -1,17 +1,17 @@
 // pantalla de registro del usuario
 
 import React, { useState } from "react";
+import Checkbox from "expo-checkbox";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Image,
-  CheckBox,
+  Image
 } from "react-native";
 
-export default function RegisterScreen({ navigation }) {
+export default function CrearCuenta({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [terms, setTerms] = useState(false);
 
@@ -62,7 +62,7 @@ export default function RegisterScreen({ navigation }) {
 
         {/* Checkbox */}
         <View style={styles.checkboxContainer}>
-          <CheckBox value={terms} onValueChange={setTerms} />
+          <Checkbox value={terms} onValueChange={setTerms} color="#4D341F" />
           <Text style={styles.checkboxText}>Términos y condiciones</Text>
         </View>
       </View>

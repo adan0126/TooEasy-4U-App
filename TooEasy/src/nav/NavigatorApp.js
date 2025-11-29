@@ -9,6 +9,13 @@ import IniciarSesion from '../screens/login';
 import CrearCuenta from '../screens/cuenta';
 import Main from '../screens/home';
 import Lecciones from '../screens/lecciones';
+import FMenu from '../screens/Fundamentos/FMenu';
+import LFundamentos1 from '../screens/Fundamentos/Nivel1/LFundamentos';
+import LFundamentos2 from '../screens/Fundamentos/Nivel2/LFundamentos';
+import LFundamentos3 from '../screens/Fundamentos/Nivel3/LFundamentos';
+import PFundamentos1 from '../screens/Fundamentos/Nivel1/PFundamentos';
+import PFundamentos2 from '../screens/Fundamentos/Nivel2/PFundamentos';
+import PFundamentos3 from '../screens/Fundamentos/Nivel3/PFundamentos';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +30,7 @@ const AppNavigator = () => {
     );
   }
 
-  const initialRouteName = isAuthenticated() ? "Main" : "IniciarAcc";
+const initialRouteName = isAuthenticated() ? "Main" : "Main";
 
   return (
     <NavigationContainer>
@@ -32,6 +39,13 @@ const AppNavigator = () => {
         <Stack.Screen name="CrearAcc" component={CrearCuenta} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Lecciones" component={Lecciones} />
+        <Stack.Screen name="FMenu" component={FMenu} />
+        <Stack.Screen name="LFundamentos1" component={LFundamentos1} />
+        <Stack.Screen name="LFundamentos2" component={LFundamentos2} />
+        <Stack.Screen name="LFundamentos3" component={LFundamentos3} />
+        <Stack.Screen name="PFundamentos1" component={PFundamentos1} />
+        <Stack.Screen name="PFundamentos2" component={PFundamentos2} />
+        <Stack.Screen name="PFundamentos3" component={PFundamentos3} />
       </Stack.Navigator>
     </NavigationContainer>
   );

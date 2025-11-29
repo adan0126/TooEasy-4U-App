@@ -3,7 +3,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
-export default function LoginScreen({ navigation }) {   // ← AGREGADO
+export default function IniciarSesion({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>INICIA SESIÓN</Text>

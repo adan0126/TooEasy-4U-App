@@ -68,7 +68,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const isAuthenticated = () => perfil !== null;
+  const isAuthenticated = () => user !== null;
 
   const value = {
     user,
