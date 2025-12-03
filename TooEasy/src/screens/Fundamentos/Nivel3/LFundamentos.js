@@ -15,28 +15,45 @@ const { width } = Dimensions.get("window");
 
 export default function FundamentosLeccionScreen({ navigation }) {
   // -------------------------------------------
-  // 👇 Aquí defines las tarjetas de la lección
+  // Aquí defines las tarjetas de la lección
   // -------------------------------------------
   const tarjetas = [
     {
       id: "1",
-      frente: "¿Qué es el dinero?",
+      frente: "Mi seguridad financiera",
       atras:
-        "El dinero es un medio de intercambio aceptado para bienes y servicios.",
+        "La seguridad financiera se refiere a la tranquilidad de saber que puedes cubrir tus necesidades básicas y enfrentar imprevistos sin depender de préstamos, tarjetas o de otras personas. No significa tener mucho dinero, sino administrar bien lo que tienes y planear para el futuro.",
     },
     {
       id: "2",
-      frente: "¿Para qué sirve ahorrar?",
+      frente: "¿Qué es un fondo de emergencia?",
       atras:
-        "Ahorrar te permite estar preparado para emergencias y metas futuras.",
+        "Un fondo de emergencia es una reserva de dinero separada del resto de tus ahorros, destinada exclusivamente a cubrir gastos imprevistos o urgencias. Por ejemplo: Reparaciones del hogar o del automóvil, gastos médicos no planeados, pérdida de empleo o emergencias familiares.",
     },
     {
       id: "3",
-      frente: "¿Qué es un presupuesto?",
+      frente: "¿Cuánto dinero debe tener mi fondo de emergencias?",
       atras:
-        "Es una guía que te ayuda a administrar tu dinero: cuánto entra y cuánto sale.",
+        "Según BBVA (2024), el fondo ideal debería cubrir entre 3 y 6 meses de tus gastos fijos mensuales. Esto significa que, si tus gastos básicos (renta, comida, transporte, servicios) suman $8,000 pesos al mes, tu fondo de emergencia debería ser entre $24,000 y $48,000 pesos. No es necesario reunirlo de inmediato. Puedes empezar con pequeñas cantidades mensuales y hacerlo crecer poco a poco.",
     },
-    // 👉 Puedes agregar más tarjetas aquí
+    {
+      id: "4",
+      frente: "¿Dónde guardar el fondo de emergencia?",
+      atras:
+        "Es importante mantenerlo en un lugar seguro y accesible, pero que no te invite a gastarlo fácilmente. Como: Una cuenta de ahorro de fácil acceso: Ideal si necesitas disponer del dinero rápido, pero sin mezclarlo con tu cuenta principal; o algunos instrumentos de inversión de bajo riesgo: Algunos bancos ofrecen opciones que generan un pequeño rendimiento sin comprometer la liquidez, como cuentas de ahorro con intereses o CETES.",
+    },
+    {
+      id: "5",
+      frente: "Características de una persona con seguridad financiera",
+      atras:
+        "Una persona con seguridad financiera: Tiene control sobre sus ingresos y gastos, cuenta con ahorros para emergencias, Evita deudas innecesarias y se siente tranquila al tomar decisiones económicas.",
+    },
+    {
+      id: "6",
+      frente: "Beneficios de tener un fondo de emergencia",
+      atras:
+        "Algunos de los beneficios de un fondo de emergencia son: La tranquilidad ante cualquier imprevisto, evitas endeudarte con préstamos o tarjetas, te permite mantener tus metas de ahorro sin interrumpirlas y	fomenta la disciplina financiera",
+    },
   ];
 
   const [indexActual, setIndexActual] = useState(0);

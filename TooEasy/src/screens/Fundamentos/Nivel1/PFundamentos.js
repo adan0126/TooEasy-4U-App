@@ -11,33 +11,49 @@ import {
 
 export default function PreguntasRepasoScreen({ navigation }) {
   // ----------------------------------------------------------
-  // 👇 ARRAY DE PREGUNTAS
-  // Agrega aquí tus preguntas, respuestas y la correcta
+  // ARRAY DE PREGUNTAS
   // ----------------------------------------------------------
   const preguntas = [
     {
       id: "1",
-      pregunta: "¿Qué es el dinero?",
+      pregunta: "Un ingreso es todo el dinero que entra a tu bolsillo o cuenta bancaria, sin importar de dónde provenga.",
       opciones: [
-        "Una herramienta para medir peso",
-        "Un medio de intercambio",
-        "Un documento legal",
-        "Una forma de ahorro obligatorio",
+        "VERDADERO",
+        "FALSO",
       ],
-      correcta: 1, // índice de la respuesta correcta
+      correcta: 0,
     },
     {
       id: "2",
-      pregunta: "¿Para qué sirve ahorrar?",
+      pregunta: "Los egresos aumentan tu patrimonio, ya que representan dinero que recibes de distintas fuentes.",
       opciones: [
-        "Para gastar más",
-        "Para emergencias y metas",
-        "Para pagar impuestos",
-        "Para usar solo en bancos",
+        "VERDADERO",
+        "FALSO"
       ],
       correcta: 1,
     },
-    // 👉 Agrega más preguntas aquí
+    {
+      id: "3",
+      pregunta: "¿Cuál de los siguientes es un ingreso fijo?",
+      opciones: [
+        "Venta ocasional de productos usados",
+        "Propina por servicio",
+        "Sueldo mensual",
+        "Premio en un concurso"
+      ],
+      correcta: 2,
+    },
+    {
+      id: "4",
+      pregunta: "¿Cuál de los siguientes es un gasto variable?",
+      opciones: [
+        "Pago mensual de renta",
+        "Compra de ropa",
+        "Pago de luz",
+        "Transporte al trabajo"
+      ],
+      correcta: 1,
+    },
   ];
 
   const [preguntaIndex, setPreguntaIndex] = useState(0);

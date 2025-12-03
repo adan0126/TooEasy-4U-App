@@ -11,33 +11,38 @@ import {
 
 export default function PreguntasRepasoScreen({ navigation }) {
   // ----------------------------------------------------------
-  // 👇 ARRAY DE PREGUNTAS
-  // Agrega aquí tus preguntas, respuestas y la correcta
+  // ARRAY DE PREGUNTAS
   // ----------------------------------------------------------
   const preguntas = [
     {
       id: "1",
-      pregunta: "¿Qué es el dinero?",
+      pregunta: "El ahorro es la parte del ingreso que decides no gastar hoy para usar en el futuro.",
       opciones: [
-        "Una herramienta para medir peso",
-        "Un medio de intercambio",
-        "Un documento legal",
-        "Una forma de ahorro obligatorio",
+        "VERDADERO",
+        "FALSO",
       ],
-      correcta: 1, // índice de la respuesta correcta
+      correcta: 0,
     },
     {
       id: "2",
-      pregunta: "¿Para qué sirve ahorrar?",
+      pregunta: "Ahorrar significa dejar de disfrutar y no gastar nunca en gustos o entretenimiento.",
       opciones: [
-        "Para gastar más",
-        "Para emergencias y metas",
-        "Para pagar impuestos",
-        "Para usar solo en bancos",
+        "VERDADERO",
+        "FALSO"
       ],
       correcta: 1,
     },
-    // 👉 Agrega más preguntas aquí
+    {
+      id: "3",
+      pregunta: "¿Cuál de las siguientes afirmaciones describe mejor la importancia del ahorro?",
+      opciones: [
+        "Permite gastar más en entretenimiento.",
+        "Es una forma de evitar pagar impuestos.",
+        "Ayuda a mantener estabilidad financiera y cumplir metas.",
+        "Solo es necesario cuando se tienen ingresos altos."
+      ],
+      correcta: 2,
+    },
   ];
 
   const [preguntaIndex, setPreguntaIndex] = useState(0);

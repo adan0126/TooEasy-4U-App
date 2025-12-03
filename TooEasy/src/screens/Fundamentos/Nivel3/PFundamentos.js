@@ -11,33 +11,58 @@ import {
 
 export default function PreguntasRepasoScreen({ navigation }) {
   // ----------------------------------------------------------
-  // 👇 ARRAY DE PREGUNTAS
   // Agrega aquí tus preguntas, respuestas y la correcta
   // ----------------------------------------------------------
   const preguntas = [
     {
       id: "1",
-      pregunta: "¿Qué es el dinero?",
+      pregunta: "La seguridad financiera significa tener mucho dinero ahorrado para poder gastar sin preocuparte.",
       opciones: [
-        "Una herramienta para medir peso",
-        "Un medio de intercambio",
-        "Un documento legal",
-        "Una forma de ahorro obligatorio",
+        "VERDADERO",
+        "FALSO"
       ],
       correcta: 1, // índice de la respuesta correcta
     },
     {
       id: "2",
-      pregunta: "¿Para qué sirve ahorrar?",
+      pregunta: "El fondo de emergencia sirve para cubrir gastos imprevistos, como una reparación o una emergencia médica.",
       opciones: [
-        "Para gastar más",
-        "Para emergencias y metas",
-        "Para pagar impuestos",
-        "Para usar solo en bancos",
+        "VERDADERO",
+        "FALSO"
+      ],
+      correcta: 0,
+    },
+    {
+      id: "3",
+      pregunta: "¿Cuál es el principal propósito del fondo de emergencia?",
+      opciones: [
+        "Ahorrar para vacaciones o regalos.",
+        "Invertir en la bolsa de valores.",
+        "Guardar efectivo para gastos diarios.",
+        "Tener dinero para emergencias o gastos imprevistos.",
+      ],
+      correcta: 3,
+    },
+    {
+      id: "4",
+      pregunta: "¿Cuántos meses de gastos fijos debería cubrir idealmente un fondo de emergencia?",
+      opciones: [
+        "1 a 2 meses.",
+        "6 a 12 meses.",
+        "3 a 6 meses.",
+        "Más de 12 meses.",
+      ],
+      correcta: 2,
+    },
+    {
+      id: "5",
+      pregunta: "El fondo de emergencia debe guardarse junto con el dinero del día a día, para poder usarlo fácilmente cuando se necesite.",
+      opciones: [
+        "VERDADERO",
+        "FALSO"
       ],
       correcta: 1,
     },
-    // 👉 Agrega más preguntas aquí
   ];
 
   const [preguntaIndex, setPreguntaIndex] = useState(0);

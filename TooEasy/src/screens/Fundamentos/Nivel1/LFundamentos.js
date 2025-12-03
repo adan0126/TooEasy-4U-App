@@ -1,4 +1,4 @@
-// Pantalla de flashcards para los fundamentos
+// Pantalla de flashcards para los fundamentos - Ingreso
 
 import React, { useRef, useState } from "react";
 import {
@@ -15,28 +15,37 @@ const { width } = Dimensions.get("window");
 
 export default function FundamentosLeccionScreen({ navigation }) {
   // -------------------------------------------
-  // 👇 Aquí defines las tarjetas de la lección
+  // Aquí defines las tarjetas de la lección
   // -------------------------------------------
   const tarjetas = [
     {
       id: "1",
-      frente: "¿Qué es el dinero?",
+      frente: "¿Qué es un ingreso?",
       atras:
-        "El dinero es un medio de intercambio aceptado para bienes y servicios.",
+        "Un ingreso es todo el dinero que entra a tu bolsillo o cuenta bancaria, proveniente de cualquier fuente. En otras palabras, representa el aumento en tus recursos económicos. Los ingresos pueden tener distintas procedencias: salario, propinas, rentas, comisiones, pensiones, premios o incluso regalos en efectivo.",
     },
     {
       id: "2",
-      frente: "¿Para qué sirve ahorrar?",
+      frente: "Tipos de ingresos",
       atras:
-        "Ahorrar te permite estar preparado para emergencias y metas futuras.",
+        "Existen dos tipos principales de ingresos: Ingresos fijos: Son los que recibes de manera regular y predecible, como un sueldo mensual, una pensión o una renta fija. Ingresos variables: Son los que no se repiten cada mes o cuyo monto cambia constantemente. Por ejemplo, una comisión por ventas, una propina o la ganancia por vender algo de segunda mano.",
     },
     {
       id: "3",
-      frente: "¿Qué es un presupuesto?",
+      frente: "¿Qué es un egereso o gasto?",
       atras:
-        "Es una guía que te ayuda a administrar tu dinero: cuánto entra y cuánto sale.",
+        "Un egreso (también llamado gasto) es el dinero que sale de tu presupuesto para pagar bienes o servicios. Cada vez que compras algo o cubres una obligación, estás haciendo un egreso. BBVA explica que los egresos reducen tu patrimonio, ya que representan las salidas de recursos.",
     },
-    // 👉 Puedes agregar más tarjetas aquí
+    {
+      id: "4",
+      frente: "Tipos de gastos",
+      atras: "Se clasifican principalmente en dos tipos: Gastos fijos: Son los que se repiten con la misma cantidad o frecuencia. Por ejemplo, el pago de la renta, la luz, el transporte o la colegiatura. Estos gastos son previsibles y deben cubrirse cada mes. Gastos variables: Son los que cambian según tus decisiones o circunstancias. Por ejemplo, salir a comer fuera, comprar ropa o pagar un servicio extra. Aunque parecen pequeños, “si no se controlan, pueden afectar tus finanzas”."
+    },
+    {
+      id: "5",
+      frente: "Tip Financiero",
+      atras: "La clave de una buena salud financiera está en mantener un equilibrio entre lo que ganas y lo que gastas. Si tus ingresos son mayores que tus gastos, tendrás un excedente, lo que te permite ahorrar o invertir. Si ocurre lo contrario, y gastas más de lo que ganas, generarás déficit y posiblemente deudas. Un presupuesto personal sirve precisamente para vigilar este equilibrio: registrar tus ingresos y tus egresos te ayuda a identificar en qué se va tu dinero y cómo puedes mejorar tu manejo financiero."
+    }
   ];
 
   const [indexActual, setIndexActual] = useState(0);

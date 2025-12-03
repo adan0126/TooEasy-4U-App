@@ -1,4 +1,4 @@
-// Pantalla de flashcards para los fundamentos
+// Pantalla de flashcards para los fundamentos - Ahorro
 
 import React, { useRef, useState } from "react";
 import {
@@ -15,28 +15,37 @@ const { width } = Dimensions.get("window");
 
 export default function FundamentosLeccionScreen({ navigation }) {
   // -------------------------------------------
-  // 👇 Aquí defines las tarjetas de la lección
+  // Aquí defines las tarjetas de la lección
   // -------------------------------------------
   const tarjetas = [
     {
       id: "1",
-      frente: "¿Qué es el dinero?",
+      frente: "El ahorro",
       atras:
-        "El dinero es un medio de intercambio aceptado para bienes y servicios.",
+        "El ahorro es uno de los hábitos más importantes dentro de la educación financiera. Aprender a ahorrar no solo implica guardar dinero, sino saber planificar el uso de tus ingresos para que puedas alcanzar metas y tener tranquilidad ante imprevistos.",
     },
     {
       id: "2",
-      frente: "¿Para qué sirve ahorrar?",
+      frente: "¿Qué es el ahorro?",
       atras:
-        "Ahorrar te permite estar preparado para emergencias y metas futuras.",
+        "Según BBVA (2024), el ahorro es la parte de tus ingresos que decides no gastar en el presente y que reservas para un uso futuro. Es una forma de priorizar tu bienestar de mañana sobre el placer o consumo inmediato de hoy.Ahorrar no significa dejar de disfrutar, sino gastar de manera consciente y con propósito, evitando compras impulsivas o innecesarias. En otras palabras: ahorrar es pagarle al “yo del futuro”.",
     },
     {
       id: "3",
-      frente: "¿Qué es un presupuesto?",
+      frente: "¿Por qué es importante ahorrar?",
       atras:
-        "Es una guía que te ayuda a administrar tu dinero: cuánto entra y cuánto sale.",
+        "Tener un fondo de dinero reservado te permite: Hacer frente a imprevistos, Cumplir metas personales (comprar un celular, estudiar, viajar o invertir), Evitar deudas, ya que reduces la necesidad de pedir prestado cuando surge un gasto inesperado, Ahorrar también fomenta la disciplina financiera",
     },
-    // 👉 Puedes agregar más tarjetas aquí
+    {
+      id: "4",
+      frente: "Tipos de ahorro",
+      atras: "El ahorro puede clasificarse de distintas formas según su propósito: Ahorro a corto, mediano y largo plazo. De pendiendo la meta final se establecen estos horizontes de tiempo. También se puede distinguir entre ahorro formal (en instituciones financieras, con seguridad y generación de intereses) y ahorro informal (guardar dinero en casa o en tandas, sin protección ni rendimiento)."
+    },
+    {
+      id: "5",
+      frente: "Como empezar a ahorrar",
+      atras: "Primero se define un objetivo de ahorro, registra tus ingresos y gastos para identificar cuanto puedes ahorrar regularmente, puedes automatizar el proceso de ahorro para evitar gastarlo en otras cosas, puedes programar en tu cuenta bancaria una transferencia automática hacia una cuenta de ahorro al recibir tu ingreso. Tip Financiero: Considera el ahorro como un gasto fijo más, no como dinero “sobrante”. De esta forma, lo conviertes en parte de tu rutina financiera."
+    }
   ];
 
   const [indexActual, setIndexActual] = useState(0);
