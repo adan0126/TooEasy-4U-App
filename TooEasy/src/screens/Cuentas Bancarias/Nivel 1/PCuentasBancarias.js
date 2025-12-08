@@ -13,47 +13,88 @@ export default function PreguntasRepasoScreen({ navigation }) {
   // ----------------------------------------------------------
   // ARRAY DE PREGUNTAS
   // ----------------------------------------------------------
-  const preguntas = [
-    {
-        id: "1",
-        pregunta: "Una cuenta bancaria sirve para guardar tu dinero de forma segura.",
-        opciones: [
-            "VERDADERO",
-            "FALSO",
-        ],
-        correcta: 0,
-    },
-    {
-      id: "2",
-        pregunta: "Un depósito es cuando sacas dinero de tu cuenta.", 
-         opciones: [
-        "VERDADERO",
-        "FALSO"
-      ],
-      correcta: 1,
-    },
-    {
-      id: "3",
-      pregunta: "¿Qué documento muestra tus depósitos, retiros y saldo?",
-      opciones: [
-        "Contrato", 
-        "Estado de cuenta", 
-        "Ficha de depósito", 
-        "Tarjeta"
-
-      ],
-      correcta: 1,
-    },
-    {
-      id: "4",
-      pregunta: "El saldo es la cantidad de dinero disponible en tu cuenta.",
-      opciones: [
-            "VERDADERO",
-            "FALSO",
-        ],
-      correcta: 0,
-    },
-  ];
+ const preguntas = [
+  {
+    id: "1",
+    pregunta: "Una cuenta de ahorro solo sirve para guardar dinero y no genera ningún tipo de rendimiento.",
+    opciones: [
+      "VERDADERO",
+      "FALSO"
+    ],
+    correcta: 1, // Falso
+  },
+  {
+    id: "2",
+    pregunta: "Para abrir una cuenta de ahorro es necesario presentar una identificación oficial y un comprobante de domicilio.",
+    opciones: [
+      "VERDADERO",
+      "FALSO"
+    ],
+    correcta: 0, // Verdadero
+  },
+  {
+    id: "3",
+    pregunta: "¿Cuál de las siguientes opciones describe mejor una cuenta de ahorro?",
+    opciones: [
+      "Una cuenta para pagar con cheques y recibir depósitos de nómina.",
+      "Una cuenta que permite ahorrar dinero, obtener intereses y retirar cuando sea necesario.",
+      "Una cuenta exclusiva para préstamos bancarios.",
+      "Una cuenta sin acceso a tu dinero hasta los 5 años."
+    ],
+    correcta: 1, // opción B
+  },
+  {
+    id: "4",
+    pregunta: "¿Qué documento es importante leer antes de firmar al abrir tu primera cuenta bancaria?",
+    opciones: [
+      "El comprobante de domicilio.",
+      "El contrato o documento de adhesión del banco.",
+      "Tu historial crediticio.",
+      "El estado de cuenta mensual."
+    ],
+    correcta: 1, // opción B
+  },
+  {
+    id: "5",
+    pregunta: "Todas las cuentas de ahorro permiten hacer retiros ilimitados sin costo.",
+    opciones: [
+      "VERDADERO",
+      "FALSO"
+    ],
+    correcta: 1, // Falso
+  },
+  {
+    id: "6",
+    pregunta: "Según CONDUSEF, ¿qué significa comisión por inactividad?",
+    opciones: [
+      "El cobro por usar demasiado la cuenta.",
+      "El cobro por no tener movimientos durante cierto tiempo.",
+      "El interés que te paga el banco por ahorrar.",
+      "Un beneficio que otorgan por no usar la cuenta."
+    ],
+    correcta: 1, // opción B
+  },
+  {
+    id: "7",
+    pregunta: "Laura abrió su primera cuenta de ahorro y el banco le cobra una comisión mensual de $15 por mantenimiento. Esto significa que:",
+    opciones: [
+      "Le descuentan $15 cada mes por tener activa su cuenta.",
+      "Le pagan $15 mensuales como premio por ahorrar.",
+      "Solo debe pagar si retira dinero.",
+      "Es un error del sistema."
+    ],
+    correcta: 0, // opción A
+  },
+  {
+    id: "8",
+    pregunta: "El dinero depositado en una cuenta de ahorro está protegido si el banco está regulado por autoridades financieras.",
+    opciones: [
+      "VERDADERO",
+      "FALSO"
+    ],
+    correcta: 0, // Verdadero
+  },
+];
 
   const [preguntaIndex, setPreguntaIndex] = useState(0);
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null);
