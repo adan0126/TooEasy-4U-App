@@ -120,7 +120,7 @@ export default function FundamentosLeccionScreen({ navigation }) {
       {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
-          onPress={() => navigation.navigate("PCuentasBancarias1")}
+          onPress={() => navigation.navigate("PCuentasBancarias2")}
         >
           <Text style={styles.btnRepasoTxt}>Preguntas de Repaso</Text>
         </TouchableOpacity>
