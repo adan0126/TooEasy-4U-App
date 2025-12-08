@@ -13,48 +13,77 @@ export default function PreguntasRepasoScreen({ navigation }) {
   // ----------------------------------------------------------
   // ARRAY DE PREGUNTAS
   // ----------------------------------------------------------
-  const preguntas = [
-    {
-      id: "1",
-      pregunta: "Un ingreso es todo el dinero que entra a tu bolsillo o cuenta bancaria, sin importar de dónde provenga.",
-      opciones: [
-        "VERDADERO",
-        "FALSO",
-      ],
-      correcta: 0,
-    },
-    {
-      id: "2",
-      pregunta: "Los egresos aumentan tu patrimonio, ya que representan dinero que recibes de distintas fuentes.",
-      opciones: [
-        "VERDADERO",
-        "FALSO"
-      ],
-      correcta: 1,
-    },
-    {
-      id: "3",
-      pregunta: "¿Cuál de los siguientes es un ingreso fijo?",
-      opciones: [
-        "Venta ocasional de productos usados",
-        "Propina por servicio",
-        "Sueldo mensual",
-        "Premio en un concurso"
-      ],
-      correcta: 2,
-    },
-    {
-      id: "4",
-      pregunta: "¿Cuál de los siguientes es un gasto variable?",
-      opciones: [
-        "Pago mensual de renta",
-        "Compra de ropa",
-        "Pago de luz",
-        "Transporte al trabajo"
-      ],
-      correcta: 1,
-    },
-  ];
+const preguntas = [
+  {
+    id: "1",
+    pregunta: "Los intereses siempre representan una ganancia para el cliente.",
+    opciones: ["VERDADERO", "FALSO"],
+    correcta: 1
+  },
+  {
+    id: "2",
+    pregunta: "El interés activo es el que cobra el banco cuando presta dinero a un cliente.",
+    opciones: ["VERDADERO", "FALSO"],
+    correcta: 0
+  },
+  {
+    id: "3",
+    pregunta: "¿Cuál tipo de interés hace crecer el dinero más rápido?",
+    opciones: [
+      "Interés simple",
+      "Interés compuesto",
+      "Interés activo",
+      "Interés pasivo"
+    ],
+    correcta: 1
+  },
+  {
+    id: "4",
+    pregunta: "¿Qué son las comisiones bancarias?",
+    opciones: [
+      "Bonos que el banco paga a los clientes por ahorrar",
+      "Cobros por ofrecer servicios o mantener cuentas",
+      "Descuentos por usar cajeros",
+      "Ganancias automáticas de las tarjetas"
+    ],
+    correcta: 1
+  },
+  {
+    id: "5",
+    pregunta: "Si usas un cajero automático que no es de tu banco, podrías pagar una comisión.",
+    opciones: ["VERDADERO", "FALSO"],
+    correcta: 0
+  },
+  {
+    id: "6",
+    pregunta: "¿Qué es una comisión por inactividad?",
+    opciones: [
+      "Cobro por tener saldo alto",
+      "Cobro por no realizar movimientos durante un tiempo",
+      "Cobro por recibir depósitos",
+      "Cobro por abrir una cuenta"
+    ],
+    correcta: 1
+  },
+  {
+    id: "7",
+    pregunta: "¿Por qué los bancos cobran comisiones?",
+    opciones: [
+      "Para castigar a los clientes que ahorran",
+      "Para cubrir sus costos de operación y mantenimiento",
+      "Para aumentar ganancias sin ofrecer servicios",
+      "Por obligación del gobierno"
+    ],
+    correcta: 1
+  },
+  {
+    id: "8",
+    pregunta: "Puedes evitar muchas comisiones eligiendo cuentas sin costo y usando cajeros de tu propio banco.",
+    opciones: ["VERDADERO", "FALSO"],
+    correcta: 0
+  }
+];
+
 
   const [preguntaIndex, setPreguntaIndex] = useState(0);
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null);

@@ -18,35 +18,83 @@ export default function FundamentosLeccionScreen({ navigation }) {
   // Aquí defines las tarjetas de la lección
   // -------------------------------------------
   const tarjetas = [
-    {
-      id: "1",
-      frente: "¿Qué es un ingreso?",
-      atras:
-        "Un ingreso es todo el dinero que entra a tu bolsillo o cuenta bancaria, proveniente de cualquier fuente. En otras palabras, representa el aumento en tus recursos económicos. Los ingresos pueden tener distintas procedencias: salario, propinas, rentas, comisiones, pensiones, premios o incluso regalos en efectivo.",
-    },
-    {
-      id: "2",
-      frente: "Tipos de ingresos",
-      atras:
-        "Existen dos tipos principales de ingresos: Ingresos fijos: Son los que recibes de manera regular y predecible, como un sueldo mensual, una pensión o una renta fija. Ingresos variables: Son los que no se repiten cada mes o cuyo monto cambia constantemente. Por ejemplo, una comisión por ventas, una propina o la ganancia por vender algo de segunda mano.",
-    },
-    {
-      id: "3",
-      frente: "¿Qué es un egereso o gasto?",
-      atras:
-        "Un egreso (también llamado gasto) es el dinero que sale de tu presupuesto para pagar bienes o servicios. Cada vez que compras algo o cubres una obligación, estás haciendo un egreso. BBVA explica que los egresos reducen tu patrimonio, ya que representan las salidas de recursos.",
-    },
-    {
-      id: "4",
-      frente: "Tipos de gastos",
-      atras: "Se clasifican principalmente en dos tipos: Gastos fijos: Son los que se repiten con la misma cantidad o frecuencia. Por ejemplo, el pago de la renta, la luz, el transporte o la colegiatura. Estos gastos son previsibles y deben cubrirse cada mes. Gastos variables: Son los que cambian según tus decisiones o circunstancias. Por ejemplo, salir a comer fuera, comprar ropa o pagar un servicio extra. Aunque parecen pequeños, “si no se controlan, pueden afectar tus finanzas”."
-    },
-    {
-      id: "5",
-      frente: "Tip Financiero",
-      atras: "La clave de una buena salud financiera está en mantener un equilibrio entre lo que ganas y lo que gastas. Si tus ingresos son mayores que tus gastos, tendrás un excedente, lo que te permite ahorrar o invertir. Si ocurre lo contrario, y gastas más de lo que ganas, generarás déficit y posiblemente deudas. Un presupuesto personal sirve precisamente para vigilar este equilibrio: registrar tus ingresos y tus egresos te ayuda a identificar en qué se va tu dinero y cómo puedes mejorar tu manejo financiero."
-    }
-  ];
+  {
+    id: "1",
+    frente: "¿Qué son los intereses?",
+    atras: "Son el costo del dinero: puedes pagarlos si pides un préstamo, o recibirlos si ahorras."
+  },
+  {
+    id: "2",
+    frente: "¿Cuándo pagas intereses?",
+    atras: "Cuando el banco te presta dinero en un crédito o préstamo."
+  },
+  {
+    id: "3",
+    frente: "¿Cuándo recibes intereses?",
+    atras: "Cuando depositas o ahorras dinero en el banco."
+  },
+  {
+    id: "4",
+    frente: "¿Qué es el interés activo?",
+    atras: "Es el interés que el banco cobra cuando presta dinero a un cliente."
+  },
+  {
+    id: "5",
+    frente: "¿Qué es el interés pasivo?",
+    atras: "Es el interés que el banco paga a los clientes por ahorrar o invertir."
+  },
+  {
+    id: "6",
+    frente: "¿Qué es el interés simple?",
+    atras: "Se calcula solo sobre el capital inicial depositado o prestado."
+  },
+  {
+    id: "7",
+    frente: "¿Qué es el interés compuesto?",
+    atras: "Se calcula sobre el capital y los intereses acumulados previamente."
+  },
+  {
+    id: "8",
+    frente: "¿Qué son las comisiones bancarias?",
+    atras: "Son cobros por usar servicios o mantener una cuenta activa."
+  },
+  {
+    id: "9",
+    frente: "¿Por qué los bancos cobran comisiones?",
+    atras: "Para cubrir costos de operación, mantenimiento y servicio."
+  },
+  {
+    id: "10",
+    frente: "¿Qué es una comisión por manejo de cuenta?",
+    atras: "Cobro por mantener la cuenta activa sin importar si la usas o no."
+  },
+  {
+    id: "11",
+    frente: "¿Qué es una comisión por inactividad?",
+    atras: "Cobro cuando la cuenta no tiene movimientos por un periodo."
+  },
+  {
+    id: "12",
+    frente: "¿Qué es una comisión por usar cajeros de otro banco?",
+    atras: "Es un cobro por retirar dinero en un cajero que no pertenece a tu banco."
+  },
+  {
+    id: "13",
+    frente: "¿Qué es una comisión por saldo mínimo?",
+    atras: "Se cobra si el saldo baja de la cantidad mínima establecida."
+  },
+  {
+    id: "14",
+    frente: "¿Cómo evitar comisiones?",
+    atras: "Usa cajeros de tu banco, elige cuentas sin comisiones y mantén la cuenta activa."
+  },
+  {
+    id: "15",
+    frente: "¿Por qué es importante conocer intereses y comisiones?",
+    atras: "Para elegir productos financieros adecuados y evitar pagar de más."
+  }
+];
+
 
   const [indexActual, setIndexActual] = useState(0);
 
@@ -73,7 +121,7 @@ export default function FundamentosLeccionScreen({ navigation }) {
       {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
-          onPress={() => navigation.navigate("PFundamentos1")}
+          onPress={() => navigation.navigate("PCuentasBancarias3")}
         >
           <Text style={styles.btnRepasoTxt}>Preguntas de Repaso</Text>
         </TouchableOpacity>
