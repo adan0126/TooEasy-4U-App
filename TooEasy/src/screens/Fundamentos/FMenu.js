@@ -15,7 +15,7 @@ export default function FMenu({ navigation }) {
     <ScrollView style={styles.container}>
       {/* ---------- HEADER ---------- */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate("Lecciones")}>
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Fundamentos</Text>

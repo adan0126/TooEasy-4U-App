@@ -4,5 +4,10 @@ npm install @react-navigation/native
 npm install @react-navigation/native-stack
 npx expo install react-native-screens react-native-safe-area-context
 npx expo install expo-linear-gradient
-npm install @react-native-async-storage/async-storage@latest (si les aparece alguna vulnerabilidad solo pongan: npm audit fix )npm install @react-native-community/checkbox
+npm install @react-native-async-storage/async-storage@latest (si les aparece alguna vulnerabilidad solo pongan: npm audit fix )
 npx expo install expo-checkbox
+npm install email-validator
+npm install firebase
+npx expo install @react-native-picker/picker
+npm install dotenv
+npx expo install constants

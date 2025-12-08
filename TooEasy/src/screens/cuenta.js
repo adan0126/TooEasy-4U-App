@@ -1,24 +1,52 @@
-// pantalla de registro del usuario
-
 import React, { useState } from "react";
 import Checkbox from "expo-checkbox";
+import { Picker } from "@react-native-picker/picker";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Image
+  Image,
+  Alert
 } from "react-native";
 
+// 👇 importamos la validación
+import { validarRegistro } from "../validaciones/valForm";
+
 export default function CrearCuenta({ navigation }) {
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [edad, setEdad] = useState("");
+  const [genero, setGenero] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
   const [terms, setTerms] = useState(false);
 
+  const handleRegistro = () => {
+    const error = validarRegistro({
+      username,
+      password,
+      correo,
+      edad,
+      genero,
+      terms
+    });
+
+    if (error) {
+      Alert.alert("Error", error);
+      return;
+    }
+
+    // Si no hubo errores:
+    Alert.alert("Cuenta creada", "Tu cuenta se creó correctamente.");
+    navigation.navigate("IniciarAcc");
+  };
+
   return (
     <View style={styles.container}>
-
-      {/* Parte superior café */}
       <View style={styles.topSection}>
         <Image
           source={require("../../assets/ftp2.png")}
@@ -26,41 +54,66 @@ export default function CrearCuenta({ navigation }) {
           resizeMode="contain"
         />
       </View>
-      {/* Tarjeta blanca */}
+
       <View style={styles.card}>
         <Text style={styles.title}>Crear Cuenta</Text>
 
-        {/* Inputs */}
-        <TextInput style={styles.input} placeholder="Nombre de usuario" />
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre de usuario"
+          value={username}
+          onChangeText={setUsername}
+        />
 
         <View style={styles.passwordContainer}>
           <TextInput
             style={[styles.input, { flex: 1, marginBottom: 0 }]}
             placeholder="Contraseña"
             secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
             style={styles.eyeBtn}
           >
-            <Text style={{ fontSize: 16 }}>👁️</Text>
+            <Text style={{ fontSize: 16 }}>{showPassword ? "🙈" : "👁️"}</Text>
           </TouchableOpacity>
         </View>
 
-        <TextInput style={styles.input} placeholder="Correo Electrónico" />
+        <TextInput
+          style={styles.input}
+          placeholder="Correo Electrónico"
+          value={correo}
+          onChangeText={setCorreo}
+        />
 
-        {/* Selects simples */}
         <View style={styles.row}>
-          <TextInput style={[styles.input, styles.small]} placeholder="Edad" />
-          <TextInput style={[styles.input, styles.small]} placeholder="Género" />
+          <TextInput
+            style={[styles.input, styles.small]}
+            placeholder="Edad"
+            keyboardType="numeric"
+            value={edad}
+            onChangeText={(t) => /^\d*$/.test(t) && setEdad(t)}
+          />
+
+          <View style={[styles.input, styles.small, { justifyContent: "center" }]}>
+            <Picker
+              selectedValue={genero}
+              onValueChange={(itemValue) => setGenero(itemValue)}
+            >
+              <Picker.Item label="Seleccione género" value="" />
+              <Picker.Item label="Hombre" value="Hombre" />
+              <Picker.Item label="Mujer" value="Mujer" />
+              <Picker.Item label="Otro" value="Otro" />
+            </Picker>
+          </View>
         </View>
 
-        {/* Botón Crear */}
-        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("IniciarAcc")}>
+        <TouchableOpacity style={styles.btn} onPress={handleRegistro}>
           <Text style={styles.btnTxt}>Crear</Text>
         </TouchableOpacity>
 
-        {/* Checkbox */}
         <View style={styles.checkboxContainer}>
           <Checkbox value={terms} onValueChange={setTerms} color="#4D341F" />
           <Text style={styles.checkboxText}>Términos y condiciones</Text>
