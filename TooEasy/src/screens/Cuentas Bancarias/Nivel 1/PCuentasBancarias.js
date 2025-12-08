@@ -15,18 +15,18 @@ export default function PreguntasRepasoScreen({ navigation }) {
   // ----------------------------------------------------------
   const preguntas = [
     {
-      id: "1",
-      pregunta: "Un ingreso es todo el dinero que entra a tu bolsillo o cuenta bancaria, sin importar de dónde provenga.",
-      opciones: [
-        "VERDADERO",
-        "FALSO",
-      ],
-      correcta: 0,
+        id: "1",
+        pregunta: "Una cuenta bancaria sirve para guardar tu dinero de forma segura.",
+        opciones: [
+            "VERDADERO",
+            "FALSO",
+        ],
+        correcta: 0,
     },
     {
       id: "2",
-      pregunta: "Los egresos aumentan tu patrimonio, ya que representan dinero que recibes de distintas fuentes.",
-      opciones: [
+        pregunta: "Un depósito es cuando sacas dinero de tu cuenta.", 
+         opciones: [
         "VERDADERO",
         "FALSO"
       ],
@@ -34,25 +34,24 @@ export default function PreguntasRepasoScreen({ navigation }) {
     },
     {
       id: "3",
-      pregunta: "¿Cuál de los siguientes es un ingreso fijo?",
+      pregunta: "¿Qué documento muestra tus depósitos, retiros y saldo?",
       opciones: [
-        "Venta ocasional de productos usados",
-        "Propina por servicio",
-        "Sueldo mensual",
-        "Premio en un concurso"
+        "Contrato", 
+        "Estado de cuenta", 
+        "Ficha de depósito", 
+        "Tarjeta"
+
       ],
-      correcta: 2,
+      correcta: 1,
     },
     {
       id: "4",
-      pregunta: "¿Cuál de los siguientes es un gasto variable?",
+      pregunta: "El saldo es la cantidad de dinero disponible en tu cuenta.",
       opciones: [
-        "Pago mensual de renta",
-        "Compra de ropa",
-        "Pago de luz",
-        "Transporte al trabajo"
-      ],
-      correcta: 1,
+            "VERDADERO",
+            "FALSO",
+        ],
+      correcta: 0,
     },
   ];
 
@@ -75,7 +74,7 @@ export default function PreguntasRepasoScreen({ navigation }) {
       setRespuestaSeleccionada(null);
       setRespuestaCorrecta(null);
     } else {
-      navigation.navigate("FMenu"); // Finaliza
+      navigation.navigate("CBMenu"); // Finaliza
     }
   };
 
