@@ -17,36 +17,83 @@ export default function FundamentosLeccionScreen({ navigation }) {
   // -------------------------------------------
   // Aquí defines las tarjetas de la lección
   // -------------------------------------------
-  const tarjetas = [
-    {
-      id: "1",
-      frente: "¿Qué es un ingreso?",
-      atras:
-        "Un ingreso es todo el dinero que entra a tu bolsillo o cuenta bancaria, proveniente de cualquier fuente. En otras palabras, representa el aumento en tus recursos económicos. Los ingresos pueden tener distintas procedencias: salario, propinas, rentas, comisiones, pensiones, premios o incluso regalos en efectivo.",
-    },
-    {
-      id: "2",
-      frente: "Tipos de ingresos",
-      atras:
-        "Existen dos tipos principales de ingresos: Ingresos fijos: Son los que recibes de manera regular y predecible, como un sueldo mensual, una pensión o una renta fija. Ingresos variables: Son los que no se repiten cada mes o cuyo monto cambia constantemente. Por ejemplo, una comisión por ventas, una propina o la ganancia por vender algo de segunda mano.",
-    },
-    {
-      id: "3",
-      frente: "¿Qué es un egereso o gasto?",
-      atras:
-        "Un egreso (también llamado gasto) es el dinero que sale de tu presupuesto para pagar bienes o servicios. Cada vez que compras algo o cubres una obligación, estás haciendo un egreso. BBVA explica que los egresos reducen tu patrimonio, ya que representan las salidas de recursos.",
-    },
-    {
-      id: "4",
-      frente: "Tipos de gastos",
-      atras: "Se clasifican principalmente en dos tipos: Gastos fijos: Son los que se repiten con la misma cantidad o frecuencia. Por ejemplo, el pago de la renta, la luz, el transporte o la colegiatura. Estos gastos son previsibles y deben cubrirse cada mes. Gastos variables: Son los que cambian según tus decisiones o circunstancias. Por ejemplo, salir a comer fuera, comprar ropa o pagar un servicio extra. Aunque parecen pequeños, “si no se controlan, pueden afectar tus finanzas”."
-    },
-    {
-      id: "5",
-      frente: "Tip Financiero",
-      atras: "La clave de una buena salud financiera está en mantener un equilibrio entre lo que ganas y lo que gastas. Si tus ingresos son mayores que tus gastos, tendrás un excedente, lo que te permite ahorrar o invertir. Si ocurre lo contrario, y gastas más de lo que ganas, generarás déficit y posiblemente deudas. Un presupuesto personal sirve precisamente para vigilar este equilibrio: registrar tus ingresos y tus egresos te ayuda a identificar en qué se va tu dinero y cómo puedes mejorar tu manejo financiero."
-    }
-  ];
+ 
+    const tarjetas = [
+  {
+    id: "1",
+    frente: "¿Qué es una cuenta de nómina?",
+    atras: "Es una cuenta bancaria donde se deposita automáticamente el salario del trabajador."
+  },
+  {
+    id: "2",
+    frente: "¿Cuál es el uso principal de una cuenta de nómina?",
+    atras: "Recibir el pago del sueldo de forma segura y automática."
+  },
+  {
+    id: "3",
+    frente: "¿La cuenta de nómina cobra comisiones?",
+    atras: "Generalmente no, mientras reciba depósitos de nómina."
+  },
+  {
+    id: "4",
+    frente: "¿Qué tarjeta incluye una cuenta de nómina?",
+    atras: "Una tarjeta de débito para compras, pagos y retiros."
+  },
+  {
+    id: "5",
+    frente: "¿Requiere monto mínimo para abrir?",
+    atras: "No, normalmente no se pide una cantidad inicial."
+  },
+  {
+    id: "6",    frente: "¿Qué beneficios adicionales ofrece una cuenta de nómina?",
+    atras: "Acceso a préstamos, tarjetas de crédito y créditos hipotecarios."
+  },
+  {
+    id: "7",
+    frente: "¿Qué pasa si tu cuenta deja de recibir depósitos de nómina?",
+    atras: "Puede convertirse en cuenta tradicional y empezar a cobrar comisiones."
+  },
+  {
+    id: "8",
+    frente: "¿En qué se diferencia una cuenta de ahorro?",
+    atras: "La cuenta de ahorro es para guardar dinero y puede generar intereses."
+  },
+  {
+    id: "9",
+    frente: "¿Qué es la portabilidad de nómina?",
+    atras: "El derecho a cambiar tu cuenta de nómina al banco que tú elijas."
+  },
+  {
+    id: "10",
+    frente: "¿Qué necesitas para solicitar la portabilidad?",
+    atras: "Identificación oficial, comprobante de domicilio y acudir al nuevo banco."
+  },
+  {
+    id: "11",
+    frente: "¿El empleador puede obligarte a un banco específico?",
+    atras: "No, tú decides dónde recibir tu salario."
+  },
+  {
+    id: "12",
+    frente: "¿Qué recomendación de seguridad es importante?",
+    atras: "Nunca compartir tu NIP ni contraseñas."
+  },
+  {
+    id: "13",
+    frente: "¿Para qué sirven las notificaciones móviles?",
+    atras: "Para saber cuándo te depositan o si hay movimientos sospechosos."
+  },
+  {
+    id: "14",
+    frente: "¿Qué hacer si cambias de empleo?",
+    atras: "Preguntar si puedes seguir usando la misma cuenta."
+  },
+  {
+    id: "15",
+    frente: "¿Qué debes verificar si tu cuenta deja de tener actividad?",
+    atras: "Que no empiece a generar comisiones por inactividad."
+  }
+];
 
   const [indexActual, setIndexActual] = useState(0);
 
@@ -73,7 +120,7 @@ export default function FundamentosLeccionScreen({ navigation }) {
       {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
-          onPress={() => navigation.navigate("PFundamentos1")}
+          onPress={() => navigation.navigate("PCuentasBancarias1")}
         >
           <Text style={styles.btnRepasoTxt}>Preguntas de Repaso</Text>
         </TouchableOpacity>
