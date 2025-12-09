@@ -16,6 +16,7 @@ import LFundamentos3 from '../screens/Fundamentos/Nivel3/LFundamentos';
 import PFundamentos1 from '../screens/Fundamentos/Nivel1/PFundamentos';
 import PFundamentos2 from '../screens/Fundamentos/Nivel2/PFundamentos';
 import PFundamentos3 from '../screens/Fundamentos/Nivel3/PFundamentos';
+import RetosScreen from '../screens/retos/RetosScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +31,7 @@ const AppNavigator = () => {
     );
   }
 
-const initialRouteName = isAuthenticated() ? "Main" : "Main";
+const initialRouteName = "Retos";
 
   return (
     <NavigationContainer>
@@ -46,6 +47,7 @@ const initialRouteName = isAuthenticated() ? "Main" : "Main";
         <Stack.Screen name="PFundamentos1" component={PFundamentos1} />
         <Stack.Screen name="PFundamentos2" component={PFundamentos2} />
         <Stack.Screen name="PFundamentos3" component={PFundamentos3} />
+        <Stack.Screen name="Retos" component={RetosScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
