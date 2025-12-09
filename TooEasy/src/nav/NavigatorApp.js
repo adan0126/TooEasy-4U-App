@@ -92,6 +92,7 @@ const AppNavigator = () => {
         {/* Nivel 3 - Intereses y Comisiones */}
         <Stack.Screen name="LCuentasBancarias3" component={LCuentasBancarias3} />
         <Stack.Screen name="PCuentasBancarias3" component={PCuentasBancarias3} />
+        <Stack.Screen name="Perfil" component={PerfilScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
