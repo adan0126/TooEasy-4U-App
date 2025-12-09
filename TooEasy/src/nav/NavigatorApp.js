@@ -13,6 +13,12 @@ import Main from '../screens/home';
 // Pantalla principal de lecciones
 import Lecciones from '../screens/lecciones';
 
+// Pantalla del DashBoard de Finanzas
+import DashboardFinanzas from '../screens/DashboardFinanzas';
+import RegistrarTransaccion from '../screens/RegistrarTransaccion';
+import EditarIngresoMensual from '../screens/EditarIngresoMensual';
+import { EditarMeta } from '../screens/EditarIngresoMensual'; // Están juntas
+
 // ========== FUNDAMENTOS ==========
 import FMenu from '../screens/Fundamentos/FMenu';
 // Nivel 1
@@ -58,8 +64,6 @@ const AppNavigator = () => {
         initialRouteName={initialRouteName} 
         screenOptions={{ headerShown: false }}
       >
-        {/* ========== Test Firebase ========== */}
-        <Stack.Screen name="TestFirebase" component={TestFirebase} />
 
         {/* ========== PANTALLAS DE AUTENTICACIÓN ========== */}
         <Stack.Screen name="Main" component={Main} />
@@ -68,6 +72,12 @@ const AppNavigator = () => {
         
         {/* ========== PANTALLA PRINCIPAL ========== */}
         <Stack.Screen name="Lecciones" component={Lecciones} />
+
+        {/* ========== DASHBOARD DE FINANZAS ========== */}
+        <Stack.Screen name="DashboardFinanzas" component={DashboardFinanzas} />
+        <Stack.Screen name="RegistrarTransaccion" component={RegistrarTransaccion} />
+        <Stack.Screen name="EditarIngresoMensual" component={EditarIngresoMensual} />
+        <Stack.Screen name="EditarMeta" component={EditarMeta} />
 
         {/* ========== FUNDAMENTOS ========== */}
         <Stack.Screen name="FMenu" component={FMenu} />
