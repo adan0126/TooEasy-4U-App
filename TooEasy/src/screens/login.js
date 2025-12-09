@@ -1,26 +1,132 @@
-// Pantalla para iniciar sesión
+// Pantalla para iniciar sesión con Firebase
 
-import React from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  TouchableOpacity, 
+  Image,
+  Alert,
+  ActivityIndicator
+} from "react-native";
+import { iniciarSesion } from "../services/authService";
+import { useUser } from "../context/UserContext";
 
 export default function IniciarSesion({ navigation }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { login } = useUser();
+
+  const handleLogin = async () => {
+    // Validaciones básicas
+    if (!username.trim() || !password) {
+      Alert.alert("Campos vacíos", "Por favor ingresa tu usuario y contraseña.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Intentar iniciar sesión
+      const resultado = await iniciarSesion(username, password);
+
+      if (!resultado.exito) {
+        Alert.alert("Error de Acceso", resultado.mensaje);
+        setLoading(false);
+        return;
+      }
+
+      // Login exitoso - guardar sesión
+      await login(resultado.usuario, {
+        id: resultado.usuario.id,
+        username: resultado.usuario.username,
+        monedas: resultado.usuario.monedas
+      });
+
+      // Navegar a Lecciones
+      navigation.navigate("Lecciones");
+
+    } catch (error) {
+      console.error("Error en login:", error);
+      Alert.alert(
+        "Error",
+        error.message || "Ocurrió un error al iniciar sesión. Intenta nuevamente."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>INICIA SESIÓN</Text>
 
-      <View style={styles.avatarCircle}></View>
+      <Image
+        source={require("../../assets/ftp2.png")}
+        style={styles.avatar}
+        resizeMode="contain"
+      />
 
-      <TextInput style={styles.input} placeholder="Nombre de usuario" />
-      <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
+      <TextInput 
+        style={styles.input} 
+        placeholder="Nombre de usuario"
+        value={username}
+        onChangeText={setUsername}
+        autoCapitalize="none"
+        editable={!loading}
+      />
+
+      <View style={styles.passwordContainer}>
+        <TextInput 
+          style={[styles.input, { flex: 1, marginBottom: 0 }]} 
+          placeholder="Contraseña" 
+          secureTextEntry={!showPassword}
+          value={password}
+          onChangeText={setPassword}
+          editable={!loading}
+        />
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.eyeBtn}
+          disabled={loading}
+        >
+          <Text style={{ fontSize: 16 }}>{showPassword ? "🙈" : "👁️"}</Text>
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity
-        style={styles.btn}
-        onPress={() => navigation.navigate("Lecciones")}  // ← AGREGADO
+        style={[styles.btn, loading && styles.btnDisabled]}
+        onPress={handleLogin}
+        disabled={loading}
       >
-        <Text style={styles.btnTxt}>INICIAR SESIÓN</Text>
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text style={styles.btnTxt}>INICIAR SESIÓN</Text>
+        )}
       </TouchableOpacity>
 
-      <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
+      <TouchableOpacity
+        onPress={() => Alert.alert("Recuperar Contraseña", "Esta función estará disponible próximamente.")}
+        disabled={loading}
+      >
+        <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("CrearAcc")}
+        disabled={loading}
+        style={{ marginTop: 20 }}
+      >
+        <Text style={styles.linkCreate}>
+          ¿No tienes cuenta? Regístrate
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -37,20 +143,30 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     marginBottom: 30,
   },
-  avatarCircle: {
+  avatar: {
     width: 150,
     height: 150,
-    borderRadius: 100,
-    backgroundColor: "#8EA4C0",
     marginBottom: 35,
   },
   input: {
     backgroundColor: "white",
     width: 250,
-    height: 35,
-    borderRadius: 4,
-    paddingHorizontal: 10,
+    height: 45,
+    borderRadius: 25,
+    paddingHorizontal: 15,
     marginBottom: 15,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: 250,
+    backgroundColor: "white",
+    borderRadius: 25,
+    paddingRight: 10,
+    marginBottom: 15,
+  },
+  eyeBtn: {
+    paddingHorizontal: 8,
   },
   btn: {
     backgroundColor: "#B6823E",
@@ -58,6 +174,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     borderRadius: 20,
     marginTop: 10,
+    width: 200,
+    alignItems: "center",
+  },
+  btnDisabled: {
+    opacity: 0.6,
   },
   btnTxt: {
     fontWeight: "700",
@@ -67,5 +188,10 @@ const styles = StyleSheet.create({
     color: "#203A53",
     marginTop: 20,
     fontWeight: "600",
+  },
+  linkCreate: {
+    color: "#B6823E",
+    fontWeight: "700",
+    fontSize: 15,
   },
 });
