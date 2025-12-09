@@ -15,10 +15,10 @@ export default function FMenu({ navigation }) {
     <ScrollView style={styles.container}>
       {/* ---------- HEADER ---------- */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Lecciones")}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Fundamentos</Text>
+        <Text style={styles.headerTitle}>Cuentas Bancarias</Text>
       </View>
 
       {/* ---------- IMAGEN ---------- */}
@@ -30,9 +30,8 @@ export default function FMenu({ navigation }) {
 
       {/* ---------- TEXTO DESCRIPTIVO ---------- */}
       <Text style={styles.description}>
-        Aprende los conceptos básicos del dinero: qué son los ingresos y
-        gastos, cómo ahorrar correctamente y la importancia de contar con un
-        fondo de emergencia para tu seguridad financiera.
+        Aprende los conceptos básicos sobre las cuentas bancarias: qué es una cuenta de ahorro, una cuenta de nomina,
+        aparte de lo que cobra el banco lo cual son los intereses  y comisiones que pueden tener.
       </Text>
 
       {/* ---------- CONTENEDOR DE LECCIONES ---------- */}
@@ -43,13 +42,13 @@ export default function FMenu({ navigation }) {
           style={styles.lessonBtn}
           onPress={() => {
             // 👇 Aquí cambias la navegación para que lleve a la lección correcta
-            navigation.navigate("LFundamentos1");
+            navigation.navigate("LCuentasBancarias1");
           }}
         >
           <View style={styles.iconCircle}>
             <Text style={styles.icon}>▶</Text>
           </View>
-          <Text style={styles.lessonText}>¿Qué es ingreso?</Text>
+          <Text style={styles.lessonText}>Tu primer cuenta, ¿Qué es una cuenta de ahorro?</Text>
         </TouchableOpacity>
 
         {/* 🔸 BOTÓN 2: ¿Qué es un gasto? */}
@@ -57,13 +56,13 @@ export default function FMenu({ navigation }) {
           style={styles.lessonBtn}
           onPress={() => {
             // 👇 Aquí cambias la navegación hacia la lección de gastos
-            navigation.navigate("LFundamentos2");
+            navigation.navigate("LCuentasBancarias2");
           }}
         >
           <View style={styles.iconCircle}>
             <Text style={styles.icon}>▶</Text>
           </View>
-          <Text style={styles.lessonText}>¿Qué es un gasto?</Text>
+          <Text style={styles.lessonText}>La cuenta del trabajo, ¿Qué es una cuenta de nomina?</Text>
         </TouchableOpacity>
 
         {/* 🔸 BOTÓN 3: Fondos de emergencia */}
@@ -71,13 +70,13 @@ export default function FMenu({ navigation }) {
           style={styles.lessonBtn}
           onPress={() => {
             // 👇 Aquí cambias la navegación hacia la lección de fondos
-            navigation.navigate("LFundamentos3");
+            navigation.navigate("LCuentasBancarias3");
           }}
         >
           <View style={styles.iconCircle}>
             <Text style={styles.icon}>▶</Text>
           </View>
-          <Text style={styles.lessonText}>Fondos de emergencia</Text>
+          <Text style={styles.lessonText}>o que el banco cobra, Intereses y Comisiones</Text>
         </TouchableOpacity>
 
         {/* 🔸 Puedes agregar más botones repitiendo este bloque */}
