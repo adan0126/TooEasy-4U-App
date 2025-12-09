@@ -64,8 +64,6 @@ const AppNavigator = () => {
         initialRouteName={initialRouteName} 
         screenOptions={{ headerShown: false }}
       >
-        {/* ========== Test Firebase ========== */}
-        <Stack.Screen name="TestFirebase" component={TestFirebase} />
 
         {/* ========== PANTALLAS DE AUTENTICACIÓN ========== */}
         <Stack.Screen name="Main" component={Main} />
