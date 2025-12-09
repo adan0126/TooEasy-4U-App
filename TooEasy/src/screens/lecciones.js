@@ -101,7 +101,7 @@ export default function LeccionesScreen({ navigation }) {
 
           <TouchableOpacity
             style={styles.playButtonLight}
-            onPress={() => navigation.navigate("LeccionDetalle", { id: 4 })}
+            onPress={() => navigation.navigate("ADMenu")}
           >
             <Text style={styles.playTextLight}>▶</Text>
           </TouchableOpacity>

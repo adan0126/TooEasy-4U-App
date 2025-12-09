@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useUser } from '../context/UserContext';
 
+// Fundamentos
 import IniciarSesion from '../screens/login';
 import CrearCuenta from '../screens/cuenta';
 import Main from '../screens/home';
@@ -16,6 +17,15 @@ import LFundamentos3 from '../screens/Fundamentos/Nivel3/LFundamentos';
 import PFundamentos1 from '../screens/Fundamentos/Nivel1/PFundamentos';
 import PFundamentos2 from '../screens/Fundamentos/Nivel2/PFundamentos';
 import PFundamentos3 from '../screens/Fundamentos/Nivel3/PFundamentos';
+
+// Admin dinero
+import ADMenu from '../screens/AdminDinero/ADMenu';
+import LAdminDinero1 from '../screens/AdminDinero/Nivel1/LAdminDinero';
+import PAdminDinero1 from '../screens/AdminDinero/Nivel1/PAdminDinero';
+import LAdminDinero2 from '../screens/AdminDinero/Nivel2/LAdminDinero';
+import PAdminDinero2 from '../screens/AdminDinero/Nivel2/PAdminDinero';
+import LAdminDinero3 from '../screens/AdminDinero/Nivel3/LAdminDinero';
+import PAdminDinero3 from '../screens/AdminDinero/Nivel3/PAdminDinero';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +56,14 @@ const initialRouteName = isAuthenticated() ? "Main" : "Main";
         <Stack.Screen name="PFundamentos1" component={PFundamentos1} />
         <Stack.Screen name="PFundamentos2" component={PFundamentos2} />
         <Stack.Screen name="PFundamentos3" component={PFundamentos3} />
+        <Stack.Screen name="ADMenu" component={ADMenu} />
+        <Stack.Screen name="LAdminDinero1" component={LAdminDinero1} />
+        <Stack.Screen name="PAdminDinero1" component={PAdminDinero1} />
+        <Stack.Screen name="LAdminDinero2" component={LAdminDinero2} />
+        <Stack.Screen name="PAdminDinero2" component={PAdminDinero2} />
+        <Stack.Screen name="LAdminDinero3" component={LAdminDinero3} />
+        <Stack.Screen name="PAdminDinero3" component={PAdminDinero3} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
