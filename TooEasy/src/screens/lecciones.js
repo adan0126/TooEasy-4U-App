@@ -83,7 +83,7 @@ export default function LeccionesScreen({ navigation }) {
           <Text style={styles.cardTitle}>Administración de Dinero</Text>
           <TouchableOpacity
             style={styles.playButtonLight}
-            onPress={() => alert("Próximamente")}
+            onPress={() => navigation.navigate("ADMenu")}
           >
             <Text style={styles.playTextLight}>🔒</Text>
           </TouchableOpacity>
