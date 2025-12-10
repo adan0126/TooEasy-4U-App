@@ -1,18 +1,33 @@
+// src/config/fb.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-import constants from "constants";
+import Constants from "expo-constants"; // ✅ Corregido
 
 const firebaseConfig = {
-  apiKey: constants.manifest.extra.firebaseApiKey,
-  authDomain: constants.manifest.extra.firebaseAuthDomain,
-  projectId: constants.manifest.extra.firebaseProjectId,
-  storageBucket: constants.manifest.extra.firebaseStorageBucket,
-  messagingSenderId: constants.manifest.extra.firebaseMessagingSenderId,
-  appId: constants.manifest.extra.firebaseAppId,
-  measurementId: constants.manifest.extra.firebaseMeasurementId
+  apiKey: Constants.expoConfig.extra.firebaseApiKey,
+  authDomain: Constants.expoConfig.extra.firebaseAuthDomain,
+  projectId: Constants.expoConfig.extra.firebaseProjectId,
+  storageBucket: Constants.expoConfig.extra.firebaseStorageBucket,
+  messagingSenderId: Constants.expoConfig.extra.firebaseMessagingSenderId,
+  appId: Constants.expoConfig.extra.firebaseAppId,
+  measurementId: Constants.expoConfig.extra.firebaseMeasurementId
 };
 
+// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
-export const database = getFirestore();
-const analytics = getAnalytics(app);
+
+// Exportar servicios
+export const database = getFirestore(app);
+
+// Analytics (solo en web)
+let analytics = null;
+if (typeof window !== 'undefined') {
+  try {
+    analytics = getAnalytics(app);
+  } catch (error) {
+    console.log("Analytics no disponible en esta plataforma");
+  }
+}
+
+export { analytics };

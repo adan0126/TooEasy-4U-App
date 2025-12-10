@@ -1,6 +1,6 @@
-// Pantalla de flashcards para los fundamentos - Ingreso
+// Pantalla de flashcards para Cuentas Bancarias - Nivel 1
 
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -9,179 +9,194 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  Image,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
 
-export default function FundamentosLeccionScreen({ navigation }) {
-  // -------------------------------------------
-  // Aquí defines las tarjetas de la lección
-  // -------------------------------------------
-const tarjetas = [
+
+  const frontImages = [
+  require("../../../../img/tarjetaFrente1.jpg"),
+  require("../../../../img/tarjetaFrente2.jpg"),
+  require("../../../../img/tarjetaFrente3.jpg"),
+  require("../../../../img/tarjetaFrente4.jpg"),
+  require("../../../../img/tarjetaFrente5.jpg"),
+  require("../../../../img/tarjetaFrente6.jpg"),
+  require("../../../../img/tarjetaFrente7.jpg"),
+  require("../../../../img/tarjetaFrente8.jpg"),
+  require("../../../../img/tarjetaFrente9.jpg"),
+  require("../../../../img/tarjetaFrente10.jpg"),
+  require("../../../../img/tarjetaFrente11.jpg"),
+];
+
+const backImages = [
+  require("../../../../img/tarjetaDetras1.jpg"),
+  require("../../../../img/tarjetaDetras2.jpg"),
+  require("../../../../img/tarjetaDetras3.jpg"),
+  require("../../../../img/tarjetaDetras4.jpg"),
+  require("../../../../img/tarjetaDetras5.jpg"),
+  require("../../../../img/tarjetaDetras6.jpg"),
+  require("../../../../img/tarjetaDetras7.jpg"),
+];
+
+const randomImage = (array) =>
+  array[Math.floor(Math.random() * array.length)];
+
+export default function CuentasBancariasLeccion1Screen({ navigation }) {
+
+  const baseTarjetas = [
   {
     id: "1",
     frente: "¿Qué es una cuenta de ahorro?",
-    atras: "Es un producto financiero que permite guardar dinero de forma segura y ganar intereses."
-  },
+    atras: "Es un producto financiero que permite guardar dinero de forma segura y ganar intereses.",
+    },
   {
     id: "2",
     frente: "¿Para qué sirve una cuenta de ahorro?",
-    atras: "Para resguardar dinero, permitir retiros cuando los necesites y generar intereses."
-  },
+    atras: "Para resguardar dinero, permitir retiros cuando los necesites y generar intereses.",
+    },
   {
     id: "3",
     frente: "¿Qué significa que una cuenta tenga liquidez?",
-    atras: "Que puedes usar o retirar tu dinero cuando lo necesites, aunque algunas cuentas pueden limitar retiros."
-  },
+    atras: "Que puedes usar o retirar tu dinero cuando lo necesites, aunque algunas cuentas pueden limitar retiros.",
+    },
   {
     id: "4",
     frente: "Primer paso para abrir una cuenta de ahorro",
-    atras: "Elegir una institución financiera confiable y revisar sus costos y servicios."
-  },
+    atras: "Elegir una institución financiera confiable y revisar sus costos y servicios.",
+    },
   {
     id: "5",
     frente: "Requisitos comunes para abrir una cuenta de ahorro",
-    atras: "Identificación oficial, comprobante de domicilio, CURP/RFC, cumplir edad mínima y realizar depósito inicial."
-  },
+    atras: "Identificación oficial, comprobante de domicilio, CURP/RFC, cumplir edad mínima y realizar depósito inicial.",
+    },
   {
     id: "6",
     frente: "¿Qué debes revisar antes de firmar?",
-    atras: "El contrato o documento de adhesión: comisiones, intereses, límites y condiciones."
-  },
+    atras: "El contrato o documento de adhesión: comisiones, intereses, límites y condiciones.",
+    },
   {
     id: "7",
     frente: "¿Qué pasa después de firmar el contrato?",
-    atras: "El banco abre tu cuenta y puedes comenzar a depositar, retirar y usar los servicios."
-  },
+    atras: "El banco abre tu cuenta y puedes comenzar a depositar, retirar y usar los servicios.",
+    },
   {
     id: "8",
     frente: "¿Qué son los límites de operación?",
-    atras: "Restricciones en número de retiros u operaciones sin costo que puede tener una cuenta."
-  },
+    atras: "Restricciones en número de retiros u operaciones sin costo que puede tener una cuenta.",
+    },
   {
     id: "9",
     frente: "¿Qué es una cuenta de ahorro sin chequera?",
-    atras: "Una cuenta básica para ahorrar sin emitir cheques, ideal para uso simple."
-  },
+    atras: "Una cuenta básica para ahorrar sin emitir cheques, ideal para uso simple.",
+    },
   {
     id: "10",
     frente: "¿Qué es una cuenta de ahorro programada?",
-    atras: "Una cuenta donde apartas automáticamente un monto mensual para una meta específica."
-  },
+    atras: "Una cuenta donde apartas automáticamente un monto mensual para una meta específica.",
+   },
   {
     id: "11",
     frente: "¿Qué son los intereses variables?",
-    atras: "Cuando la tasa de interés puede cambiar según las condiciones del mercado."
-  },
+    atras: "Cuando la tasa de interés puede cambiar según las condiciones del mercado.",
+    },
   {
     id: "12",
     frente: "¿Qué son las comisiones bancarias?",
-    atras: "Cargos por servicios como mantenimiento, inactividad, transferencias o estados de cuenta."
-  },
+    atras: "Cargos por servicios como mantenimiento, inactividad, transferencias o estados de cuenta.",
+    },
   {
     id: "13",
     frente: "¿Qué es la comisión por inactividad?",
-    atras: "Cargo que cobra el banco cuando tu cuenta no tiene movimientos por un tiempo."
-  },
+    atras: "Cargo que cobra el banco cuando tu cuenta no tiene movimientos por un tiempo.",
+    },
   {
     id: "14",
     frente: "¿Qué es la comisión por saldo mínimo?",
-    atras: "Penalización que se cobra si no mantienes un saldo promedio requerido."
-  },
+    atras: "Penalización que se cobra si no mantienes un saldo promedio requerido.",
+    },
   {
     id: "15",
     frente: "¿Qué es la tasa de interés?",
-    atras: "Porcentaje que el banco paga por el dinero que mantienes depositado."
-  },
+    atras: "Porcentaje que el banco paga por el dinero que mantienes depositado.",
+     },
   {
     id: "16",
     frente: "¿Qué es el CAT (Costo Anual Total)?",
-    atras: "Indicador que muestra el costo real de un producto financiero, incluyendo intereses y comisiones."
-  },
+    atras: "Indicador que muestra el costo real de un producto financiero, incluyendo intereses y comisiones.",
+   },
   {
     id: "17",
     frente: "¿El dinero en una cuenta está protegido?",
-    atras: "Sí, si el banco está regulado por autoridades financieras del país."
-  },
+    atras: "Sí, si el banco está regulado por autoridades financieras del país.",
+    },
   {
     id: "18",
     frente: "¿Qué es un estado de cuenta?",
-    atras: "Es un documento que muestra tus depósitos, retiros y el saldo disponible."
-  },
+    atras: "Es un documento que muestra tus depósitos, retiros y el saldo disponible.",
+    },
   {
     id: "19",
-    frente: "¿Qué es una comisión por inactividad?",
-    atras: "Es un cobro cuando tu cuenta no tiene movimientos por un tiempo."
-  },
+    frente: "¿Qué es la liquidez?",
+    atras: "La facilidad con la que puedes retirar tu dinero sin complicaciones.",
+    },
   {
     id: "20",
-    frente: "¿Qué es una comisión por mantenimiento?",
-    atras: "Es un cobro que hace el banco por administrar tu cuenta cada mes."
-  },
-  {
-    id: "21",
-    frente: "¿Todas las cuentas permiten retiros ilimitados sin costo?",
-    atras: "No. Algunas cuentas tienen límites o cobran por ciertos retiros."
-  },
-  {
-    id: "22",
-    frente: "¿El dinero en bancos regulados está protegido?",
-    atras: "Sí, las instituciones autorizadas protegen tu dinero mediante regulación financiera."
-  },
-  {
-    id: "23",
-    frente: "¿Qué es una cuenta de ahorro programada?",
-    atras: "Una cuenta donde apartas automáticamente un monto para cumplir una meta de ahorro."
-  },
-  {
-    id: "24",
-    frente: "¿Qué es la liquidez?",
-    atras: "La facilidad con la que puedes retirar tu dinero sin complicaciones."
-  },
-  {
-    id: "25",
     frente: "¿Qué es el CAT?",
-    atras: "El Costo Anual Total, que muestra el costo real de un producto financiero."
-  },
-  {
-    id: "26",
-    frente: "¿Qué es una tasa de interés?",
-    atras: "El porcentaje que el banco paga por tu dinero depositado."
-  }
+    atras: "El Costo Anual Total, que muestra el costo real de un producto financiero.",
+    },
 ];
 
-  const [indexActual, setIndexActual] = useState(0);
+ const tarjetas = useMemo(() => {
+    return baseTarjetas.map((t) => ({
+      ...t,
+      imagenFrente: randomImage(frontImages),
+      imagenAtras: randomImage(backImages),
+    }));
+  }, []);
+ 
+ const [indexActual, setIndexActual] = useState(0);
 
-  return (
+const handleScroll = (e) => {
+    const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
+    setIndexActual(nuevoIndex);
+  };
+
+   return (
     <View style={styles.container}>
+      {tarjetas.length === 0 && (
+        <Text style={styles.msgVacio}>
+          Aquí aún no hay tarjetas cargadas.{"\n"}
+          Cuando tengas el contenido, agrégalo en el arreglo "tarjetas".
+        </Text>
+      )}
+
       <FlatList
         data={tarjetas}
         keyExtractor={(item) => item.id}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={(e) => {
-          const index = Math.round(
-            e.nativeEvent.contentOffset.x / width
-          );
-          setIndexActual(index);
-        }}
+        onScroll={handleScroll}
         renderItem={({ item }) => (
-          <FlashCard frente={item.frente} atras={item.atras} />
+          <FlashCard
+            frente={item.frente}
+            atras={item.atras}
+            imagenFrente={item.imagenFrente}
+            imagenAtras={item.imagenAtras}
+          />
         )}
       />
 
-      {/* 🌟 SOLO aparece al finalizar todas las tarjetas */}
-      {indexActual === tarjetas.length - 1 && (
+      {tarjetas.length > 0 && indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
-          onPress={() => navigation.navigate("LCuentasBancarias1")}
+          onPress={() => navigation.navigate("PAdminDinero1")}
         >
           <Text style={styles.btnRepasoTxt}>Preguntas de Repaso</Text>
         </TouchableOpacity>
       )}
 
-      {/* Botón regresar */}
       <TouchableOpacity
         style={styles.btnRegresar}
         onPress={() => navigation.goBack()}
@@ -192,10 +207,10 @@ const tarjetas = [
   );
 }
 
-// -------------------------------------------------------
-// 🔥 COMPONENTE FLASHCARD con animación de FLIP
-// -------------------------------------------------------
-function FlashCard({ frente, atras }) {
+// ---------------------------------------------------------
+// 🔥 COMPONENTE FLASHCARD (con imágenes)
+// ---------------------------------------------------------
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
   const [ladoFrente, setLadoFrente] = useState(true);
 
@@ -214,15 +229,12 @@ function FlashCard({ frente, atras }) {
       toValue: ladoFrente ? 180 : 0,
       duration: 400,
       useNativeDriver: true,
-    }).start(() => {
-      setLadoFrente(!ladoFrente);
-    });
+    }).start(() => setLadoFrente(!ladoFrente));
   };
 
   return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-        {/* Frente */}
         <Animated.View
           style={[
             styles.card,
@@ -230,10 +242,10 @@ function FlashCard({ frente, atras }) {
             { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
           ]}
         >
+          <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
           <Text style={styles.cardText}>{frente}</Text>
         </Animated.View>
 
-        {/* Reverso */}
         <Animated.View
           style={[
             styles.card,
@@ -241,6 +253,7 @@ function FlashCard({ frente, atras }) {
             { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
           ]}
         >
+          <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
           <Text style={styles.cardTextAtras}>{atras}</Text>
         </Animated.View>
       </TouchableOpacity>
@@ -248,7 +261,9 @@ function FlashCard({ frente, atras }) {
   );
 }
 
-// --------------------- ESTILOS ---------------------
+// ---------------------------------------------------------
+// 🎨 ESTILOS
+// ---------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -256,30 +271,36 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
+  msgVacio: {
+    color: "#E0E1DD",
+    fontSize: 16,
+    textAlign: "center",
+    marginHorizontal: 20,
+  },
   cardWrapper: {
-    width: width,
+    width,
     justifyContent: "center",
     alignItems: "center",
   },
-
   card: {
     width: width * 0.8,
-    height: 300,
+    minHeight: 300,
     borderRadius: 15,
+    padding: 20,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
     backfaceVisibility: "hidden",
     position: "absolute",
   },
-
+  img: {
+    width: "70%",
+    height: 140,
+    marginBottom: 15,
+  },
   cardFrente: { backgroundColor: "#415A77" },
   cardAtras: { backgroundColor: "#E0E1DD" },
-
   cardText: { textAlign: "center", fontSize: 22, color: "#FFF" },
   cardTextAtras: { textAlign: "center", fontSize: 20, color: "#000" },
-
   btnRepaso: {
     position: "absolute",
     bottom: 110,
@@ -288,13 +309,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
   },
-
   btnRepasoTxt: {
     color: "#FFF",
     fontSize: 20,
     fontWeight: "bold",
   },
-
   btnRegresar: {
     position: "absolute",
     bottom: 40,
@@ -303,7 +322,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#778DA9",
     borderRadius: 10,
   },
-
   btnRegresarTxt: {
     color: "#FFF",
     fontSize: 18,
