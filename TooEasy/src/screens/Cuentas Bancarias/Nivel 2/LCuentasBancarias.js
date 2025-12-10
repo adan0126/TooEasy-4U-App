@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  Image,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -106,17 +107,20 @@ export default function FundamentosLeccionScreen({ navigation }) {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={(e) => {
-          const index = Math.round(
-            e.nativeEvent.contentOffset.x / width
-          );
+          const index = Math.round(e.nativeEvent.contentOffset.x / width);
           setIndexActual(index);
         }}
         renderItem={({ item }) => (
-          <FlashCard frente={item.frente} atras={item.atras} />
+          <FlashCard
+            frente={item.frente}
+            atras={item.atras}
+            imagenFrente={item.imagenFrente}
+            imagenAtras={item.imagenAtras}
+          />
         )}
       />
 
-      {/* 🌟 SOLO aparece al finalizar todas las tarjetas */}
+      {/* Botón que aparece al final */}
       {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
@@ -138,9 +142,9 @@ export default function FundamentosLeccionScreen({ navigation }) {
 }
 
 // -------------------------------------------------------
-// 🔥 COMPONENTE FLASHCARD con animación de FLIP
+// 🔥 COMPONENTE FLASHCARD con animación + imágenes
 // -------------------------------------------------------
-function FlashCard({ frente, atras }) {
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
   const [ladoFrente, setLadoFrente] = useState(true);
 
@@ -159,14 +163,13 @@ function FlashCard({ frente, atras }) {
       toValue: ladoFrente ? 180 : 0,
       duration: 400,
       useNativeDriver: true,
-    }).start(() => {
-      setLadoFrente(!ladoFrente);
-    });
+    }).start(() => setLadoFrente(!ladoFrente));
   };
 
   return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity activeOpacity={1} onPress={flipCard}>
+
         {/* Frente */}
         <Animated.View
           style={[
@@ -175,6 +178,9 @@ function FlashCard({ frente, atras }) {
             { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
           ]}
         >
+          {imagenFrente && (
+            <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
+          )}
           <Text style={styles.cardText}>{frente}</Text>
         </Animated.View>
 
@@ -186,6 +192,9 @@ function FlashCard({ frente, atras }) {
             { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
           ]}
         >
+          {imagenAtras && (
+            <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
+          )}
           <Text style={styles.cardTextAtras}>{atras}</Text>
         </Animated.View>
       </TouchableOpacity>
@@ -201,16 +210,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
   cardWrapper: {
     width: width,
     justifyContent: "center",
     alignItems: "center",
   },
-
   card: {
     width: width * 0.8,
-    height: 300,
+    minHeight: 300,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
@@ -218,13 +225,15 @@ const styles = StyleSheet.create({
     backfaceVisibility: "hidden",
     position: "absolute",
   },
-
+  img: {
+    width: "70%",
+    height: 140,
+    marginBottom: 15,
+  },
   cardFrente: { backgroundColor: "#415A77" },
   cardAtras: { backgroundColor: "#E0E1DD" },
-
   cardText: { textAlign: "center", fontSize: 22, color: "#FFF" },
   cardTextAtras: { textAlign: "center", fontSize: 20, color: "#000" },
-
   btnRepaso: {
     position: "absolute",
     bottom: 110,
@@ -233,13 +242,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
   },
-
   btnRepasoTxt: {
     color: "#FFF",
     fontSize: 20,
     fontWeight: "bold",
   },
-
   btnRegresar: {
     position: "absolute",
     bottom: 40,
@@ -248,7 +255,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#778DA9",
     borderRadius: 10,
   },
-
   btnRegresarTxt: {
     color: "#FFF",
     fontSize: 18,
