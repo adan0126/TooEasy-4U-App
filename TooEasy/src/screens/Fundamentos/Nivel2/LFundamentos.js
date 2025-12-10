@@ -160,7 +160,7 @@ function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
     });
   };
 
-   return (
+ return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity activeOpacity={1} onPress={flipCard}>
         {/* FRENTE */}
