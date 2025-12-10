@@ -32,7 +32,7 @@ export default function CrearCuenta({ navigation }) {
   const handleRegistro = async () => {
     console.log("🚀 Iniciando proceso de registro...");
     
-    // 1️⃣ Validación local del formulario
+    // Validación local del formulario
     const errorValidacion = validarRegistro({
       username,
       password,
@@ -54,7 +54,7 @@ export default function CrearCuenta({ navigation }) {
     try {
       console.log("🔍 Verificando si el usuario existe...");
       
-      // 2️⃣ Verificar si el usuario ya existe en Firebase
+      // Verificar si el usuario ya existe en Firebase
       const verificacion = await verificarUsuarioExistente(username, correo);
       
       console.log("Resultado de verificación:", verificacion);
@@ -66,9 +66,7 @@ export default function CrearCuenta({ navigation }) {
         return;
       }
 
-      console.log("✅ Usuario no existe, procediendo a registrar...");
-
-      // 3️⃣ Registrar usuario en Firebase
+      // Registrar usuario en Firebase
       const nuevoUsuario = await registrarUsuario({
         username,
         password,

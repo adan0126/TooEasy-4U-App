@@ -29,12 +29,12 @@ export default function PerfilScreen({ navigation }) {
 
   // Mapeo de skins
   const DB_SKINS = {
-    skin_default: require("../../assets/img/casadefault.png"),
-    skin_1: require("../../assets/img/casa1.png"),
-    skin_2: require("../../assets/img/casa2.png"),
-    skin_3: require("../../assets/img/casa3.png"),
-    skin_4: require("../../assets/img/casa4.png"),
-    skin_5: require("../../assets/img/casa5.png")
+    skin_default: require("../../assets/casaN1.png"),
+    skin_1: require("../../assets/casaN1.png"),
+    skin_2: require("../../assets/casaN2.png"),
+    skin_3: require("../../assets/casaN3.png"),
+    skin_4: require("../../assets/casaN4.png"),
+    skin_5: require("../../assets/casaN5.png")
   };
 
   const SKIN_NAMES = {
@@ -47,12 +47,12 @@ export default function PerfilScreen({ navigation }) {
   };
 
   const DB_CASTORES = {
-    castor_default: require("../../assets/img/castordefault.png"),
-    castor_1: require("../../assets/img/castor1.png"),
-    castor_2: require("../../assets/img/castor2.png"),
-    castor_3: require("../../assets/img/castor3.png"),
-    castor_4: require("../../assets/img/castor4.png"),
-    castor_5: require("../../assets/img/castor5.png")
+    castor_default: require("../../assets/mapacheN1.png"),
+    castor_1: require("../../assets/mapacheN1.png"),
+    castor_2: require("../../assets/mapacheN2.png"),
+    castor_3: require("../../assets/mapacheN3.png"),
+    castor_4: require("../../assets/mapacheN4.png"),
+    castor_5: require("../../assets/mapacheN5.png")
   };
 
   const CASTOR_NAMES = {

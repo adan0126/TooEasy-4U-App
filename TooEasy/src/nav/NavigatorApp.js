@@ -13,6 +13,15 @@ import Main from '../screens/home';
 // ========== PANTALLA PRINCIPAL ==========
 import Lecciones from '../screens/lecciones';
 
+// ========== PANTALLAS DE NAVEGACIÓN ==========
+import DashboardFinanzas from '../screens/DashboardFinanzas';
+import Retos from '../screens/retos/RetosScreen';
+import Perfil from '../screens/perfil';
+
+// ========== PANTALLAS DEL DASHBOARD DE FINANZAS ==========
+import EditarIngresoMensual from '../screens/EditarIngresoMensual';
+import RegistrarTransaccion from '../screens/RegistrarTransaccion';
+
 // ========== FUNDAMENTOS ==========
 import FMenu from '../screens/Fundamentos/FMenu';
 // Nivel 1 - Ingresos y Gastos
@@ -107,6 +116,13 @@ const AppNavigator = () => {
         
         {/* ========== PANTALLA PRINCIPAL ========== */}
         <Stack.Screen name="Lecciones" component={Lecciones} />
+
+        {/* ========== PANTALLAS DE NAVEGACIÓN ========== */}
+        <Stack.Screen name="DashboardFinanzas" component={DashboardFinanzas} />
+        <Stack.Screen name="EditarIngresoMensual" component={EditarIngresoMensual} />
+        <Stack.Screen name="RegistrarTransaccion" component={RegistrarTransaccion} />
+        <Stack.Screen name="Retos" component={Retos} />
+        <Stack.Screen name="Perfil" component={Perfil} />
 
         {/* ========== FUNDAMENTOS ========== */}
         <Stack.Screen name="FMenu" component={FMenu} />

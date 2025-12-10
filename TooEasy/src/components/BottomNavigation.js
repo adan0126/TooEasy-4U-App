@@ -16,28 +16,24 @@ export default function BottomNavigation({ navigation, activeRoute = "Lecciones"
       id: "dashboard",
       name: "DashboardFinanzas",
       route: "DashboardFinanzas",
-      // 📸 IMAGEN: Coloca aquí el ícono de gráfico/progreso (graph icon)
       icon: require("../../assets/icono_dashboard-removebg-preview.png"),
     },
     {
       id: "lecciones",
       name: "Lecciones",
       route: "Lecciones",
-      // 📸 IMAGEN: Coloca aquí el ícono de documento/pruebas (document icon)
       icon: require("../../assets/icono_lecciones-removebg-preview.png"),
     },
     {
       id: "retos",
       name: "Retos",
       route: "Retos",
-      // 📸 IMAGEN: Coloca aquí el ícono de moneda/lecciones (coin icon)
       icon: require("../../assets/icono_retos-removebg-preview.png"),
     },
     {
       id: "perfil",
       name: "Perfil",
       route: "Perfil",
-      // 📸 IMAGEN: Coloca aquí el ícono de usuario/perfil (user icon)
       icon: require("../../assets/icono_perfil-removebg-preview.png"),
     },
   ];

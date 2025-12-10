@@ -33,7 +33,7 @@ export default function RetosScreen() {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../../assets/retos_fondo.jpg")}
+        source={require("../../../assets/mapacheEscalando.png")}
         style={styles.bg}
         resizeMode="cover"
       >
