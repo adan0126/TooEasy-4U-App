@@ -11,13 +11,37 @@ import {
 
 const { width } = Dimensions.get("window");
 
+  const frontImages = [
+  require("../../../../assets/tarjetaFrente1.png"),
+  require("../../../../assets/tarjetaFrente2.png"),
+  require("../../../../assets/tarjetaFrente3.png"),
+  require("../../../../assets/tarjetaFrente4.png"),
+  require("../../../../assets/tarjetaFrente5.png"),
+  require("../../../../assets/tarjetaFrente6.png"),
+  require("../../../../assets/tarjetaFrente7.png"),
+  require("../../../../assets/tarjetaFrente8.png"),
+  require("../../../../assets/tarjetaFrente9.png"),
+  require("../../../../assets/tarjetaFrente10.png"),
+  require("../../../../assets/tarjetaFrente11.png"),
+];
+
+const backImages = [
+  require("../../../../assets/tarjetaDetras1.png"),
+  require("../../../../assets/tarjetaDetras2.png"),
+  require("../../../../assets/tarjetaDetras3.png"),
+  require("../../../../assets/tarjetaDetras4.png"),
+  require("../../../../assets/tarjetaDetras5.png"),
+  require("../../../../assets/tarjetaDetras6.png"),
+  require("../../../../assets/tarjetaDetras7.png"),
+];
+
 // Componente renombrado
 export default function DeudasyCreditosLeccionScreen({ navigation }) {
   // -------------------------------------------
   // Aquí defines las tarjetas de la lección
   // (Información actualizada: Deudas Buenas vs. Malas)
   // -------------------------------------------
-  const tarjetas = [
+  const tarjetasBase = [
     {
       id: "1",
       frente: "Deudas Buenas: Generando Valor",
@@ -44,7 +68,20 @@ export default function DeudasyCreditosLeccionScreen({ navigation }) {
     },
   ];
 
+const tarjetas = useMemo(() => {
+    return tarjetasBase.map((t, i) => ({
+      ...t,
+      imagenFrente: frontImages[i % frontImages.length], // 11 imágenes → se repiten
+      imagenAtras: backImages[i % backImages.length],     // 7 imágenes → se repiten
+    }));
+  }, []);
+
   const [indexActual, setIndexActual] = useState(0);
+
+  const handleScroll = (e) => {
+    const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
+    setIndexActual(nuevoIndex);
+  };
 
   return (
     <View style={styles.container}>

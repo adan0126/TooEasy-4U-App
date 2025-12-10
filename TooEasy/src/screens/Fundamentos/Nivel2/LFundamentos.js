@@ -19,27 +19,27 @@ export default function FundamentosLeccionScreen({ navigation }) {
   // IMÁGENES DISPONIBLES
   // -------------------------------------------
   const frontImages = [
-  require("../../../../img/tarjetaFrente1.jpg"),
-  require("../../../../img/tarjetaFrente2.jpg"),
-  require("../../../../img/tarjetaFrente3.jpg"),
-  require("../../../../img/tarjetaFrente4.jpg"),
-  require("../../../../img/tarjetaFrente5.jpg"),
-  require("../../../../img/tarjetaFrente6.jpg"),
-  require("../../../../img/tarjetaFrente7.jpg"),
-  require("../../../../img/tarjetaFrente8.jpg"),
-  require("../../../../img/tarjetaFrente9.jpg"),
-  require("../../../../img/tarjetaFrente10.jpg"),
-  require("../../../../img/tarjetaFrente11.jpg"),
+  require("../../../../assets/tarjetaFrente1.png"),
+  require("../../../../assets/tarjetaFrente2.png"),
+  require("../../../../assets/tarjetaFrente3.png"),
+  require("../../../../assets/tarjetaFrente4.png"),
+  require("../../../../assets/tarjetaFrente5.png"),
+  require("../../../../assets/tarjetaFrente6.png"),
+  require("../../../../assets/tarjetaFrente7.png"),
+  require("../../../../assets/tarjetaFrente8.png"),
+  require("../../../../assets/tarjetaFrente9.png"),
+  require("../../../../assets/tarjetaFrente10.png"),
+  require("../../../../assets/tarjetaFrente11.png"),
 ];
 
 const backImages = [
-  require("../../../../img/tarjetaDetras1.jpg"),
-  require("../../../../img/tarjetaDetras2.jpg"),
-  require("../../../../img/tarjetaDetras3.jpg"),
-  require("../../../../img/tarjetaDetras4.jpg"),
-  require("../../../../img/tarjetaDetras5.jpg"),
-  require("../../../../img/tarjetaDetras6.jpg"),
-  require("../../../../img/tarjetaDetras7.jpg"),
+  require("../../../../assets/tarjetaDetras1.png"),
+  require("../../../../assets/tarjetaDetras2.png"),
+  require("../../../../assets/tarjetaDetras3.png"),
+  require("../../../../assets/tarjetaDetras4.png"),
+  require("../../../../assets/tarjetaDetras5.png"),
+  require("../../../../assets/tarjetaDetras6.png"),
+  require("../../../../assets/tarjetaDetras7.png"),
 ];
 
   // -------------------------------------------

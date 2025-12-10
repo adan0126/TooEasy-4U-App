@@ -9,7 +9,7 @@ import {
   serverTimestamp 
 } from "firebase/firestore";
 
-import { database } from "../firebaseConfig";
+import { database } from "../fb.js";
 import bcrypt from "react-native-bcrypt";
 
 // ==============================
