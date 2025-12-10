@@ -23,76 +23,107 @@ export default function FundamentosLeccionScreen({ navigation }) {
   {
     id: "1",
     frente: "¿Qué es una cuenta de nómina?",
-    atras: "Es una cuenta bancaria donde se deposita automáticamente el salario del trabajador."
+    atras: "Es una cuenta bancaria donde se deposita automáticamente el salario del trabajador.",
+    imagenFrente: require("../../../../img/tarjetaFrente1.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
+    
   },
   {
     id: "2",
     frente: "¿Cuál es el uso principal de una cuenta de nómina?",
-    atras: "Recibir el pago del sueldo de forma segura y automática."
+    atras: "Recibir el pago del sueldo de forma segura y automática.",
+    imagenFrente: require("../../../../img/tarjetaFrente2.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras2.png"),
   },
   {
     id: "3",
     frente: "¿La cuenta de nómina cobra comisiones?",
-    atras: "Generalmente no, mientras reciba depósitos de nómina."
+    atras: "Generalmente no, mientras reciba depósitos de nómina.",
+    imagenFrente: require("../../../../img/tarjetaFrente3.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras3.png"),
   },
   {
     id: "4",
     frente: "¿Qué tarjeta incluye una cuenta de nómina?",
-    atras: "Una tarjeta de débito para compras, pagos y retiros."
+    atras: "Una tarjeta de débito para compras, pagos y retiros.",
+    imagenFrente: require("../../../../img/tarjetaFrente4.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras4.png"),
   },
   {
     id: "5",
     frente: "¿Requiere monto mínimo para abrir?",
-    atras: "No, normalmente no se pide una cantidad inicial."
+    atras: "No, normalmente no se pide una cantidad inicial.",
+    imagenFrente: require("../../../../img/tarjetaFrente5.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras5.png"),
   },
   {
     id: "6",    frente: "¿Qué beneficios adicionales ofrece una cuenta de nómina?",
-    atras: "Acceso a préstamos, tarjetas de crédito y créditos hipotecarios."
+    atras: "Acceso a préstamos, tarjetas de crédito y créditos hipotecarios.",
+    imagenFrente: require("../../../../img/tarjetaFrente6.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras6.png"),
   },
   {
     id: "7",
     frente: "¿Qué pasa si tu cuenta deja de recibir depósitos de nómina?",
-    atras: "Puede convertirse en cuenta tradicional y empezar a cobrar comisiones."
+    atras: "Puede convertirse en cuenta tradicional y empezar a cobrar comisiones.",
+    imagenFrente: require("../../../../img/tarjetaFrente7.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras7.png"),
   },
   {
     id: "8",
     frente: "¿En qué se diferencia una cuenta de ahorro?",
-    atras: "La cuenta de ahorro es para guardar dinero y puede generar intereses."
+    atras: "La cuenta de ahorro es para guardar dinero y puede generar intereses.",
+    imagenFrente: require("../../../../img/tarjetaFrente8.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
   },
   {
     id: "9",
     frente: "¿Qué es la portabilidad de nómina?",
-    atras: "El derecho a cambiar tu cuenta de nómina al banco que tú elijas."
+    atras: "El derecho a cambiar tu cuenta de nómina al banco que tú elijas.",
+    imagenFrente: require("../../../../img/tarjetaFrente9.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras2.png"),
   },
   {
     id: "10",
     frente: "¿Qué necesitas para solicitar la portabilidad?",
-    atras: "Identificación oficial, comprobante de domicilio y acudir al nuevo banco."
+    atras: "Identificación oficial, comprobante de domicilio y acudir al nuevo banco.",
+    imagenFrente: require("../../../../img/tarjetaFrente10.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras3.png"),
   },
   {
     id: "11",
     frente: "¿El empleador puede obligarte a un banco específico?",
-    atras: "No, tú decides dónde recibir tu salario."
+    atras: "No, tú decides dónde recibir tu salario.",
+    imagenFrente: require("../../../../img/tarjetaFrente11.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras4.png"),
   },
   {
     id: "12",
     frente: "¿Qué recomendación de seguridad es importante?",
-    atras: "Nunca compartir tu NIP ni contraseñas."
+    atras: "Nunca compartir tu NIP ni contraseñas.",
+    imagenFrente: require("../../../../img/tarjetaFrente1.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras5.png"),
   },
   {
     id: "13",
     frente: "¿Para qué sirven las notificaciones móviles?",
-    atras: "Para saber cuándo te depositan o si hay movimientos sospechosos."
+    atras: "Para saber cuándo te depositan o si hay movimientos sospechosos.",
+    imagenFrente: require("../../../../img/tarjetaFrente2.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras6.png"),
   },
   {
     id: "14",
     frente: "¿Qué hacer si cambias de empleo?",
-    atras: "Preguntar si puedes seguir usando la misma cuenta."
+    atras: "Preguntar si puedes seguir usando la misma cuenta.",
+    imagenFrente: require("../../../../img/tarjetaFrente3.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras7.png"),
   },
   {
     id: "15",
     frente: "¿Qué debes verificar si tu cuenta deja de tener actividad?",
-    atras: "Que no empiece a generar comisiones por inactividad."
+    atras: "Que no empiece a generar comisiones por inactividad.",
+    imagenFrente: require("../../../../img/tarjetaFrente4.png"),
+    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
   }
 ];
 
