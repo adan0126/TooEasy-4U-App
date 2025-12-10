@@ -1,4 +1,3 @@
-// Pantalla de flashcards para los fundamentos – Ingreso
 
 import React, { useRef, useState, useMemo } from "react";
 import {
@@ -19,28 +18,28 @@ export default function FundamentosLeccionScreen({ navigation }) {
   // IMÁGENES DISPONIBLES
   // -------------------------------------------
   const frontImages = [
-    require("../../assets/frente1.jpg"),
-    require("../../assets/frente2.jpg"),
-    require("../../assets/frente3.jpg"),
-    require("../../assets/frente4.jpg"),
-    require("../../assets/frente5.jpg"),
-    require("../../assets/frente6.jpg"),
-    require("../../assets/frente7.jpg"),
-    require("../../assets/frente8.jpg"),
-    require("../../assets/frente9.jpg"),
-    require("../../assets/frente10.jpg"),
-    require("../../assets/frente11.jpg"),
-  ];
+  require("../../../../img/tarjetaFrente1.jpg"),
+  require("../../../../img/tarjetaFrente2.jpg"),
+  require("../../../../img/tarjetaFrente3.jpg"),
+  require("../../../../img/tarjetaFrente4.jpg"),
+  require("../../../../img/tarjetaFrente5.jpg"),
+  require("../../../../img/tarjetaFrente6.jpg"),
+  require("../../../../img/tarjetaFrente7.jpg"),
+  require("../../../../img/tarjetaFrente8.jpg"),
+  require("../../../../img/tarjetaFrente9.jpg"),
+  require("../../../../img/tarjetaFrente10.jpg"),
+  require("../../../../img/tarjetaFrente11.jpg"),
+];
 
-  const backImages = [
-    require("../../assets/atras1.jpg"),
-    require("../../assets/atras2.jpg"),
-    require("../../assets/atras3.jpg"),
-    require("../../assets/atras4.jpg"),
-    require("../../assets/atras5.jpg"),
-    require("../../assets/atras6.jpg"),
-    require("../../assets/atras7.jpg"),
-  ];
+const backImages = [
+  require("../../../../img/tarjetaDetras1.jpg"),
+  require("../../../../img/tarjetaDetras2.jpg"),
+  require("../../../../img/tarjetaDetras3.jpg"),
+  require("../../../../img/tarjetaDetras4.jpg"),
+  require("../../../../img/tarjetaDetras5.jpg"),
+  require("../../../../img/tarjetaDetras6.jpg"),
+  require("../../../../img/tarjetaDetras7.jpg"),
+];
 
   // -------------------------------------------
   // TARJETAS BASE

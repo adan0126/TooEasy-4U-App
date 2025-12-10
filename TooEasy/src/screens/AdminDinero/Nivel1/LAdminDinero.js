@@ -136,7 +136,7 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
 }
 
 // ----------------- FLASHCARD -----------------
-function FlashCard({ frente, atras, imgFrente, imgAtras }) {
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
   const [ladoFrente, setLadoFrente] = useState(true);
 
@@ -159,35 +159,35 @@ function FlashCard({ frente, atras, imgFrente, imgAtras }) {
   };
 
   return (
-    <View style={styles.cardWrapper}>
-      <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-        {/* Frente */}
-        <Animated.View
-          style={[
-            styles.card,
-            { transform: [{ rotateY: rotacionFrente }] },
-            { opacity: ladoFrente ? 1 : 0 },
-          ]}
-        >
-          <Image source={imgFrente} style={styles.img} />
-          <Text style={styles.cardText}>{frente}</Text>
-        </Animated.View>
-
-        {/* Atrás */}
-        <Animated.View
-          style={[
-            styles.card,
-            { transform: [{ rotateY: rotacionAtras }] },
-            { opacity: ladoFrente ? 0 : 1 },
-          ]}
-        >
-          <Image source={imgAtras} style={styles.img} />
-          <Text style={styles.cardTextAtras}>{atras}</Text>
-        </Animated.View>
-      </TouchableOpacity>
-    </View>
-  );
-}
+      <View style={styles.cardWrapper}>
+        <TouchableOpacity activeOpacity={1} onPress={flipCard}>
+          {/* FRENTE */}
+          <Animated.View
+            style={[
+              styles.card,
+              styles.cardFrente,
+              { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
+            ]}
+          >
+            <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
+            <Text style={styles.cardText}>{frente}</Text>
+          </Animated.View>
+  
+          {/* ATRÁS */}
+          <Animated.View
+            style={[
+              styles.card,
+              styles.cardAtras,
+              { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
+            ]}
+          >
+            <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
+            <Text style={styles.cardTextAtras}>{atras}</Text>
+          </Animated.View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
 // ----------------- ESTILOS -----------------
 const styles = StyleSheet.create({
