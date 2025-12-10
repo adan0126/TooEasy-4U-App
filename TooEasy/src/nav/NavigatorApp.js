@@ -30,6 +30,7 @@ import PFundamentos2 from '../screens/Fundamentos/Nivel2/PFundamentos';
 // Nivel 3
 import LFundamentos3 from '../screens/Fundamentos/Nivel3/LFundamentos';
 import PFundamentos3 from '../screens/Fundamentos/Nivel3/PFundamentos';
+import RetosScreen from '../screens/retos/RetosScreen';
 
 // ========== CUENTAS BANCARIAS ==========
 import CBMenu from '../screens/Cuentas Bancarias/CBMeu';
@@ -90,6 +91,7 @@ const AppNavigator = () => {
         {/* Nivel 3 - Fondos de Emergencia */}
         <Stack.Screen name="LFundamentos3" component={LFundamentos3} />
         <Stack.Screen name="PFundamentos3" component={PFundamentos3} />
+        <Stack.Screen name="Retos" component={RetosScreen} />
 
         {/* ========== CUENTAS BANCARIAS ========== */}
         <Stack.Screen name="CBMenu" component={CBMenu} />
