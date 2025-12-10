@@ -1,6 +1,4 @@
-// Pantalla de flashcards para los fundamentos - Ingreso
-
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -15,118 +13,75 @@ import {
 const { width } = Dimensions.get("window");
 
 export default function FundamentosLeccionScreen({ navigation }) {
-  // -------------------------------------------
-  // Aquí defines las tarjetas de la lección
-  // -------------------------------------------
-  const tarjetas = [
-  {
-    id: "1",
-    frente: "¿Qué son los intereses?",
-    atras: "Son el costo del dinero: puedes pagarlos si pides un préstamo, o recibirlos si ahorras.",
-    imagenFrente: require("../../../../img/tarjetaFrente1.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
-  },
-  {
-    id: "2",
-    frente: "¿Cuándo pagas intereses?",
-    atras: "Cuando el banco te presta dinero en un crédito o préstamo.",
-    imagenFrente: require("../../../../img/tarjetaFrente2.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras2.png"),
-  },
-  {
-    id: "3",
-    frente: "¿Cuándo recibes intereses?",
-    atras: "Cuando depositas o ahorras dinero en el banco.",
-    imagenFrente: require("../../../../img/tarjetaFrente3.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras3.png"),
-  },
-  {
-    id: "4",
-    frente: "¿Qué es el interés activo?",
-    atras: "Es el interés que el banco cobra cuando presta dinero a un cliente.",
-    imagenFrente: require("../../../../img/tarjetaFrente4.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras4.png"),
-  },
-  {
-    id: "5",
-    frente: "¿Qué es el interés pasivo?",
-    atras: "Es el interés que el banco paga a los clientes por ahorrar o invertir.",
-    imagenFrente: require("../../../../img/tarjetaFrente5.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras5.png"),
-  },
-  {
-    id: "6",
-    frente: "¿Qué es el interés simple?",
-    atras: "Se calcula solo sobre el capital inicial depositado o prestado.",
-    imagenFrente: require("../../../../img/tarjetaFrente6.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras6.png"),
-  },
-  {
-    id: "7",
-    frente: "¿Qué es el interés compuesto?",
-    atras: "Se calcula sobre el capital y los intereses acumulados previamente.",
-    imagenFrente: require("../../../../img/tarjetaFrente7.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras7.png"),
-  },
-  {
-    id: "8",
-    frente: "¿Qué son las comisiones bancarias?",
-    atras: "Son cobros por usar servicios o mantener una cuenta activa.",
-    imagenFrente: require("../../../../img/tarjetaFrente8.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
-  },
-  {
-    id: "9",
-    frente: "¿Por qué los bancos cobran comisiones?",
-    atras: "Para cubrir costos de operación, mantenimiento y servicio.",
-    imagenFrente: require("../../../../img/tarjetaFrente9.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras2.png"),
-  },
-  {
-    id: "10",
-    frente: "¿Qué es una comisión por manejo de cuenta?",
-    atras: "Cobro por mantener la cuenta activa sin importar si la usas o no.",
-    imagenFrente: require("../../../../img/tarjetaFrente10.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras3.png"),
-  },
-  {
-    id: "11",
-    frente: "¿Qué es una comisión por inactividad?",
-    atras: "Cobro cuando la cuenta no tiene movimientos por un periodo.",
-    imagenFrente: require("../../../../img/tarjetaFrente11.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras4.png"),
-  },
-  {
-    id: "12",
-    frente: "¿Qué es una comisión por usar cajeros de otro banco?",
-    atras: "Es un cobro por retirar dinero en un cajero que no pertenece a tu banco.",
-    imagenFrente: require("../../../../img/tarjetaFrente1.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras5.png"),
-  },
-  {
-    id: "13",
-    frente: "¿Qué es una comisión por saldo mínimo?",
-    atras: "Se cobra si el saldo baja de la cantidad mínima establecida.",
-    imagenFrente: require("../../../../img/tarjetaFrente2.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras6.png"),
-  },
-  {
-    id: "14",
-    frente: "¿Cómo evitar comisiones?",
-    atras: "Usa cajeros de tu banco, elige cuentas sin comisiones y mantén la cuenta activa.",
-    imagenFrente: require("../../../../img/tarjetaFrente3.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras7.png"),
-  },
-  {
-    id: "15",
-    frente: "¿Por qué es importante conocer intereses y comisiones?",
-    atras: "Para elegir productos financieros adecuados y evitar pagar de más.",
-    imagenFrente: require("../../../../img/tarjetaFrente4.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
-  }
-];
 
- const [indexActual, setIndexActual] = useState(0);
+  // ----------------------------------------------------------------------
+  // 🖼️ AUTOMATIZACIÓN DE IMÁGENES (.jpg)
+  // ----------------------------------------------------------------------
+
+  // Carga automática de 11 imágenes para el frente
+  const imagenesFrente = useMemo(() => {
+    return [
+      require("../../../../img/tarjetaFrente1.jpg"),
+      require("../../../../img/tarjetaFrente2.jpg"),
+      require("../../../../img/tarjetaFrente3.jpg"),
+      require("../../../../img/tarjetaFrente4.jpg"),
+      require("../../../../img/tarjetaFrente5.jpg"),
+      require("../../../../img/tarjetaFrente6.jpg"),
+      require("../../../../img/tarjetaFrente7.jpg"),
+      require("../../../../img/tarjetaFrente8.jpg"),
+      require("../../../../img/tarjetaFrente9.jpg"),
+      require("../../../../img/tarjetaFrente10.jpg"),
+      require("../../../../img/tarjetaFrente11.jpg"),
+    ];
+  }, []);
+
+  // Carga automática de 7 imágenes para el reverso
+  const imagenesAtras = useMemo(() => {
+    return [
+      require("../../../../img/tarjetaDetras1.jpg"),
+      require("../../../../img/tarjetaDetras2.jpg"),
+      require("../../../../img/tarjetaDetras3.jpg"),
+      require("../../../../img/tarjetaDetras4.jpg"),
+      require("../../../../img/tarjetaDetras5.jpg"),
+      require("../../../../img/tarjetaDetras6.jpg"),
+      require("../../../../img/tarjetaDetras7.jpg"),
+    ];
+  }, []);
+
+  // ----------------------------------------------------------------------
+  // ▶️ TARJETAS (Ahora asignan imágenes automáticamente)
+  // ----------------------------------------------------------------------
+
+  const tarjetasBase = [
+    { frente: "¿Qué son los intereses?", atras: "Son el costo del dinero..." },
+    { frente: "¿Cuándo pagas intereses?", atras: "Cuando el banco te presta dinero." },
+    { frente: "¿Cuándo recibes intereses?", atras: "Cuando ahorras o inviertes." },
+    { frente: "¿Qué es el interés activo?", atras: "Interés que cobra el banco." },
+    { frente: "¿Qué es el interés pasivo?", atras: "Interés que te paga el banco." },
+    { frente: "¿Qué es el interés simple?", atras: "Solo sobre el capital inicial." },
+    { frente: "¿Qué es el interés compuesto?", atras: "Sobre capital + intereses." },
+    { frente: "¿Qué son las comisiones bancarias?", atras: "Cobros por servicios." },
+    { frente: "¿Por qué cobran comisiones?", atras: "Para operar y mantener servicios." },
+    { frente: "¿Qué es comisión por manejo de cuenta?", atras: "Cobro fijo por tener cuenta." },
+    { frente: "¿Qué es comisión por inactividad?", atras: "Cobro por no usar la cuenta." },
+    { frente: "¿Qué es comisión por cajeros externos?", atras: "Cobro por cajeros de otro banco." },
+    { frente: "¿Qué es comisión por saldo mínimo?", atras: "Cobro por bajar el saldo mínimo." },
+    { frente: "¿Cómo evitar comisiones?", atras: "Usa cajeros y cuentas adecuadas." },
+    { frente: "¿Por qué es importante conocer intereses?", atras: "Para elegir bien productos." },
+  ];
+
+  // Combina textos + imágenes
+  const tarjetas = useMemo(() => {
+    return tarjetasBase.map((t, i) => ({
+      id: (i + 1).toString(),
+      frente: t.frente,
+      atras: t.atras,
+      imagenFrente: imagenesFrente[i % imagenesFrente.length], // 11 imágenes → se repiten
+      imagenAtras: imagenesAtras[i % imagenesAtras.length],     // 7 imágenes → se repiten
+    }));
+  }, [tarjetasBase, imagenesFrente, imagenesAtras]);
+
+  const [indexActual, setIndexActual] = useState(0);
 
   return (
     <View style={styles.container}>
@@ -150,7 +105,6 @@ export default function FundamentosLeccionScreen({ navigation }) {
         )}
       />
 
-      {/* Botón que aparece al final */}
       {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
@@ -160,7 +114,6 @@ export default function FundamentosLeccionScreen({ navigation }) {
         </TouchableOpacity>
       )}
 
-      {/* Botón regresar */}
       <TouchableOpacity
         style={styles.btnRegresar}
         onPress={() => navigation.goBack()}
@@ -170,6 +123,7 @@ export default function FundamentosLeccionScreen({ navigation }) {
     </View>
   );
 }
+
 
 // -------------------------------------------------------
 // 🔥 COMPONENTE FLASHCARD con animación + imágenes

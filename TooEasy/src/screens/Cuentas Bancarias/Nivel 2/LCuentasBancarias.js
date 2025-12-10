@@ -1,6 +1,6 @@
-// Pantalla de flashcards para los fundamentos - Ingreso
+// Pantalla de flashcards para los fundamentos – Ingreso
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -16,118 +16,70 @@ const { width } = Dimensions.get("window");
 
 export default function FundamentosLeccionScreen({ navigation }) {
   // -------------------------------------------
-  // Aquí defines las tarjetas de la lección
+  // IMÁGENES DISPONIBLES
   // -------------------------------------------
- 
-    const tarjetas = [
-  {
-    id: "1",
-    frente: "¿Qué es una cuenta de nómina?",
-    atras: "Es una cuenta bancaria donde se deposita automáticamente el salario del trabajador.",
-    imagenFrente: require("../../../../img/tarjetaFrente1.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
-    
-  },
-  {
-    id: "2",
-    frente: "¿Cuál es el uso principal de una cuenta de nómina?",
-    atras: "Recibir el pago del sueldo de forma segura y automática.",
-    imagenFrente: require("../../../../img/tarjetaFrente2.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras2.png"),
-  },
-  {
-    id: "3",
-    frente: "¿La cuenta de nómina cobra comisiones?",
-    atras: "Generalmente no, mientras reciba depósitos de nómina.",
-    imagenFrente: require("../../../../img/tarjetaFrente3.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras3.png"),
-  },
-  {
-    id: "4",
-    frente: "¿Qué tarjeta incluye una cuenta de nómina?",
-    atras: "Una tarjeta de débito para compras, pagos y retiros.",
-    imagenFrente: require("../../../../img/tarjetaFrente4.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras4.png"),
-  },
-  {
-    id: "5",
-    frente: "¿Requiere monto mínimo para abrir?",
-    atras: "No, normalmente no se pide una cantidad inicial.",
-    imagenFrente: require("../../../../img/tarjetaFrente5.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras5.png"),
-  },
-  {
-    id: "6",    frente: "¿Qué beneficios adicionales ofrece una cuenta de nómina?",
-    atras: "Acceso a préstamos, tarjetas de crédito y créditos hipotecarios.",
-    imagenFrente: require("../../../../img/tarjetaFrente6.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras6.png"),
-  },
-  {
-    id: "7",
-    frente: "¿Qué pasa si tu cuenta deja de recibir depósitos de nómina?",
-    atras: "Puede convertirse en cuenta tradicional y empezar a cobrar comisiones.",
-    imagenFrente: require("../../../../img/tarjetaFrente7.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras7.png"),
-  },
-  {
-    id: "8",
-    frente: "¿En qué se diferencia una cuenta de ahorro?",
-    atras: "La cuenta de ahorro es para guardar dinero y puede generar intereses.",
-    imagenFrente: require("../../../../img/tarjetaFrente8.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
-  },
-  {
-    id: "9",
-    frente: "¿Qué es la portabilidad de nómina?",
-    atras: "El derecho a cambiar tu cuenta de nómina al banco que tú elijas.",
-    imagenFrente: require("../../../../img/tarjetaFrente9.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras2.png"),
-  },
-  {
-    id: "10",
-    frente: "¿Qué necesitas para solicitar la portabilidad?",
-    atras: "Identificación oficial, comprobante de domicilio y acudir al nuevo banco.",
-    imagenFrente: require("../../../../img/tarjetaFrente10.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras3.png"),
-  },
-  {
-    id: "11",
-    frente: "¿El empleador puede obligarte a un banco específico?",
-    atras: "No, tú decides dónde recibir tu salario.",
-    imagenFrente: require("../../../../img/tarjetaFrente11.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras4.png"),
-  },
-  {
-    id: "12",
-    frente: "¿Qué recomendación de seguridad es importante?",
-    atras: "Nunca compartir tu NIP ni contraseñas.",
-    imagenFrente: require("../../../../img/tarjetaFrente1.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras5.png"),
-  },
-  {
-    id: "13",
-    frente: "¿Para qué sirven las notificaciones móviles?",
-    atras: "Para saber cuándo te depositan o si hay movimientos sospechosos.",
-    imagenFrente: require("../../../../img/tarjetaFrente2.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras6.png"),
-  },
-  {
-    id: "14",
-    frente: "¿Qué hacer si cambias de empleo?",
-    atras: "Preguntar si puedes seguir usando la misma cuenta.",
-    imagenFrente: require("../../../../img/tarjetaFrente3.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras7.png"),
-  },
-  {
-    id: "15",
-    frente: "¿Qué debes verificar si tu cuenta deja de tener actividad?",
-    atras: "Que no empiece a generar comisiones por inactividad.",
-    imagenFrente: require("../../../../img/tarjetaFrente4.png"),
-    imagenAtras: require("../../../../img/tarjetaDetras1.png"),
-  }
-];
+  const frontImages = [
+    require("../../assets/frente1.jpg"),
+    require("../../assets/frente2.jpg"),
+    require("../../assets/frente3.jpg"),
+    require("../../assets/frente4.jpg"),
+    require("../../assets/frente5.jpg"),
+    require("../../assets/frente6.jpg"),
+    require("../../assets/frente7.jpg"),
+    require("../../assets/frente8.jpg"),
+    require("../../assets/frente9.jpg"),
+    require("../../assets/frente10.jpg"),
+    require("../../assets/frente11.jpg"),
+  ];
+
+  const backImages = [
+    require("../../assets/atras1.jpg"),
+    require("../../assets/atras2.jpg"),
+    require("../../assets/atras3.jpg"),
+    require("../../assets/atras4.jpg"),
+    require("../../assets/atras5.jpg"),
+    require("../../assets/atras6.jpg"),
+    require("../../assets/atras7.jpg"),
+  ];
+
+  // -------------------------------------------
+  // TARJETAS BASE
+  // -------------------------------------------
+  const tarjetasBase = [
+    { id: "1", frente: "¿Qué es una cuenta de nómina?", atras: "Es una cuenta bancaria donde se deposita automáticamente el salario del trabajador." },
+    { id: "2", frente: "¿Cuál es el uso principal de una cuenta de nómina?", atras: "Recibir el pago del sueldo de forma segura y automática." },
+    { id: "3", frente: "¿La cuenta de nómina cobra comisiones?", atras: "Generalmente no, mientras reciba depósitos de nómina." },
+    { id: "4", frente: "¿Qué tarjeta incluye una cuenta de nómina?", atras: "Una tarjeta de débito para compras, pagos y retiros." },
+    { id: "5", frente: "¿Requiere monto mínimo para abrir?", atras: "No, normalmente no se pide una cantidad inicial." },
+    { id: "6", frente: "¿Qué beneficios adicionales ofrece una cuenta de nómina?", atras: "Acceso a préstamos, tarjetas de crédito y créditos hipotecarios." },
+    { id: "7", frente: "¿Qué pasa si tu cuenta deja de recibir depósitos de nómina?", atras: "Puede convertirse en cuenta tradicional y empezar a cobrar comisiones." },
+    { id: "8", frente: "¿En qué se diferencia una cuenta de ahorro?", atras: "La cuenta de ahorro es para guardar dinero y puede generar intereses." },
+    { id: "9", frente: "¿Qué es la portabilidad de nómina?", atras: "El derecho a cambiar tu cuenta de nómina al banco que tú elijas." },
+    { id: "10", frente: "¿Qué necesitas para solicitar la portabilidad?", atras: "Identificación oficial, comprobante de domicilio y acudir al nuevo banco." },
+    { id: "11", frente: "¿El empleador puede obligarte a un banco específico?", atras: "No, tú decides dónde recibir tu salario." },
+    { id: "12", frente: "¿Qué recomendación de seguridad es importante?", atras: "Nunca compartir tu NIP ni contraseñas." },
+    { id: "13", frente: "¿Para qué sirven las notificaciones móviles?", atras: "Para saber cuándo te depositan o si hay movimientos sospechosos." },
+    { id: "14", frente: "¿Qué hacer si cambias de empleo?", atras: "Preguntar si puedes seguir usando la misma cuenta." },
+    { id: "15", frente: "¿Qué debes verificar si tu cuenta deja de tener actividad?", atras: "Que no empiece a generar comisiones por inactividad." },
+  ];
+
+  // -------------------------------------------
+  // COMBINAR TARJETAS + IMÁGENES AUTOMÁTICAMENTE
+  // -------------------------------------------
+  const tarjetas = useMemo(() => {
+    return tarjetasBase.map((t, i) => ({
+      ...t,
+      imagenFrente: frontImages[i % frontImages.length], // 11 imágenes → se repiten
+      imagenAtras: backImages[i % backImages.length],     // 7 imágenes → se repiten
+    }));
+  }, []);
 
   const [indexActual, setIndexActual] = useState(0);
+
+  const handleScroll = (e) => {
+    const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
+    setIndexActual(nuevoIndex);
+  };
 
   return (
     <View style={styles.container}>
@@ -137,10 +89,7 @@ export default function FundamentosLeccionScreen({ navigation }) {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={(e) => {
-          const index = Math.round(e.nativeEvent.contentOffset.x / width);
-          setIndexActual(index);
-        }}
+        onScroll={handleScroll}
         renderItem={({ item }) => (
           <FlashCard
             frente={item.frente}
@@ -151,7 +100,6 @@ export default function FundamentosLeccionScreen({ navigation }) {
         )}
       />
 
-      {/* Botón que aparece al final */}
       {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
@@ -161,7 +109,6 @@ export default function FundamentosLeccionScreen({ navigation }) {
         </TouchableOpacity>
       )}
 
-      {/* Botón regresar */}
       <TouchableOpacity
         style={styles.btnRegresar}
         onPress={() => navigation.goBack()}
@@ -172,8 +119,9 @@ export default function FundamentosLeccionScreen({ navigation }) {
   );
 }
 
+
 // -------------------------------------------------------
-// 🔥 COMPONENTE FLASHCARD con animación + imágenes
+// 🔥 COMPONENTE FLASHCARD
 // -------------------------------------------------------
 function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
@@ -200,8 +148,7 @@ function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-
-        {/* Frente */}
+        {/* FRENTE */}
         <Animated.View
           style={[
             styles.card,
@@ -209,13 +156,11 @@ function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
             { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
           ]}
         >
-          {imagenFrente && (
-            <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
-          )}
+          <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
           <Text style={styles.cardText}>{frente}</Text>
         </Animated.View>
 
-        {/* Reverso */}
+        {/* ATRÁS */}
         <Animated.View
           style={[
             styles.card,
@@ -223,9 +168,7 @@ function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
             { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
           ]}
         >
-          {imagenAtras && (
-            <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
-          )}
+          <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
           <Text style={styles.cardTextAtras}>{atras}</Text>
         </Animated.View>
       </TouchableOpacity>
@@ -248,7 +191,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: width * 0.8,
-    minHeight: 300,
+    minHeight: 320,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
