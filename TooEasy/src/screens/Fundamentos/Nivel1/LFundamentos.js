@@ -1,6 +1,7 @@
 // Pantalla de flashcards para los fundamentos - Ingreso
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, uneMemo
+ } from "react";
 import {
   View,
   Text,
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  Image,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -17,7 +19,37 @@ export default function FundamentosLeccionScreen({ navigation }) {
   // -------------------------------------------
   // Aquí defines las tarjetas de la lección
   // -------------------------------------------
-  const tarjetas = [
+  // -------------------------------------------
+  // IMÁGENES DISPONIBLES
+  // -------------------------------------------
+  const frontImages = [
+  require("../../../../img/tarjetaFrente1.jpg"),
+  require("../../../../img/tarjetaFrente2.jpg"),
+  require("../../../../img/tarjetaFrente3.jpg"),
+  require("../../../../img/tarjetaFrente4.jpg"),
+  require("../../../../img/tarjetaFrente5.jpg"),
+  require("../../../../img/tarjetaFrente6.jpg"),
+  require("../../../../img/tarjetaFrente7.jpg"),
+  require("../../../../img/tarjetaFrente8.jpg"),
+  require("../../../../img/tarjetaFrente9.jpg"),
+  require("../../../../img/tarjetaFrente10.jpg"),
+  require("../../../../img/tarjetaFrente11.jpg"),
+];
+
+const backImages = [
+  require("../../../../img/tarjetaDetras1.jpg"),
+  require("../../../../img/tarjetaDetras2.jpg"),
+  require("../../../../img/tarjetaDetras3.jpg"),
+  require("../../../../img/tarjetaDetras4.jpg"),
+  require("../../../../img/tarjetaDetras5.jpg"),
+  require("../../../../img/tarjetaDetras6.jpg"),
+  require("../../../../img/tarjetaDetras7.jpg"),
+];
+
+  // -------------------------------------------
+  // TARJETAS BASE
+  // -------------------------------------------
+  const tarjetasBase = [
     {
       id: "1",
       frente: "¿Qué es un ingreso?",
@@ -48,7 +80,23 @@ export default function FundamentosLeccionScreen({ navigation }) {
     }
   ];
 
+  // -------------------------------------------
+  // COMBINAR TARJETAS + IMÁGENES AUTOMÁTICAMENTE
+  // -------------------------------------------
+  const tarjetas = useMemo(() => {
+    return tarjetasBase.map((t, i) => ({
+      ...t,
+      imagenFrente: frontImages[i % frontImages.length], // 11 imágenes → se repiten
+      imagenAtras: backImages[i % backImages.length],     // 7 imágenes → se repiten
+    }));
+  }, []);
+
   const [indexActual, setIndexActual] = useState(0);
+
+  const handleScroll = (e) => {
+    const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
+    setIndexActual(nuevoIndex);
+  };
 
   return (
     <View style={styles.container}>
@@ -58,18 +106,17 @@ export default function FundamentosLeccionScreen({ navigation }) {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={(e) => {
-          const index = Math.round(
-            e.nativeEvent.contentOffset.x / width
-          );
-          setIndexActual(index);
-        }}
+        onScroll={handleScroll}
         renderItem={({ item }) => (
-          <FlashCard frente={item.frente} atras={item.atras} />
+          <FlashCard
+            frente={item.frente}
+            atras={item.atras}
+            imagenFrente={item.imagenFrente}
+            imagenAtras={item.imagenAtras}
+          />
         )}
       />
 
-      {/* 🌟 SOLO aparece al finalizar todas las tarjetas */}
       {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
@@ -93,7 +140,7 @@ export default function FundamentosLeccionScreen({ navigation }) {
 // -------------------------------------------------------
 // 🔥 COMPONENTE FLASHCARD con animación de FLIP
 // -------------------------------------------------------
-function FlashCard({ frente, atras }) {
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
   const [ladoFrente, setLadoFrente] = useState(true);
 
@@ -117,10 +164,10 @@ function FlashCard({ frente, atras }) {
     });
   };
 
-  return (
+   return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-        {/* Frente */}
+        {/* FRENTE */}
         <Animated.View
           style={[
             styles.card,
@@ -128,10 +175,11 @@ function FlashCard({ frente, atras }) {
             { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
           ]}
         >
+          <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
           <Text style={styles.cardText}>{frente}</Text>
         </Animated.View>
 
-        {/* Reverso */}
+        {/* ATRÁS */}
         <Animated.View
           style={[
             styles.card,
@@ -139,6 +187,7 @@ function FlashCard({ frente, atras }) {
             { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
           ]}
         >
+          <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
           <Text style={styles.cardTextAtras}>{atras}</Text>
         </Animated.View>
       </TouchableOpacity>

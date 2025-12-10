@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -7,15 +7,43 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  Image,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
 
 export default function AdminDineroLeccionNivel2({ navigation }) {
+    // -------------------------------------------
+  // IMÁGENES DISPONIBLES
+  // -------------------------------------------
+  const frontImages = [
+  require("../../../../img/tarjetaFrente1.jpg"),
+  require("../../../../img/tarjetaFrente2.jpg"),
+  require("../../../../img/tarjetaFrente3.jpg"),
+  require("../../../../img/tarjetaFrente4.jpg"),
+  require("../../../../img/tarjetaFrente5.jpg"),
+  require("../../../../img/tarjetaFrente6.jpg"),
+  require("../../../../img/tarjetaFrente7.jpg"),
+  require("../../../../img/tarjetaFrente8.jpg"),
+  require("../../../../img/tarjetaFrente9.jpg"),
+  require("../../../../img/tarjetaFrente10.jpg"),
+  require("../../../../img/tarjetaFrente11.jpg"),
+];
+
+const backImages = [
+  require("../../../../img/tarjetaDetras1.jpg"),
+  require("../../../../img/tarjetaDetras2.jpg"),
+  require("../../../../img/tarjetaDetras3.jpg"),
+  require("../../../../img/tarjetaDetras4.jpg"),
+  require("../../../../img/tarjetaDetras5.jpg"),
+  require("../../../../img/tarjetaDetras6.jpg"),
+  require("../../../../img/tarjetaDetras7.jpg"),
+];
+
   // AQUÍ VAS A PEGAR LAS TARJETAS DE ESTE TEMA Y NIVEL
 // Dentro de src/screens/AdminDinero/Nivel2/LAdminDinero.js
 // Reemplaza SOLO el contenido del arreglo tarjetas por esto:
-  const tarjetas = [
+ const tarjetasBase = [
     {
       id: "1",
       frente: "¿Qué es la regla 50/30/20?",
@@ -54,23 +82,24 @@ export default function AdminDineroLeccionNivel2({ navigation }) {
     },
   ];
 
+  const tarjetas = useMemo(() => {
+    return tarjetasBase.map((t, i) => ({
+      ...t,
+      imagenFrente: frontImages[i % frontImages.length], // 11 imágenes → se repiten
+      imagenAtras: backImages[i % backImages.length],     // 7 imágenes → se repiten
+    }));
+  }, []);
 
-  const [indexActual, setIndexActual] = useState(0);
-
-  const handleScroll = (e) => {
+    const [indexActual, setIndexActual] = useState(0);
+      
+    const handleScroll = (e) => {
     const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
     setIndexActual(nuevoIndex);
   };
+  
 
   return (
     <View style={styles.container}>
-      {tarjetas.length === 0 && (
-        <Text style={styles.msgVacio}>
-          Aquí aún no hay tarjetas cargadas.  
-          Cuando tengas el contenido, agrégalo en el arreglo "tarjetas".
-        </Text>
-      )}
-
       <FlatList
         data={tarjetas}
         keyExtractor={(item) => item.id}
@@ -79,12 +108,16 @@ export default function AdminDineroLeccionNivel2({ navigation }) {
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         renderItem={({ item }) => (
-          <FlashCard frente={item.frente} atras={item.atras} />
+          <FlashCard
+            frente={item.frente}
+            atras={item.atras}
+            imagenFrente={item.imagenFrente}
+            imagenAtras={item.imagenAtras}
+          />
         )}
       />
 
-      {/* Botón para ir a preguntas de repaso solo si hay tarjetas */}
-      {tarjetas.length > 0 && indexActual === tarjetas.length - 1 && (
+      {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
           onPress={() => navigation.navigate("PAdminDinero2")}
@@ -105,7 +138,7 @@ export default function AdminDineroLeccionNivel2({ navigation }) {
 }
 
 // ---------- COMPONENTE FLASHCARD (igual al de Fundamentos, pero genérico) ----------
-function FlashCard({ frente, atras }) {
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
   const [ladoFrente, setLadoFrente] = useState(true);
 
@@ -130,39 +163,35 @@ function FlashCard({ frente, atras }) {
   };
 
   return (
-    <View style={styles.cardWrapper}>
-      <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-        {/* Frente */}
-        <Animated.View
-          style={[
-            styles.card,
-            styles.cardFrente,
-            {
-              transform: [{ rotateY: rotacionFrente }],
-              opacity: ladoFrente ? 1 : 0,
-            },
-          ]}
-        >
-          <Text style={styles.cardText}>{frente}</Text>
-        </Animated.View>
-
-        {/* Reverso */}
-        <Animated.View
-          style={[
-            styles.card,
-            styles.cardAtras,
-            {
-              transform: [{ rotateY: rotacionAtras }],
-              opacity: ladoFrente ? 0 : 1,
-            },
-          ]}
-        >
-          <Text style={styles.cardTextAtras}>{atras}</Text>
-        </Animated.View>
-      </TouchableOpacity>
-    </View>
-  );
-}
+      <View style={styles.cardWrapper}>
+        <TouchableOpacity activeOpacity={1} onPress={flipCard}>
+          {/* FRENTE */}
+          <Animated.View
+            style={[
+              styles.card,
+              styles.cardFrente,
+              { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
+            ]}
+          >
+            <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
+            <Text style={styles.cardText}>{frente}</Text>
+          </Animated.View>
+  
+          {/* ATRÁS */}
+          <Animated.View
+            style={[
+              styles.card,
+              styles.cardAtras,
+              { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
+            ]}
+          >
+            <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
+            <Text style={styles.cardTextAtras}>{atras}</Text>
+          </Animated.View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
 // ---------- ESTILOS ----------
 const styles = StyleSheet.create({

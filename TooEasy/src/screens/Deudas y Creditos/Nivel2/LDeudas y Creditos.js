@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo} from "react";
 import {
   View,
   Text,
@@ -6,7 +6,8 @@ import {
   Animated,
   TouchableOpacity,
   FlatList,
-  Dimensions,
+  Dimensions, 
+  Image,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -17,7 +18,37 @@ export default function DeudasyCreditosLeccionScreen({ navigation }) {
   // Aquí defines las tarjetas de la lección
   // (Información actualizada: Historial Crediticio)
   // -------------------------------------------
-  const tarjetas = [
+   // -------------------------------------------
+  // IMÁGENES DISPONIBLES
+  // -------------------------------------------
+  const frontImages = [
+  require("../../../../img/tarjetaFrente1.jpg"),
+  require("../../../../img/tarjetaFrente2.jpg"),
+  require("../../../../img/tarjetaFrente3.jpg"),
+  require("../../../../img/tarjetaFrente4.jpg"),
+  require("../../../../img/tarjetaFrente5.jpg"),
+  require("../../../../img/tarjetaFrente6.jpg"),
+  require("../../../../img/tarjetaFrente7.jpg"),
+  require("../../../../img/tarjetaFrente8.jpg"),
+  require("../../../../img/tarjetaFrente9.jpg"),
+  require("../../../../img/tarjetaFrente10.jpg"),
+  require("../../../../img/tarjetaFrente11.jpg"),
+];
+
+const backImages = [
+  require("../../../../img/tarjetaDetras1.jpg"),
+  require("../../../../img/tarjetaDetras2.jpg"),
+  require("../../../../img/tarjetaDetras3.jpg"),
+  require("../../../../img/tarjetaDetras4.jpg"),
+  require("../../../../img/tarjetaDetras5.jpg"),
+  require("../../../../img/tarjetaDetras6.jpg"),
+  require("../../../../img/tarjetaDetras7.jpg"),
+];
+
+  // -------------------------------------------
+  // TARJETAS BASE
+  // -------------------------------------------
+  const tarjetasBase = [
     {
       id: "1",
       frente: "¿Qué es el historial crediticio?",
@@ -44,33 +75,47 @@ export default function DeudasyCreditosLeccionScreen({ navigation }) {
     },
   ];
 
-  const [indexActual, setIndexActual] = useState(0);
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={tarjetas}
-        keyExtractor={(item) => item.id}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={(e) => {
-          const index = Math.round(
-            e.nativeEvent.contentOffset.x / width
-          );
-          setIndexActual(index);
-        }}
-        renderItem={({ item }) => (
-          <FlashCard frente={item.frente} atras={item.atras} />
-        )}
-      />
-
-      {/* 🌟 SOLO aparece al finalizar todas las tarjetas */}
-      {/* 🛑 Navegación cambiada a "PDeudasyCreditos2" */}
-      {indexActual === tarjetas.length - 1 && (
-        <TouchableOpacity
-          style={styles.btnRepaso}
-          onPress={() => navigation.navigate("PDeudasyCreditos2")}
+  // -------------------------------------------
+    // COMBINAR TARJETAS + IMÁGENES AUTOMÁTICAMENTE
+    // -------------------------------------------
+    const tarjetas = useMemo(() => {
+      return tarjetasBase.map((t, i) => ({
+        ...t,
+        imagenFrente: frontImages[i % frontImages.length], // 11 imágenes → se repiten
+        imagenAtras: backImages[i % backImages.length],     // 7 imágenes → se repiten
+      }));
+    }, []);
+  
+    const [indexActual, setIndexActual] = useState(0);
+  
+    const handleScroll = (e) => {
+      const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
+      setIndexActual(nuevoIndex);
+    };
+  
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={tarjetas}
+          keyExtractor={(item) => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleScroll}
+          renderItem={({ item }) => (
+            <FlashCard
+              frente={item.frente}
+              atras={item.atras}
+              imagenFrente={item.imagenFrente}
+              imagenAtras={item.imagenAtras}
+            />
+          )}
+        />
+  
+        {indexActual === tarjetas.length - 1 && (
+          <TouchableOpacity
+            style={styles.btnRepaso}
+            onPress={() => navigation.navigate("PDeudasyCreditos2")}
         >
           <Text style={styles.btnRepasoTxt}>Preguntas de Repaso</Text>
         </TouchableOpacity>
@@ -90,7 +135,7 @@ export default function DeudasyCreditosLeccionScreen({ navigation }) {
 // -------------------------------------------------------
 // 🔥 COMPONENTE FLASHCARD con animación de FLIP (Sin cambios)
 // -------------------------------------------------------
-function FlashCard({ frente, atras }) {
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
   const [ladoFrente, setLadoFrente] = useState(true);
 
@@ -124,41 +169,36 @@ function FlashCard({ frente, atras }) {
     opacity: ladoFrente ? 0 : 1,
   };
 
-  return (
+return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-        {/* Frente */}
-        {ladoFrente && (
-          <Animated.View
-            style={[
-              styles.card,
-              styles.cardFrente,
-              estiloFrente,
-            ]}
-          >
-            <Text style={styles.cardText}>{frente}</Text>
-          </Animated.View>
-        )}
+        {/* FRENTE */}
+        <Animated.View
+          style={[
+            styles.card,
+            styles.cardFrente,
+            { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
+          ]}
+        >
+          <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
+          <Text style={styles.cardText}>{frente}</Text>
+        </Animated.View>
 
-        {/* Reverso */}
-        {!ladoFrente && (
-          <Animated.View
-            style={[
-              styles.card,
-              styles.cardAtras,
-              estiloAtras,
-              { position: 'absolute' },
-            ]}
-          >
-            {/* Ajuste de estilo para texto largo en el reverso */}
-            <Text style={styles.cardTextAtras}>{atras}</Text>
-          </Animated.View>
-        )}
+        {/* ATRÁS */}
+        <Animated.View
+          style={[
+            styles.card,
+            styles.cardAtras,
+            { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
+          ]}
+        >
+          <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
+          <Text style={styles.cardTextAtras}>{atras}</Text>
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );
 }
-
 // --------------------- ESTILOS --------------------- (Sin cambios)
 const styles = StyleSheet.create({
   container: {

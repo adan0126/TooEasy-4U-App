@@ -1,5 +1,5 @@
 // src/screens/CuentasBancarias/Nivel1/LCuentasBancarias.js
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -8,12 +8,41 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  Image,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
 
+// ---------------- IMÁGENES AUTOMÁTICAS ----------------
+const frontImages = [
+  require("../../../../img/tarjetaFrente1.jpg"),
+  require("../../../../img/tarjetaFrente2.jpg"),
+  require("../../../../img/tarjetaFrente3.jpg"),
+  require("../../../../img/tarjetaFrente4.jpg"),
+  require("../../../../img/tarjetaFrente5.jpg"),
+  require("../../../../img/tarjetaFrente6.jpg"),
+  require("../../../../img/tarjetaFrente7.jpg"),
+  require("../../../../img/tarjetaFrente8.jpg"),
+  require("../../../../img/tarjetaFrente9.jpg"),
+  require("../../../../img/tarjetaFrente10.jpg"),
+  require("../../../../img/tarjetaFrente11.jpg"),
+];
+
+const backImages = [
+  require("../../../../img/tarjetaDetras1.jpg"),
+  require("../../../../img/tarjetaDetras2.jpg"),
+  require("../../../../img/tarjetaDetras3.jpg"),
+  require("../../../../img/tarjetaDetras4.jpg"),
+  require("../../../../img/tarjetaDetras5.jpg"),
+  require("../../../../img/tarjetaDetras6.jpg"),
+  require("../../../../img/tarjetaDetras7.jpg"),
+];
+
+const randomImage = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
 export default function AdminDineroLeccionNivel1({ navigation }) {
-  const tarjetas = [
+  // -------- TARJETAS BASE (solo texto) --------
+  const baseTarjetas = [
     {
       id: "1",
       frente: "¿Por qué es importante organizar tu sueldo?",
@@ -52,6 +81,14 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
     },
   ];
 
+  // ---- GENERAR TARJETAS CON IMÁGENES ALEATORIAS ----
+  const tarjetas = useMemo(() => {
+    return baseTarjetas.map((t) => ({
+      ...t,
+      imagenFrente: randomImage(frontImages),
+      imagenAtras: randomImage(backImages),
+    }));
+  }, []);
 
   const [indexActual, setIndexActual] = useState(0);
 
@@ -62,13 +99,6 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {tarjetas.length === 0 && (
-        <Text style={styles.msgVacio}>
-          Aquí aún no hay tarjetas cargadas.  
-          Cuando tengas el contenido, agrégalo en el arreglo "tarjetas".
-        </Text>
-      )}
-
       <FlatList
         data={tarjetas}
         keyExtractor={(item) => item.id}
@@ -77,12 +107,16 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         renderItem={({ item }) => (
-          <FlashCard frente={item.frente} atras={item.atras} />
+          <FlashCard
+            frente={item.frente}
+            atras={item.atras}
+            imgFrente={item.imagenFrente}
+            imgAtras={item.imagenAtras}
+          />
         )}
       />
 
-      {/* Botón para ir a preguntas de repaso solo si hay tarjetas */}
-      {tarjetas.length > 0 && indexActual === tarjetas.length - 1 && (
+      {indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
           onPress={() => navigation.navigate("PAdminDinero1")}
@@ -91,7 +125,6 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
         </TouchableOpacity>
       )}
 
-      {/* Botón regresar */}
       <TouchableOpacity
         style={styles.btnRegresar}
         onPress={() => navigation.goBack()}
@@ -102,8 +135,8 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
   );
 }
 
-// ---------- COMPONENTE FLASHCARD (igual al de Fundamentos, pero genérico) ----------
-function FlashCard({ frente, atras }) {
+// ----------------- FLASHCARD -----------------
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
   const [ladoFrente, setLadoFrente] = useState(true);
 
@@ -122,60 +155,47 @@ function FlashCard({ frente, atras }) {
       toValue: ladoFrente ? 180 : 0,
       duration: 400,
       useNativeDriver: true,
-    }).start(() => {
-      setLadoFrente(!ladoFrente);
-    });
+    }).start(() => setLadoFrente(!ladoFrente));
   };
 
   return (
-    <View style={styles.cardWrapper}>
-      <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-        {/* Frente */}
-        <Animated.View
-          style={[
-            styles.card,
-            styles.cardFrente,
-            {
-              transform: [{ rotateY: rotacionFrente }],
-              opacity: ladoFrente ? 1 : 0,
-            },
-          ]}
-        >
-          <Text style={styles.cardText}>{frente}</Text>
-        </Animated.View>
+      <View style={styles.cardWrapper}>
+        <TouchableOpacity activeOpacity={1} onPress={flipCard}>
+          {/* FRENTE */}
+          <Animated.View
+            style={[
+              styles.card,
+              styles.cardFrente,
+              { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
+            ]}
+          >
+            <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
+            <Text style={styles.cardText}>{frente}</Text>
+          </Animated.View>
+  
+          {/* ATRÁS */}
+          <Animated.View
+            style={[
+              styles.card,
+              styles.cardAtras,
+              { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
+            ]}
+          >
+            <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
+            <Text style={styles.cardTextAtras}>{atras}</Text>
+          </Animated.View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
-        {/* Reverso */}
-        <Animated.View
-          style={[
-            styles.card,
-            styles.cardAtras,
-            {
-              transform: [{ rotateY: rotacionAtras }],
-              opacity: ladoFrente ? 0 : 1,
-            },
-          ]}
-        >
-          <Text style={styles.cardTextAtras}>{atras}</Text>
-        </Animated.View>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-// ---------- ESTILOS ----------
+// ----------------- ESTILOS -----------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0D1B2A",
     justifyContent: "center",
     alignItems: "center",
-  },
-  msgVacio: {
-    color: "#E0E1DD",
-    fontSize: 16,
-    marginHorizontal: 20,
-    textAlign: "center",
-    marginBottom: 20,
   },
   cardWrapper: {
     width,
@@ -184,28 +204,29 @@ const styles = StyleSheet.create({
   },
   card: {
     width: width * 0.8,
-    height: 300,
+    height: 350,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backfaceVisibility: "hidden",
     position: "absolute",
+    backgroundColor: "#FFF",
   },
-  cardFrente: {
-    backgroundColor: "#415A77",
-  },
-  cardAtras: {
-    backgroundColor: "#E0E1DD",
+  img: {
+    width: "100%",
+    height: 160,
+    resizeMode: "contain",
+    marginBottom: 10,
   },
   cardText: {
     textAlign: "center",
-    fontSize: 22,
-    color: "#FFF",
+    fontSize: 20,
+    color: "#000",
   },
   cardTextAtras: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     color: "#000",
   },
   btnRepaso: {

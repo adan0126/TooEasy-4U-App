@@ -17,7 +17,7 @@ export default function BottomNavigation({ navigation, activeRoute = "Lecciones"
       name: "DashboardFinanzas",
       route: "DashboardFinanzas",
       // 📸 IMAGEN: Coloca aquí el ícono de gráfico/progreso (graph icon)
-      icon: require("../../assets/icon_dashboard-removebg-preview.png"),
+      icon: require("../../assets/icono_dashboard-removebg-preview.png"),
     },
     {
       id: "lecciones",
