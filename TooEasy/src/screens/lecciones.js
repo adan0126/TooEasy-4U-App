@@ -37,7 +37,6 @@ export default function LeccionesScreen({ navigation }) {
         >
           {/* -------- LECCIÓN 1: FUNDAMENTOS -------- */}
           <View style={styles.cardDark}>
-            {/* 📸 IMAGEN: pig.png ya existe en tu proyecto */}
             <Image
               source={require("../../assets/pig.png")}
               style={styles.icon}
