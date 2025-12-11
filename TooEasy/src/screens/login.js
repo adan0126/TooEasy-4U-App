@@ -32,7 +32,7 @@ export default function IniciarSesion({ navigation }) {
     setLoading(true);
 
     try {
-      // Intentar iniciar sesión
+      // Intentar iniciar sesión      
       const resultado = await iniciarSesion(username, password);
 
       if (!resultado.exito) {
