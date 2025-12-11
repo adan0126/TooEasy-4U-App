@@ -17,7 +17,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { database } from "../config/fb";
 
 export default function EditarIngresoMensual({ navigation }) {
-  const { user } = useUser();
+const { user, setUser } = useUser();
   const [ingresoMensual, setIngresoMensual] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
@@ -52,6 +52,14 @@ export default function EditarIngresoMensual({ navigation }) {
 
     try {
       await actualizarIngresoMensual(user.id, parseFloat(ingresoMensual));
+
+      setUser((prev) => ({
+        ...prev,
+        finanzas: {
+          ...prev.finanzas,
+          ingresoMensual: parseFloat(ingresoMensual)
+        }
+      }));
       
       Alert.alert(
         "¡Éxito!",

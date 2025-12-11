@@ -21,6 +21,7 @@ import Perfil from '../screens/perfil';
 // ========== PANTALLAS DEL DASHBOARD DE FINANZAS ==========
 import EditarIngresoMensual from '../screens/EditarIngresoMensual';
 import RegistrarTransaccion from '../screens/RegistrarTransaccion';
+import EditarMeta from '../screens/EditarMeta';
 
 // ========== FUNDAMENTOS ==========
 import FMenu from '../screens/Fundamentos/FMenu';
@@ -121,6 +122,7 @@ const AppNavigator = () => {
         <Stack.Screen name="DashboardFinanzas" component={DashboardFinanzas} />
         <Stack.Screen name="EditarIngresoMensual" component={EditarIngresoMensual} />
         <Stack.Screen name="RegistrarTransaccion" component={RegistrarTransaccion} />
+        <Stack.Screen name="EditarMeta" component={EditarMeta} />
         <Stack.Screen name="Retos" component={Retos} />
         <Stack.Screen name="Perfil" component={Perfil} />
 

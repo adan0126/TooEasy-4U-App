@@ -1,6 +1,6 @@
-// ==============================
-// IMPORTS NECESARIOS
-// ==============================
+// ======================================================================
+//  IMPORTS DE FIREBASE (solo Firestore)
+// ======================================================================
 import { 
   doc, 
   setDoc, 
@@ -13,57 +13,43 @@ import {
   getDocs
 } from "firebase/firestore";
 
-import { database } from "../config/fb";
+import { database } from "../config/fb"; // ← Tu Firestore real
 
-// 👉 bcryptjs funciona en React Native, PERO necesita un reemplazo para generar números aleatorios
+
+// ======================================================================
+//  BCRYPT + EXPO-CRYPTO (necesario para RN)
+// ======================================================================
 import bcrypt from "bcryptjs";
-
-// 👉 Importamos expo-crypto (FUNCIONA dentro de Expo / React Native)
 import * as Crypto from "expo-crypto";
 
-
-// ==========================================================
-// ⚠️ FIX CRÍTICO: Permite que bcryptjs funcione en React Native
-// ==========================================================
-// React Native NO tiene WebCrypto ni crypto.randomBytes.
-// Aquí forzamos a bcryptjs a usar expo-crypto como generador de entropía.
-bcrypt.setRandomFallback((len) => {
-  return Crypto.getRandomBytes(len); // ← devuelve Uint8Array
-});
-// ==========================================================
+// Fix obligatorio: bcrypt usa WebCrypto en navegador, pero RN no lo tiene
+bcrypt.setRandomFallback((len) => Crypto.getRandomBytes(len));
 
 
 
-// ==============================
-// VERIFICAR SI USUARIO EXISTE
-// ==============================
+// ======================================================================
+//  VERIFICAR SI USUARIO EXISTE (correo y username)
+// ======================================================================
 export const verificarUsuarioExistente = async (username, correo) => {
   try {
+    // Buscar por correo (ID del documento)
     const correoRef = doc(database, "usuarios", correo.toLowerCase());
     const correoDoc = await getDoc(correoRef);
 
     if (correoDoc.exists()) {
-      return {
-        existe: true,
-        mensaje: "Este correo ya está registrado"
-      };
+      return { existe: true, mensaje: "Este correo ya está registrado" };
     }
 
+    // Buscar por username en la colección
     const usersRef = collection(database, "usuarios");
     const q = query(usersRef, where("username", "==", username.trim()));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      return {
-        existe: true,
-        mensaje: "Este nombre de usuario ya está en uso"
-      };
+      return { existe: true, mensaje: "Este nombre de usuario ya está en uso" };
     }
 
-    return {
-      existe: false,
-      mensaje: "Usuario disponible"
-    };
+    return { existe: false, mensaje: "Usuario disponible" };
 
   } catch (error) {
     console.error("Error verificando usuario:", error);
@@ -72,28 +58,29 @@ export const verificarUsuarioExistente = async (username, correo) => {
 };
 
 
-// ==============================
-// REGISTRO DE USUARIO
-// ==============================
+
+// ======================================================================
+//  REGISTRO DE USUARIO NUEVO
+// ======================================================================
 export const registrarUsuario = async ({ username, correo, password, edad, genero }) => {
   try {
-    // ====================================================
-    // 🔐 Generar hash de contraseña usando bcryptjs + expo-crypto
-    // ====================================================
+    // Hashear contraseña (bcrypt)
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
-    // ====================================================
 
+    // Referencia del usuario (ID como el correo)
     const userRef = doc(database, "usuarios", correo.toLowerCase());
 
+    // Datos completos iniciales del usuario
     const nuevoUsuario = {
       id: correo.toLowerCase(),
       username: username.trim(),
       correo: correo.trim().toLowerCase(),
       edad: parseInt(edad),
-      genero: genero,
+      genero,
       password: passwordHash,
 
+      // Datos del juego
       monedas: 0,
       wood: 0,
       house_level: 1,
@@ -104,6 +91,7 @@ export const registrarUsuario = async ({ username, correo, password, edad, gener
       fechaRegistro: serverTimestamp(),
       ultimoAcceso: serverTimestamp(),
 
+      // Finanzas principales del usuario
       finanzas: {
         ingresoMensual: 0,
         ahorroActual: 0,
@@ -120,6 +108,7 @@ export const registrarUsuario = async ({ username, correo, password, edad, gener
         transacciones: {}
       },
 
+      // Progreso educativo
       progreso: {
         fundamentos: {
           nivel1: { completado: false, puntuacion: 0, intentos: 0 },
@@ -135,8 +124,6 @@ export const registrarUsuario = async ({ username, correo, password, edad, gener
     };
 
     await setDoc(userRef, nuevoUsuario);
-
-    console.log("✅ Usuario registrado exitosamente");
     return nuevoUsuario;
 
   } catch (error) {
@@ -146,51 +133,175 @@ export const registrarUsuario = async ({ username, correo, password, edad, gener
 };
 
 
-// ==============================
-// INICIAR SESIÓN
-// ==============================
+
+// ======================================================================
+//  INICIAR SESIÓN
+// ======================================================================
 export const iniciarSesion = async (correo, password) => {
   try {
     const userRef = doc(database, "usuarios", correo.toLowerCase());
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
-      return {
-        exito: false,
-        mensaje: "El usuario no existe"
-      };
+      return { exito: false, mensaje: "El usuario no existe" };
     }
 
     const data = userDoc.data();
 
-    // ====================================================
-    // 🔐 Comparar contraseña con bcryptjs
-    // ====================================================
+    // Validar contraseña con bcrypt
     const passwordCorrecta = bcrypt.compareSync(password, data.password);
-    // ====================================================
-
     if (!passwordCorrecta) {
-      return {
-        exito: false,
-        mensaje: "Contraseña incorrecta"
-      };
+      return { exito: false, mensaje: "Contraseña incorrecta" };
     }
 
-    await updateDoc(userRef, {
-      ultimoAcceso: serverTimestamp(),
-    });
+    // Registrar acceso
+    await updateDoc(userRef, { ultimoAcceso: serverTimestamp() });
 
-    return {
-      exito: true,
-      usuario: data,
-      mensaje: "Inicio de sesión exitoso"
-    };
+    return { exito: true, usuario: data, mensaje: "Inicio de sesión exitoso" };
 
   } catch (error) {
     console.error("❌ Error iniciando sesión:", error);
+    return { exito: false, mensaje: "Error al iniciar sesión" };
+  }
+};
+
+
+
+// ======================================================================
+//  TRANSACCIONES POR MES (Se guardan en subcolección "finanzas")
+// ======================================================================
+
+// --------------------------------------------------------------
+// Obtener transacciones del mes
+// --------------------------------------------------------------
+export const obtenerTransaccionesMes = async (userId, año, mes) => {
+  try {
+    const ref = doc(database, "usuarios", userId, "finanzas", `${año}-${mes}`);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      // Siempre regresar arrays → evita errores en reduce()
+      return { ingresos: [], egresos: [], transacciones: [] };
+    }
+
+    const data = snap.data();
+
     return {
-      exito: false,
-      mensaje: "Error al iniciar sesión"
+      ingresos: Array.isArray(data.ingresos) ? data.ingresos : [],
+      egresos: Array.isArray(data.egresos) ? data.egresos : [],
+      transacciones: Array.isArray(data.transacciones) ? data.transacciones : []
     };
+
+  } catch (error) {
+    console.error("❌ Error obteniendo transacciones:", error);
+    throw error;
+  }
+};
+
+// --------------------------------------------------------------
+// Actualizar meta de ahorro
+// --------------------------------------------------------------
+export const actualizarMeta = async (userId, meta) => {
+  try {
+    const ref = doc(database, "usuarios", userId);
+
+    await updateDoc(ref, {
+      "finanzas.meta": {
+        nombre: meta.nombre,
+        cantidad: meta.cantidad
+      }
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error actualizando meta:", error);
+    throw error;
+  }
+};
+
+// --------------------------------------------------------------
+// Registrar INGRESO mensual
+// --------------------------------------------------------------
+export async function actualizarIngresoMensual(userId, monto) {
+  try {
+    const ref = doc(database, "usuarios", userId);
+
+    await updateDoc(ref, {
+      "finanzas.ingresoMensual": monto
+    });
+
+    return true;
+
+  } catch (error) {
+    console.error("Error actualizando ingreso fijo:", error);
+    throw error;
+  }
+}
+
+// --------------------------------------------------------------
+// Registrar EGRESO mensual
+// --------------------------------------------------------------
+export const actualizarEgresoMensual = async (userId, año, mes, monto, descripcion) => {
+  try {
+    const ref = doc(database, "usuarios", userId, "finanzas", `${año}-${mes}`);
+    const snap = await getDoc(ref);
+
+    const dataExistente = snap.exists()
+      ? snap.data()
+      : { ingresos: [], egresos: [], transacciones: [] };
+
+    const nuevaData = {
+      ...dataExistente,
+      egresos: [...dataExistente.egresos, monto],
+      transacciones: [
+        ...dataExistente.transacciones,
+        { tipo: "egreso", monto, descripcion, fecha: serverTimestamp() }
+      ]
+    };
+
+    await setDoc(ref, nuevaData);
+    return true;
+
+  } catch (error) {
+    console.error("❌ Error actualizando egreso:", error);
+    throw error;
+  }
+};
+
+
+
+// ======================================================================
+//  ACTUALIZAR RACHA DIARIA
+// ======================================================================
+export const actualizarRacha = async (userId) => {
+  try {
+    const userRef = doc(database, "usuarios", userId);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) return;
+
+    const data = snap.data().finanzas;
+
+    const hoy = new Date().toLocaleDateString("es-MX");
+    const ultima = data.ultimaActualizacionRacha || "";
+    const rachaActual = data.racha || 0;
+
+    let nuevaRacha = rachaActual;
+
+    // Si la fecha cambió → aumentar una racha
+    if (ultima !== hoy) {
+      nuevaRacha = rachaActual + 1;
+    }
+
+    await updateDoc(userRef, {
+      "finanzas.racha": nuevaRacha,
+      "finanzas.ultimaActualizacionRacha": hoy
+    });
+
+    return nuevaRacha;
+
+  } catch (error) {
+    console.error("❌ Error al actualizar racha:", error);
+    throw error;
   }
 };

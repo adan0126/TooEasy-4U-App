@@ -22,7 +22,7 @@ import { database } from "../config/fb";
 const { width } = Dimensions.get("window");
 
 export default function DashboardFinanzas({ navigation }) {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const [loading, setLoading] = useState(true);
   const [datosFinanzas, setDatosFinanzas] = useState(null);
   const [mesActual, setMesActual] = useState(new Date());
@@ -56,7 +56,10 @@ export default function DashboardFinanzas({ navigation }) {
         mesActual.getFullYear()
       );
       
-      setTransacciones(trans);
+      setTransacciones({
+        ingresos: Array.isArray(trans?.ingresos) ? trans.ingresos : [],
+        egresos: Array.isArray(trans?.egresos) ? trans.egresos : []
+      });
       
       // Actualizar racha
       await actualizarRacha(user.id);
@@ -70,8 +73,14 @@ export default function DashboardFinanzas({ navigation }) {
   };
 
   const calcularTotalesMes = () => {
-    const totalIngresos = transacciones.ingresos.reduce((sum, t) => sum + t.monto, 0);
-    const totalEgresos = transacciones.egresos.reduce((sum, t) => sum + t.monto, 0);
+    const totalIngresos = (transacciones.ingresos || []).reduce(
+      (sum, t) => sum + (t.monto || 0),
+      0
+    );
+    const totalEgresos = (transacciones.egresos || []).reduce(
+      (sum, t) => sum + (t.monto || 0),
+      0
+    );
     const balance = totalIngresos - totalEgresos;
     
     return { totalIngresos, totalEgresos, balance };

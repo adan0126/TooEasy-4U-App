@@ -27,7 +27,7 @@ export default function LeccionesScreen({ navigation }) {
             source={require("../../assets/coin.png")}
             style={styles.coin}
           />
-          <Text style={styles.coinText}>500</Text>
+          <Text style={styles.coinText}>0</Text>
         </View>
 
         <ScrollView 
