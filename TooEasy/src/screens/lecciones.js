@@ -50,9 +50,9 @@ export default function LeccionesScreen({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={styles.progressBarContainer}>
-            <View style={styles.progressBarFill} />
+            <View style={[styles.progressBarFill, { width: "0%" }]} />
           </View>
-          <Text style={styles.progressText}>60%</Text>
+          <Text style={styles.progressText}>0%</Text>
 
           {/* -------- LECCIÓN 2: CUENTAS BANCARIAS -------- */}
           <View style={styles.cardLight}>
@@ -66,9 +66,9 @@ export default function LeccionesScreen({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={styles.progressBarContainerLight}>
-            <View style={styles.progressBarFillLight} />
+            <View style={[styles.progressBarFillLight, { width: "0%" }]} />
           </View>
-          <Text style={styles.progressText}>60%</Text>
+          <Text style={styles.progressText}>0%</Text>
 
           {/* -------- LECCIÓN 3: DEUDAS Y CRÉDITOS -------- */}
           <View style={styles.cardDark}>

@@ -74,7 +74,7 @@ export default function IniciarSesion({ navigation }) {
 
       <TextInput 
         style={styles.input} 
-        placeholder="Nombre de usuario"
+        placeholder="Correo Electrónico"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
