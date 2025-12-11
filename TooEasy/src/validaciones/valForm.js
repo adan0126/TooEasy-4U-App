@@ -45,8 +45,8 @@ export const validarRegistro = ({ username, password, correo, edad, genero, term
   }
 
   const edadNum = parseInt(edad);
-  if (edadNum <= 0 || edadNum > 99) {
-    return "La edad debe ser entre 1 y 99.";
+  if (edadNum <= 14 || edadNum > 99) {
+    return "La edad debe ser entre 15 y 99.";
   }
 
   if (edadNum < 13) {

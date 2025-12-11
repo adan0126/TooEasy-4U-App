@@ -20,7 +20,7 @@ export default function HomeScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => navigation.navigate("TestFirebase")}
+        onPress={() => navigation.navigate("CrearAcc")}
       >
         <Text style={styles.btnTxt}>CREAR CUENTA</Text>
       </TouchableOpacity>

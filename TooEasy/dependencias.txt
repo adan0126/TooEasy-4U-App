@@ -12,3 +12,4 @@ npx expo install @react-native-picker/picker
 npm install dotenv
 npx expo install constants
 npm install bcryptjs
+npx expo install expo-crypto
