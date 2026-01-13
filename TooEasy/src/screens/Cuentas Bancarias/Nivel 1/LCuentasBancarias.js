@@ -191,7 +191,7 @@ const handleScroll = (e) => {
       {tarjetas.length > 0 && indexActual === tarjetas.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
-          onPress={() => navigation.navigate("PAdminDinero1")}
+          onPress={() => navigation.navigate("PCuentasBancarias1")}
         >
           <Text style={styles.btnRepasoTxt}>Preguntas de Repaso</Text>
         </TouchableOpacity>

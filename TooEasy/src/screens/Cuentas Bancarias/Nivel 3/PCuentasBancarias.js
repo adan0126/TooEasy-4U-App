@@ -104,7 +104,7 @@ const preguntas = [
       setRespuestaSeleccionada(null);
       setRespuestaCorrecta(null);
     } else {
-      navigation.navigate("FMenu"); // Finaliza
+      navigation.navigate("CBMenu"); // Finaliza
     }
   };
 
