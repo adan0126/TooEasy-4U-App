@@ -1,4 +1,3 @@
-// src/screens/CuentasBancarias/Nivel1/LCuentasBancarias.js
 import React, { useRef, useState, useMemo } from "react";
 import {
   View,
@@ -42,7 +41,7 @@ const randomImage = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 export default function AdminDineroLeccionNivel1({ navigation }) {
   // -------- TARJETAS BASE (solo texto) --------
-  const baseTarjetas = [
+  const tarjetasBase = [
     {
       id: "1",
       frente: "¿Por qué es importante organizar tu sueldo?",
@@ -81,18 +80,17 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
     },
   ];
 
-  // ---- GENERAR TARJETAS CON IMÁGENES ALEATORIAS ----
   const tarjetas = useMemo(() => {
-    return baseTarjetas.map((t) => ({
+    return tarjetasBase.map((t, i) => ({
       ...t,
-      imagenFrente: randomImage(frontImages),
-      imagenAtras: randomImage(backImages),
+      imagenFrente: frontImages[i % frontImages.length], // 11 imágenes → se repiten
+      imagenAtras: backImages[i % backImages.length],     // 7 imágenes → se repiten
     }));
   }, []);
 
-  const [indexActual, setIndexActual] = useState(0);
-
-  const handleScroll = (e) => {
+    const [indexActual, setIndexActual] = useState(0);
+      
+    const handleScroll = (e) => {
     const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
     setIndexActual(nuevoIndex);
   };
@@ -110,8 +108,8 @@ export default function AdminDineroLeccionNivel1({ navigation }) {
           <FlashCard
             frente={item.frente}
             atras={item.atras}
-            imgFrente={item.imagenFrente}
-            imgAtras={item.imagenAtras}
+            imagenFrente={item.imagenFrente}  // ✅ nombre correcto
+            imagenAtras={item.imagenAtras}
           />
         )}
       />
@@ -197,6 +195,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  msgVacio: {
+    color: "#E0E1DD",
+    fontSize: 16,
+    marginHorizontal: 20,
+    textAlign: "center",
+    marginBottom: 20,
+  },
   cardWrapper: {
     width,
     justifyContent: "center",
@@ -204,29 +209,28 @@ const styles = StyleSheet.create({
   },
   card: {
     width: width * 0.8,
-    height: 350,
+    height: 300,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backfaceVisibility: "hidden",
     position: "absolute",
-    backgroundColor: "#FFF",
   },
-  img: {
-    width: "100%",
-    height: 160,
-    resizeMode: "contain",
-    marginBottom: 10,
+  cardFrente: {
+    backgroundColor: "#415A77",
+  },
+  cardAtras: {
+    backgroundColor: "#E0E1DD",
   },
   cardText: {
     textAlign: "center",
-    fontSize: 20,
-    color: "#000",
+    fontSize: 22,
+    color: "#FFF",
   },
   cardTextAtras: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 20,
     color: "#000",
   },
   btnRepaso: {

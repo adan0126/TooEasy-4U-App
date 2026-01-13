@@ -40,7 +40,7 @@ export default function ADMenu({ navigation }) {
           onPress={() => navigation.navigate("LAdminDinero1")}
         >
           <View style={styles.iconCircle}>
-            <Text style={styles.icon}>1</Text>
+            <Text style={styles.icon}>▶</Text>
           </View>
           <Text style={styles.lessonText}>Bases para administrar tu dinero</Text>
         </TouchableOpacity>
@@ -51,7 +51,7 @@ export default function ADMenu({ navigation }) {
           onPress={() => navigation.navigate("LAdminDinero2")}
         >
           <View style={styles.iconCircle}>
-            <Text style={styles.icon}>2</Text>
+            <Text style={styles.icon}>▶</Text>
           </View>
           <Text style={styles.lessonText}>Cómo aplicar la regla 50/30/20</Text>
         </TouchableOpacity>
@@ -62,7 +62,7 @@ export default function ADMenu({ navigation }) {
           onPress={() => navigation.navigate("LAdminDinero3")}
         >
           <View style={styles.iconCircle}>
-            <Text style={styles.icon}>3</Text>
+            <Text style={styles.icon}>▶</Text>
           </View>
           <Text style={styles.lessonText}>Crear y ajustar tu presupuesto mensual</Text>
         </TouchableOpacity>

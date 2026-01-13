@@ -13,7 +13,7 @@ import {
 const { width } = Dimensions.get("window");
 
 export default function AdminDineroLeccionNivel2({ navigation }) {
-    // -------------------------------------------
+  // -------------------------------------------
   // IMÁGENES DISPONIBLES
   // -------------------------------------------
   const frontImages = [
@@ -40,9 +40,6 @@ const backImages = [
   require("../../../../assets/tarjetaDetras7.png"),
 ];
 
-  // AQUÍ VAS A PEGAR LAS TARJETAS DE ESTE TEMA Y NIVEL
-// Dentro de src/screens/AdminDinero/Nivel2/LAdminDinero.js
-// Reemplaza SOLO el contenido del arreglo tarjetas por esto:
  const tarjetasBase = [
     {
       id: "1",
