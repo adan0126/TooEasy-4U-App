@@ -1,6 +1,6 @@
 // Pantalla de flashcards para los fundamentos - Ingreso
 
-import React, { useRef, useState, uneMemo
+import React, { useRef, useState, useMemo
  } from "react";
 import {
   View,

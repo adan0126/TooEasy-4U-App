@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../context/UserContext";
 import { fetchActiveChallenges } from "../../api/challengesApi";
 import RetosPanel from "../../components/retos/RetosPanel";
 
 export default function RetosScreen() {
+  const navigation = useNavigation();
   const { user, token } = useUser(); // asumiendo que ya existe
   const [challenges, setChallenges] = useState([]);
   const [open, setOpen] = useState(false);
@@ -32,6 +34,14 @@ export default function RetosScreen() {
 
   return (
     <View style={styles.container}>
+
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backBtn}>←</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Retos Personales</Text>
+      </View>
+
       <ImageBackground
         source={require("../../../assets/mapacheEscalando.png")}
         style={styles.bg}
@@ -103,4 +113,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   btnRetosTxt: { color: "#FFF", fontWeight: "bold" },
+  header: {
+    backgroundColor: "#1B263B",
+    padding: 20,
+    paddingTop: 50,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FFF",
+  },
+    backBtn: {
+    fontSize: 28,
+    color: "#FFF",
+    marginRight: 15,
+  },
 });

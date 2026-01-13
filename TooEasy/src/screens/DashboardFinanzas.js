@@ -149,6 +149,9 @@ export default function DashboardFinanzas({ navigation }) {
     <ScrollView style={styles.container}>
       {/* HEADER */}
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backBtn}>←</Text>
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Dashboard</Text>
       </View>
 
@@ -339,7 +342,10 @@ export default function DashboardFinanzas({ navigation }) {
         >
           <Text style={styles.navIcon}>➕</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navBtn}>
+        <TouchableOpacity
+        style={styles.navBtn}
+        onPress={() => navigation.navigate("Perfil")}
+        >
           <Text style={styles.navIcon}>👤</Text>
         </TouchableOpacity>
       </View>
@@ -367,11 +373,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#5B4636",
     padding: 20,
     paddingTop: 50,
+    flexDirection: "row",
+    alignItems: "center",
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#FFF",
+  },
+    backBtn: {
+    fontSize: 28,
+    color: "#FFF",
+    marginRight: 15,
   },
   cardsContainer: {
     flexDirection: "row",

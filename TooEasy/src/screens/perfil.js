@@ -9,6 +9,7 @@ import {
   Alert,
   ActivityIndicator
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../context/UserContext";
 import { doc, getDoc, updateDoc, increment } from "firebase/firestore";
 import { database } from "../config/fb";
@@ -238,12 +239,15 @@ export default function PerfilScreen({ navigation }) {
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backBtn}>←</Text>
+        </TouchableOpacity>
         <View>
           <Text style={styles.welcomeText}>Hola, {userData.username}!</Text>
           <Text style={styles.subtitle}>Perfil</Text>
         </View>
         <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-          <Text style={styles.logoutText}>Salir</Text>
+          <Text style={styles.logoutText}>Cerrar Sesión</Text>
         </TouchableOpacity>
       </View>
 
@@ -481,6 +485,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+    backBtn: {
+    fontSize: 28,
+    color: "#FFF",
+    marginRight: 15,
   },
   welcomeText: {
     fontSize: 24,
