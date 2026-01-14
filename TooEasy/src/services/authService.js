@@ -305,3 +305,93 @@ export const actualizarRacha = async (userId) => {
     throw error;
   }
 };
+
+// --------------------------------------------------------------
+// Agregar transacción (ingreso o egreso)
+// --------------------------------------------------------------
+export const agregarTransaccion = async (userId, tipo, datos) => {
+  try {
+    const { fecha, monto, descripcion, categoria } = datos;
+    
+    // Obtener año y mes de la fecha
+    const fechaObj = new Date(fecha);
+    const año = fechaObj.getFullYear();
+    const mes = fechaObj.getMonth() + 1;
+    
+    // Referencia al documento del mes
+    const refMes = doc(database, "usuarios", userId, "finanzas", `${año}-${mes}`);
+    const snapMes = await getDoc(refMes);
+    
+    // Datos existentes o iniciales
+    const dataExistente = snapMes.exists()
+      ? snapMes.data()
+      : { ingresos: [], egresos: [], transacciones: [] };
+    
+    // Nueva transacción
+    const nuevaTransaccion = {
+      tipo,
+      monto,
+      descripcion,
+      categoria,
+      fecha: fecha.toISOString(),
+      timestamp: serverTimestamp()
+    };
+    
+    // Actualizar arrays según el tipo
+    const nuevaData = {
+      ...dataExistente,
+      transacciones: [...(dataExistente.transacciones || []), nuevaTransaccion]
+    };
+    
+    if (tipo === "ingreso") {
+      nuevaData.ingresos = [...(dataExistente.ingresos || []), nuevaTransaccion];
+    } else {
+      nuevaData.egresos = [...(dataExistente.egresos || []), nuevaTransaccion];
+    }
+    
+    // Guardar en Firestore
+    await setDoc(refMes, nuevaData);
+    
+    // Actualizar ahorro actual en el documento principal del usuario
+    const userRef = doc(database, "usuarios", userId);
+    const userSnap = await getDoc(userRef);
+    
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      const ahorroActual = userData.finanzas?.ahorroActual || 0;
+      const meta = userData.finanzas?.meta || { nombre: "", cantidad: 0 };
+      
+      // Calcular nuevo ahorro
+      let nuevoAhorro = ahorroActual;
+      if (tipo === "ingreso") {
+        nuevoAhorro += monto;
+      } else {
+        nuevoAhorro -= monto;
+      }
+      
+      // Calcular progreso de meta
+      const progresoMeta = meta.cantidad > 0 
+        ? Math.min(100, (nuevoAhorro / meta.cantidad) * 100)
+        : 0;
+      
+      const estadoMeta = nuevoAhorro >= meta.cantidad 
+        ? "Completada" 
+        : nuevoAhorro > 0 
+          ? "En progreso" 
+          : "No iniciada";
+      
+      // Actualizar documento principal
+      await updateDoc(userRef, {
+        "finanzas.ahorroActual": nuevoAhorro,
+        "finanzas.meta.progreso": progresoMeta,
+        "finanzas.meta.estado": estadoMeta
+      });
+    }
+    
+    return true;
+    
+  } catch (error) {
+    console.error("❌ Error agregando transacción:", error);
+    throw error;
+  }
+};

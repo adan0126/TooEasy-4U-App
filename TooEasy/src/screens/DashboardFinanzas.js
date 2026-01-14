@@ -1,5 +1,4 @@
-// src/screens/DashboardFinanzas.js
-// Pantalla para mostrar el dashboard del usuario
+// src/screens/DashboardFinanzas.js - VERSIÓN ACTUALIZADA
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -37,7 +36,6 @@ export default function DashboardFinanzas({ navigation }) {
     try {
       setLoading(true);
       
-      // Obtener datos del usuario
       const userRef = doc(database, "usuarios", user.id);
       const userDoc = await getDoc(userRef);
       const userData = userDoc.data();
@@ -49,19 +47,15 @@ export default function DashboardFinanzas({ navigation }) {
         meta: { nombre: "", cantidad: 0, progreso: 0, estado: "No iniciada" }
       });
       
-      // Obtener transacciones del mes
-      const trans = await obtenerTransaccionesMes(
-        user.id,
-        mesActual.getMonth() + 1,
-        mesActual.getFullYear()
-      );
+      const año = mesActual.getFullYear();
+      const mes = mesActual.getMonth() + 1;
+      const trans = await obtenerTransaccionesMes(user.id, año, mes);
       
       setTransacciones({
         ingresos: Array.isArray(trans?.ingresos) ? trans.ingresos : [],
         egresos: Array.isArray(trans?.egresos) ? trans.egresos : []
       });
       
-      // Actualizar racha
       await actualizarRacha(user.id);
       
     } catch (error) {
@@ -95,12 +89,10 @@ export default function DashboardFinanzas({ navigation }) {
     const dias = [];
     const primerDiaSemana = primerDia.getDay();
     
-    // Espacios vacíos antes del primer día
     for (let i = 0; i < primerDiaSemana; i++) {
       dias.push(null);
     }
     
-    // Días del mes
     for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
       dias.push(dia);
     }
@@ -108,21 +100,22 @@ export default function DashboardFinanzas({ navigation }) {
     return dias;
   };
 
-  const verificarTransaccionEnDia = (dia) => {
-    if (!dia) return { tieneIngreso: false, tieneEgreso: false };
+  // Calcular balance por día
+  const calcularBalanceDia = (dia) => {
+    if (!dia) return 0;
     
     const fecha = new Date(mesActual.getFullYear(), mesActual.getMonth(), dia);
     const fechaStr = fecha.toISOString().split('T')[0];
     
-    const tieneIngreso = transacciones.ingresos.some(t => 
-      t.fecha.split('T')[0] === fechaStr
-    );
+    const ingresosDia = transacciones.ingresos
+      .filter(t => t.fecha.split('T')[0] === fechaStr)
+      .reduce((sum, t) => sum + t.monto, 0);
     
-    const tieneEgreso = transacciones.egresos.some(t => 
-      t.fecha.split('T')[0] === fechaStr
-    );
+    const egresosDia = transacciones.egresos
+      .filter(t => t.fecha.split('T')[0] === fechaStr)
+      .reduce((sum, t) => sum + t.monto, 0);
     
-    return { tieneIngreso, tieneEgreso };
+    return ingresosDia - egresosDia;
   };
 
   const cambiarMes = (direccion) => {
@@ -132,7 +125,10 @@ export default function DashboardFinanzas({ navigation }) {
     setDiaSeleccionado(null);
   };
 
-  const nombreMes = mesActual.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' }).toUpperCase();
+  const nombreMes = mesActual.toLocaleDateString('es-MX', { 
+    month: 'long', 
+    year: 'numeric' 
+  }).toUpperCase();
 
   if (loading) {
     return (
@@ -144,6 +140,7 @@ export default function DashboardFinanzas({ navigation }) {
   }
 
   const { totalIngresos, totalEgresos, balance } = calcularTotalesMes();
+  const faltaParaMeta = Math.max(0, datosFinanzas.meta.cantidad - datosFinanzas.ahorroActual);
 
   return (
     <ScrollView style={styles.container}>
@@ -193,7 +190,7 @@ export default function DashboardFinanzas({ navigation }) {
         <View style={[styles.card, styles.cardBlue]}>
           <Text style={styles.cardLabel}>Falta para Meta</Text>
           <Text style={styles.cardValue}>
-            ${Math.max(0, datosFinanzas.meta.cantidad - datosFinanzas.ahorroActual).toLocaleString()}
+            ${faltaParaMeta.toLocaleString()}
           </Text>
         </View>
 
@@ -217,12 +214,14 @@ export default function DashboardFinanzas({ navigation }) {
         </View>
 
         <View style={[styles.card, styles.cardWhite]}>
-          <Text style={styles.cardLabel}>Racha</Text>
-          <Text style={styles.cardValueEmpty}>- -</Text>
+          <Text style={styles.cardLabel}>Progreso Meta</Text>
+          <Text style={styles.cardValue}>
+            {Math.round(datosFinanzas.meta.progreso || 0)}%
+          </Text>
         </View>
       </View>
 
-      {/* CALENDARIO */}
+      {/* CALENDARIO CON COLORES POR BALANCE */}
       <View style={styles.calendarContainer}>
         <View style={styles.calendarHeader}>
           <TouchableOpacity onPress={() => cambiarMes(-1)}>
@@ -234,23 +233,29 @@ export default function DashboardFinanzas({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Días de la semana */}
         <View style={styles.weekDays}>
           {['D', 'L', 'M', 'M', 'J', 'V', 'S'].map((dia, i) => (
             <Text key={i} style={styles.weekDay}>{dia}</Text>
           ))}
         </View>
 
-        {/* Días del mes */}
         <View style={styles.daysGrid}>
           {obtenerDiasMes().map((dia, index) => {
             if (!dia) {
               return <View key={`empty-${index}`} style={styles.dayCell} />;
             }
 
-            const { tieneIngreso, tieneEgreso } = verificarTransaccionEnDia(dia);
+            const balanceDia = calcularBalanceDia(dia);
             const esHoy = dia === new Date().getDate() && 
                           mesActual.getMonth() === new Date().getMonth();
+
+            // 🎨 DETERMINAR COLOR SEGÚN BALANCE
+            let backgroundColor = 'transparent';
+            if (balanceDia > 0) {
+              backgroundColor = '#27AE60'; // Verde para positivo
+            } else if (balanceDia < 0) {
+              backgroundColor = '#E74C3C'; // Rojo para negativo
+            }
 
             return (
               <TouchableOpacity
@@ -258,6 +263,7 @@ export default function DashboardFinanzas({ navigation }) {
                 style={[
                   styles.dayCell,
                   esHoy && styles.dayCellToday,
+                  balanceDia !== 0 && { backgroundColor },
                   diaSeleccionado === dia && styles.dayCellSelected
                 ]}
                 onPress={() => {
@@ -267,13 +273,13 @@ export default function DashboardFinanzas({ navigation }) {
                   });
                 }}
               >
-                <Text style={[styles.dayText, esHoy && styles.dayTextToday]}>
+                <Text style={[
+                  styles.dayText, 
+                  esHoy && styles.dayTextToday,
+                  balanceDia !== 0 && styles.dayTextBalance
+                ]}>
                   {dia}
                 </Text>
-                <View style={styles.dayIndicators}>
-                  {tieneIngreso && <View style={styles.indicadorIngreso} />}
-                  {tieneEgreso && <View style={styles.indicadorEgreso} />}
-                </View>
               </TouchableOpacity>
             );
           })}
@@ -282,7 +288,7 @@ export default function DashboardFinanzas({ navigation }) {
 
       {/* GRÁFICA DE FINANZAS */}
       <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>Finanzas</Text>
+        <Text style={styles.chartTitle}>Finanzas del Mes</Text>
         
         <View style={styles.legend}>
           <View style={styles.legendItem}>
@@ -299,7 +305,6 @@ export default function DashboardFinanzas({ navigation }) {
           </View>
         </View>
 
-        {/* Barras del gráfico */}
         <View style={styles.chartBars}>
           <View style={styles.barContainer}>
             <Text style={styles.barValue}>${totalIngresos.toLocaleString()}</Text>
@@ -319,7 +324,7 @@ export default function DashboardFinanzas({ navigation }) {
 
           <View style={styles.barContainer}>
             <Text style={styles.barValue}>${balance.toLocaleString()}</Text>
-            <View style={[styles.bar, styles.barBalance, { 
+            <View style={[styles.bar, { 
               height: Math.max(20, (Math.abs(balance) / Math.max(totalIngresos, totalEgresos, Math.abs(balance))) * 150),
               backgroundColor: balance >= 0 ? '#27AE60' : '#E74C3C'
             }]} />
@@ -330,11 +335,17 @@ export default function DashboardFinanzas({ navigation }) {
 
       {/* NAVEGACIÓN INFERIOR */}
       <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navBtn}>
+        <TouchableOpacity 
+          style={styles.navBtn}
+          onPress={() => navigation.navigate("DashboardFinanzas")}
+        >
           <Text style={styles.navIcon}>📊</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navBtn}>
-          <Text style={styles.navIcon}>📈</Text>
+        <TouchableOpacity 
+          style={styles.navBtn}
+          onPress={() => navigation.navigate("Retos")}
+        >
+          <Text style={styles.navIcon}>🎯</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navBtn}
@@ -343,8 +354,8 @@ export default function DashboardFinanzas({ navigation }) {
           <Text style={styles.navIcon}>➕</Text>
         </TouchableOpacity>
         <TouchableOpacity
-        style={styles.navBtn}
-        onPress={() => navigation.navigate("Perfil")}
+          style={styles.navBtn}
+          onPress={() => navigation.navigate("Perfil")}
         >
           <Text style={styles.navIcon}>👤</Text>
         </TouchableOpacity>
@@ -381,7 +392,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFF",
   },
-    backBtn: {
+  backBtn: {
     fontSize: 28,
     color: "#FFF",
     marginRight: 15,
@@ -424,11 +435,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "#FFF",
-  },
-  cardValueEmpty: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#CCC",
   },
   editBtn: {
     position: "absolute",
@@ -481,40 +487,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 2,
+    borderRadius: 8,
   },
   dayCellToday: {
-    backgroundColor: "#5B7C99",
-    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "#5B7C99",
   },
   dayCellSelected: {
-    backgroundColor: "#E0E0E0",
-    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "#000",
   },
   dayText: {
     fontSize: 14,
     color: "#333",
+    fontWeight: "600",
   },
   dayTextToday: {
-    color: "#FFF",
     fontWeight: "bold",
   },
-  dayIndicators: {
-    flexDirection: "row",
-    marginTop: 2,
-  },
-  indicadorIngreso: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: "#27AE60",
-    marginHorizontal: 1,
-  },
-  indicadorEgreso: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: "#E74C3C",
-    marginHorizontal: 1,
+  dayTextBalance: {
+    color: "#FFF",
+    fontWeight: "bold",
   },
   chartContainer: {
     backgroundColor: "#FFF",
@@ -570,9 +563,6 @@ const styles = StyleSheet.create({
   },
   barEgresos: {
     backgroundColor: "#E8A87C",
-  },
-  barBalance: {
-    backgroundColor: "#95A5A6",
   },
   barLabel: {
     fontSize: 12,
