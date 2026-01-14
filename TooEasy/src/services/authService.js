@@ -206,10 +206,8 @@ export const actualizarMeta = async (userId, meta) => {
     const ref = doc(database, "usuarios", userId);
 
     await updateDoc(ref, {
-      "finanzas.meta": {
-        nombre: meta.nombre,
-        cantidad: meta.cantidad
-      }
+      "finanzas.meta.nombre": meta.nombre,
+      "finanzas.meta.cantidad": meta.cantidad
     });
 
     return true;
@@ -239,74 +237,6 @@ export async function actualizarIngresoMensual(userId, monto) {
 }
 
 // --------------------------------------------------------------
-// Registrar EGRESO mensual
-// --------------------------------------------------------------
-export const actualizarEgresoMensual = async (userId, año, mes, monto, descripcion) => {
-  try {
-    const ref = doc(database, "usuarios", userId, "finanzas", `${año}-${mes}`);
-    const snap = await getDoc(ref);
-
-    const dataExistente = snap.exists()
-      ? snap.data()
-      : { ingresos: [], egresos: [], transacciones: [] };
-
-    const nuevaData = {
-      ...dataExistente,
-      egresos: [...dataExistente.egresos, monto],
-      transacciones: [
-        ...dataExistente.transacciones,
-        { tipo: "egreso", monto, descripcion, fecha: serverTimestamp() }
-      ]
-    };
-
-    await setDoc(ref, nuevaData);
-    return true;
-
-  } catch (error) {
-    console.error("❌ Error actualizando egreso:", error);
-    throw error;
-  }
-};
-
-
-
-// ======================================================================
-//  ACTUALIZAR RACHA DIARIA
-// ======================================================================
-export const actualizarRacha = async (userId) => {
-  try {
-    const userRef = doc(database, "usuarios", userId);
-    const snap = await getDoc(userRef);
-
-    if (!snap.exists()) return;
-
-    const data = snap.data().finanzas;
-
-    const hoy = new Date().toLocaleDateString("es-MX");
-    const ultima = data.ultimaActualizacionRacha || "";
-    const rachaActual = data.racha || 0;
-
-    let nuevaRacha = rachaActual;
-
-    // Si la fecha cambió → aumentar una racha
-    if (ultima !== hoy) {
-      nuevaRacha = rachaActual + 1;
-    }
-
-    await updateDoc(userRef, {
-      "finanzas.racha": nuevaRacha,
-      "finanzas.ultimaActualizacionRacha": hoy
-    });
-
-    return nuevaRacha;
-
-  } catch (error) {
-    console.error("❌ Error al actualizar racha:", error);
-    throw error;
-  }
-};
-
-// --------------------------------------------------------------
 // Agregar transacción (ingreso o egreso)
 // --------------------------------------------------------------
 export const agregarTransaccion = async (userId, tipo, datos) => {
@@ -327,6 +257,10 @@ export const agregarTransaccion = async (userId, tipo, datos) => {
       ? snapMes.data()
       : { ingresos: [], egresos: [], transacciones: [] };
     
+    // 🔥 IMPORTANTE: Usar ISO string en lugar de serverTimestamp() 
+    // porque Firestore no permite serverTimestamp() dentro de arrays
+    const ahora = new Date().toISOString();
+    
     // Nueva transacción
     const nuevaTransaccion = {
       tipo,
@@ -334,7 +268,7 @@ export const agregarTransaccion = async (userId, tipo, datos) => {
       descripcion,
       categoria,
       fecha: fecha.toISOString(),
-      timestamp: serverTimestamp()
+      timestamp: ahora  // ✅ Usar ISO string en lugar de serverTimestamp()
     };
     
     // Actualizar arrays según el tipo
@@ -392,6 +326,76 @@ export const agregarTransaccion = async (userId, tipo, datos) => {
     
   } catch (error) {
     console.error("❌ Error agregando transacción:", error);
+    throw error;
+  }
+};
+
+// --------------------------------------------------------------
+// Registrar EGRESO mensual (DEPRECADO - usar agregarTransaccion)
+// --------------------------------------------------------------
+export const actualizarEgresoMensual = async (userId, año, mes, monto, descripcion) => {
+  try {
+    const ref = doc(database, "usuarios", userId, "finanzas", `${año}-${mes}`);
+    const snap = await getDoc(ref);
+
+    const dataExistente = snap.exists()
+      ? snap.data()
+      : { ingresos: [], egresos: [], transacciones: [] };
+
+    const ahora = new Date().toISOString();
+
+    const nuevaData = {
+      ...dataExistente,
+      egresos: [...dataExistente.egresos, monto],
+      transacciones: [
+        ...dataExistente.transacciones,
+        { tipo: "egreso", monto, descripcion, fecha: ahora }
+      ]
+    };
+
+    await setDoc(ref, nuevaData);
+    return true;
+
+  } catch (error) {
+    console.error("❌ Error actualizando egreso:", error);
+    throw error;
+  }
+};
+
+
+
+// ======================================================================
+//  ACTUALIZAR RACHA DIARIA
+// ======================================================================
+export const actualizarRacha = async (userId) => {
+  try {
+    const userRef = doc(database, "usuarios", userId);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) return;
+
+    const data = snap.data().finanzas;
+
+    const hoy = new Date().toLocaleDateString("es-MX");
+    const ultima = data.ultimaActualizacionRacha || "";
+    const rachaActual = data.racha || 0;
+
+    let nuevaRacha = rachaActual;
+
+    // Si la fecha cambió → aumentar una racha
+    if (ultima !== hoy) {
+      nuevaRacha = rachaActual + 1;
+    }
+
+    await updateDoc(userRef, {
+      "finanzas.racha": nuevaRacha,
+      "finanzas.ultimaActualizacionRacha": hoy
+    });
+
+    return nuevaRacha;
+
+  } catch (error) {
+    console.error("❌ Error al actualizar racha:", error);
     throw error;
   }
 };
