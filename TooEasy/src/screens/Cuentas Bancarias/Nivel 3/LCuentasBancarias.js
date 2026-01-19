@@ -12,45 +12,31 @@ import {
 
 const { width } = Dimensions.get("window");
 
+// Imagenes disponibles
 export default function FundamentosLeccionScreen({ navigation }) {
+  const frontImages = [
+  require("../../../../assets/tarjetaFrente1.png"),
+  require("../../../../assets/tarjetaFrente2.png"),
+  require("../../../../assets/tarjetaFrente3.png"),
+  require("../../../../assets/tarjetaFrente4.png"),
+  require("../../../../assets/tarjetaFrente5.png"),
+  require("../../../../assets/tarjetaFrente6.png"),
+  require("../../../../assets/tarjetaFrente7.png"),
+  require("../../../../assets/tarjetaFrente8.png"),
+  require("../../../../assets/tarjetaFrente9.png"),
+  require("../../../../assets/tarjetaFrente10.png"),
+  require("../../../../assets/tarjetaFrente11.png"),
+];
 
-  // ----------------------------------------------------------------------
-  // 🖼️ AUTOMATIZACIÓN DE IMÁGENES (.jpg)
-  // ----------------------------------------------------------------------
-
-  // Carga automática de 11 imágenes para el frente
-  const imagenesFrente = useMemo(() => {
-    return [
-      require("../../../../assets/tarjetaFrente1.png"),
-      require("../../../../assets/tarjetaFrente2.png"),
-      require("../../../../assets/tarjetaFrente3.png"),
-      require("../../../../assets/tarjetaFrente4.png"),
-      require("../../../../assets/tarjetaFrente5.png"),
-      require("../../../../assets/tarjetaFrente6.png"),
-      require("../../../../assets/tarjetaFrente7.png"),
-      require("../../../../assets/tarjetaFrente8.png"),
-      require("../../../../assets/tarjetaFrente9.png"),
-      require("../../../../assets/tarjetaFrente10.png"),
-      require("../../../../assets/tarjetaFrente11.png"),
-    ];
-  }, []);
-
-  // Carga automática de 7 imágenes para el reverso
-  const imagenesAtras = useMemo(() => {
-    return [
-      require("../../../../assets/tarjetaDetras1.png"),
-      require("../../../../assets/tarjetaDetras2.png"),
-      require("../../../../assets/tarjetaDetras3.png"),
-      require("../../../../assets/tarjetaDetras4.png"),
-      require("../../../../assets/tarjetaDetras5.png"),
-      require("../../../../assets/tarjetaDetras6.png"),
-      require("../../../../assets/tarjetaDetras7.png"),
-    ];
-  }, []);
-
-  // ----------------------------------------------------------------------
-  // ▶️ TARJETAS (Ahora asignan imágenes automáticamente)
-  // ----------------------------------------------------------------------
+const backImages = [
+  require("../../../../assets/tarjetaDetras1.png"),
+  require("../../../../assets/tarjetaDetras2.png"),
+  require("../../../../assets/tarjetaDetras3.png"),
+  require("../../../../assets/tarjetaDetras4.png"),
+  require("../../../../assets/tarjetaDetras5.png"),
+  require("../../../../assets/tarjetaDetras6.png"),
+  require("../../../../assets/tarjetaDetras7.png"),
+];
 
   const tarjetasBase = [
     { frente: "¿Qué son los intereses?", atras: "Son el costo del dinero..." },
@@ -70,18 +56,20 @@ export default function FundamentosLeccionScreen({ navigation }) {
     { frente: "¿Por qué es importante conocer intereses?", atras: "Para elegir bien productos." },
   ];
 
-  // Combina textos + imágenes
   const tarjetas = useMemo(() => {
     return tarjetasBase.map((t, i) => ({
-      id: (i + 1).toString(),
-      frente: t.frente,
-      atras: t.atras,
-      imagenFrente: imagenesFrente[i % imagenesFrente.length], // 11 imágenes → se repiten
-      imagenAtras: imagenesAtras[i % imagenesAtras.length],     // 7 imágenes → se repiten
+      ...t,
+      imagenFrente: frontImages[i % frontImages.length],
+      imagenAtras: backImages[i % backImages.length],
     }));
-  }, [tarjetasBase, imagenesFrente, imagenesAtras]);
+  }, []);
 
   const [indexActual, setIndexActual] = useState(0);
+
+  const handleScroll = (e) => {
+    const nuevoIndex = Math.round(e.nativeEvent.contentOffset.x / width);
+    setIndexActual(nuevoIndex);
+  };
 
   return (
     <View style={styles.container}>
@@ -91,21 +79,13 @@ export default function FundamentosLeccionScreen({ navigation }) {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={(e) => {
-          const index = Math.round(e.nativeEvent.contentOffset.x / width);
-          setIndexActual(index);
-        }}
+        onScroll={handleScroll}
         renderItem={({ item }) => (
-          <FlashCard
-            frente={item.frente}
-            atras={item.atras}
-            imagenFrente={item.imagenFrente}
-            imagenAtras={item.imagenAtras}
-          />
+          <FlashCard {...item} />
         )}
       />
 
-      {indexActual === tarjetas.length - 1 && (
+      {indexActual === tarjetasBase.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
           onPress={() => navigation.navigate("PCuentasBancarias3")}
@@ -118,130 +98,161 @@ export default function FundamentosLeccionScreen({ navigation }) {
         style={styles.btnRegresar}
         onPress={() => navigation.goBack()}
       >
-        <Text style={styles.btnRegresarTxt}>Regresar</Text>
+        <Text style={styles.btnTxt}>Regresar</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-
-// -------------------------------------------------------
-// 🔥 COMPONENTE FLASHCARD con animación + imágenes
-// -------------------------------------------------------
 function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
-  const [ladoFrente, setLadoFrente] = useState(true);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-  const rotacionFrente = flipAnim.interpolate({
+  const frontRotate = flipAnim.interpolate({
     inputRange: [0, 180],
     outputRange: ["0deg", "180deg"],
   });
 
-  const rotacionAtras = flipAnim.interpolate({
+  const backRotate = flipAnim.interpolate({
     inputRange: [0, 180],
     outputRange: ["180deg", "360deg"],
   });
 
-  const flipCard = () => {
+  const flip = () => {
     Animated.timing(flipAnim, {
-      toValue: ladoFrente ? 180 : 0,
+      toValue: isFlipped ? 0 : 180,
       duration: 400,
       useNativeDriver: true,
-    }).start(() => setLadoFrente(!ladoFrente));
+    }).start(() => setIsFlipped(!isFlipped));
   };
 
   return (
-    <View style={styles.cardWrapper}>
-      <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-
-        {/* Frente */}
+    <View style={styles.item}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={flip}
+        style={styles.touch}
+      >
+        {/* FRENTE */}
         <Animated.View
           style={[
             styles.card,
-            styles.cardFrente,
-            { transform: [{ rotateY: rotacionFrente }], opacity: ladoFrente ? 1 : 0 },
+            {
+              transform: [{ perspective: 1000 }, { rotateY: frontRotate }],
+            },
           ]}
         >
-          {imagenFrente && (
-            <Image source={imagenFrente} style={styles.img} resizeMode="contain" />
-          )}
-          <Text style={styles.cardText}>{frente}</Text>
+          <Image source={imagenFrente} style={styles.img} />
+          <Text style={styles.textFront}>{frente}</Text>
         </Animated.View>
 
-        {/* Reverso */}
+        {/* ATRÁS */}
         <Animated.View
           style={[
             styles.card,
-            styles.cardAtras,
-            { transform: [{ rotateY: rotacionAtras }], opacity: ladoFrente ? 0 : 1 },
+            styles.back,
+            {
+              transform: [{ perspective: 1000 }, { rotateY: backRotate }],
+            },
           ]}
         >
-          {imagenAtras && (
-            <Image source={imagenAtras} style={styles.img} resizeMode="contain" />
-          )}
-          <Text style={styles.cardTextAtras}>{atras}</Text>
+          <Image source={imagenAtras} style={styles.img} />
+          <Text style={styles.textBack}>{atras}</Text>
         </Animated.View>
       </TouchableOpacity>
     </View>
   );
 }
 
-// --------------------- ESTILOS ---------------------
+// ========================== ESTILOS ==========================
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0D1B2A",
-    justifyContent: "center",
-    alignItems: "center",
   },
-  cardWrapper: {
+
+  item: {
     width: width,
     justifyContent: "center",
     alignItems: "center",
   },
-  card: {
+
+  touch: {
     width: width * 0.8,
-    minHeight: 300,
-    borderRadius: 15,
+    height: 420,
+  },
+
+  card: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backfaceVisibility: "hidden",
-    position: "absolute",
+    backgroundColor: "#415A77",
   },
+
+  back: {
+    backgroundColor: "#E0E1DD",
+  },
+
   img: {
-    width: "70%",
-    height: 140,
-    marginBottom: 15,
+    width: "100%",
+    height: 180,
+    resizeMode: "contain",
+    marginBottom: 16,
   },
-  cardFrente: { backgroundColor: "#415A77" },
-  cardAtras: { backgroundColor: "#E0E1DD" },
-  cardText: { textAlign: "center", fontSize: 22, color: "#FFF" },
-  cardTextAtras: { textAlign: "center", fontSize: 20, color: "#000" },
+
+  textFront: {
+    color: "#FFF",
+    fontSize: 22,
+    textAlign: "center",
+  },
+
+  textBack: {
+    color: "#000",
+    fontSize: 18,
+    textAlign: "center",
+  },
+
+  btnRegresar: {
+    position: "absolute",
+    bottom: 40,
+    alignSelf: "center",
+    backgroundColor: "#778DA9",
+    paddingHorizontal: 30,
+    paddingVertical: 12,
+    borderRadius: 10,
+  },
+
+  btnTxt: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
   btnRepaso: {
     position: "absolute",
     bottom: 110,
+    alignSelf: "center",
     backgroundColor: "#1B263B",
     paddingHorizontal: 30,
     paddingVertical: 14,
     borderRadius: 12,
   },
+
   btnRepasoTxt: {
     color: "#FFF",
     fontSize: 20,
     fontWeight: "bold",
   },
-  btnRegresar: {
-    position: "absolute",
-    bottom: 40,
-    paddingHorizontal: 25,
-    paddingVertical: 12,
-    backgroundColor: "#778DA9",
-    borderRadius: 10,
-  },
-  btnRegresarTxt: {
+
+  buttonText: {
     color: "#FFF",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
