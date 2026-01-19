@@ -49,7 +49,7 @@ export default function FMenu({ navigation }) {
           <View style={styles.iconCircle}>
             <Text style={styles.icon}>▶</Text>
           </View>
-          <Text style={styles.lessonText}>¿Qué es ingreso?</Text>
+          <Text style={styles.lessonText}>¿Qué es ingreso y un egreso?</Text>
         </TouchableOpacity>
 
         {/* 🔸 BOTÓN 2: ¿Qué es un gasto? */}
@@ -63,7 +63,7 @@ export default function FMenu({ navigation }) {
           <View style={styles.iconCircle}>
             <Text style={styles.icon}>▶</Text>
           </View>
-          <Text style={styles.lessonText}>¿Qué es un gasto?</Text>
+          <Text style={styles.lessonText}>¿Qué es el ahorro y su importancia?</Text>
         </TouchableOpacity>
 
         {/* 🔸 BOTÓN 3: Fondos de emergencia */}
