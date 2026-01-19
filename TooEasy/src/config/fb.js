@@ -16,11 +16,11 @@ const firebaseConfig = {
 };
 
 // Validar configuración
-console.log("🔥 Inicializando Firebase...");
+console.log("Inicializando Firebase");
 console.log("Project ID:", firebaseConfig.projectId);
 
 if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-  console.error("❌ ERROR: Configuración de Firebase incompleta");
+  console.error("ERROR: Configuración de Firebase incompleta");
   console.error("Variables disponibles:", firebaseConfig);
   throw new Error("Firebase no está configurado correctamente. Verifica tu archivo .env y app.config.js");
 }
@@ -34,19 +34,19 @@ try {
   app = initializeApp(firebaseConfig);
   database = getFirestore(app);
   
-  console.log("✅ Firebase inicializado correctamente");
+  console.log("Firebase inicializado correctamente");
   
   // Analytics (solo en web)
   if (typeof window !== 'undefined') {
     try {
       analytics = getAnalytics(app);
-      console.log("✅ Analytics inicializado");
+      console.log("Analytics inicializado");
     } catch (error) {
-      console.log("⚠️ Analytics no disponible en esta plataforma");
+      console.log("Analytics no disponible en esta plataforma");
     }
   }
 } catch (error) {
-  console.error("❌ Error inicializando Firebase:", error);
+  console.error("Error inicializando Firebase:", error);
   throw error;
 }
 
