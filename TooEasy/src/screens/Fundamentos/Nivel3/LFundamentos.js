@@ -109,7 +109,7 @@ const backImages = [
       {indexActual === tarjetasBase.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
-          onPress={() => navigation.navigate("PFundamentos1")}
+          onPress={() => navigation.navigate("PFundamentos3")}
         >
           <Text style={styles.btnRepasoTxt}>Preguntas de Repaso</Text>
         </TouchableOpacity>
