@@ -127,7 +127,7 @@ export const registrarUsuario = async ({ username, correo, password, edad, gener
     return nuevoUsuario;
 
   } catch (error) {
-    console.error("❌ Error registrando usuario:", error);
+    console.error("Error registrando usuario:", error);
     throw new Error("No se pudo registrar el usuario");
   }
 };
@@ -160,7 +160,7 @@ export const iniciarSesion = async (correo, password) => {
     return { exito: true, usuario: data, mensaje: "Inicio de sesión exitoso" };
 
   } catch (error) {
-    console.error("❌ Error iniciando sesión:", error);
+    console.error("Error iniciando sesión:", error);
     return { exito: false, mensaje: "Error al iniciar sesión" };
   }
 };
@@ -193,7 +193,7 @@ export const obtenerTransaccionesMes = async (userId, año, mes) => {
     };
 
   } catch (error) {
-    console.error("❌ Error obteniendo transacciones:", error);
+    console.error("Error obteniendo transacciones:", error);
     throw error;
   }
 };
@@ -257,7 +257,6 @@ export const agregarTransaccion = async (userId, tipo, datos) => {
       ? snapMes.data()
       : { ingresos: [], egresos: [], transacciones: [] };
     
-    // 🔥 IMPORTANTE: Usar ISO string en lugar de serverTimestamp() 
     // porque Firestore no permite serverTimestamp() dentro de arrays
     const ahora = new Date().toISOString();
     
@@ -268,7 +267,7 @@ export const agregarTransaccion = async (userId, tipo, datos) => {
       descripcion,
       categoria,
       fecha: fecha.toISOString(),
-      timestamp: ahora  // ✅ Usar ISO string en lugar de serverTimestamp()
+      timestamp: ahora  // Usar ISO string en lugar de serverTimestamp()
     };
     
     // Actualizar arrays según el tipo
