@@ -7,10 +7,13 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
+  Image,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
 
+// Imagenes disponibles
+export default function FundamentosLeccionScreen({ navigation }) {
   const frontImages = [
   require("../../../../assets/tarjetaFrente1.png"),
   require("../../../../assets/tarjetaFrente2.png"),
@@ -35,12 +38,6 @@ const backImages = [
   require("../../../../assets/tarjetaDetras7.png"),
 ];
 
-// Componente renombrado
-export default function DeudasyCreditosLeccionScreen({ navigation }) {
-  // -------------------------------------------
-  // Aquí defines las tarjetas de la lección
-  // (Información actualizada: Deudas Buenas vs. Malas)
-  // -------------------------------------------
   const tarjetasBase = [
     {
       id: "1",
@@ -68,11 +65,11 @@ export default function DeudasyCreditosLeccionScreen({ navigation }) {
     },
   ];
 
-const tarjetas = useMemo(() => {
+  const tarjetas = useMemo(() => {
     return tarjetasBase.map((t, i) => ({
       ...t,
-      imagenFrente: frontImages[i % frontImages.length], // 11 imágenes → se repiten
-      imagenAtras: backImages[i % backImages.length],     // 7 imágenes → se repiten
+      imagenFrente: frontImages[i % frontImages.length],
+      imagenAtras: backImages[i % backImages.length],
     }));
   }, []);
 
@@ -91,20 +88,13 @@ const tarjetas = useMemo(() => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={(e) => {
-          const index = Math.round(
-            e.nativeEvent.contentOffset.x / width
-          );
-          setIndexActual(index);
-        }}
+        onScroll={handleScroll}
         renderItem={({ item }) => (
-          <FlashCard frente={item.frente} atras={item.atras} />
+          <FlashCard {...item} />
         )}
       />
 
-      {/* 🌟 SOLO aparece al finalizar todas las tarjetas */}
-      {/* 🛑 Navegación cambiada a "PDeudasyCreditos4" */}
-      {indexActual === tarjetas.length - 1 && (
+      {indexActual === tarjetasBase.length - 1 && (
         <TouchableOpacity
           style={styles.btnRepaso}
           onPress={() => navigation.navigate("PDeudasyCreditos4")}
@@ -113,135 +103,149 @@ const tarjetas = useMemo(() => {
         </TouchableOpacity>
       )}
 
-      {/* Botón regresar */}
       <TouchableOpacity
         style={styles.btnRegresar}
         onPress={() => navigation.goBack()}
       >
-        <Text style={styles.btnRegresarTxt}>Regresar</Text>
+        <Text style={styles.btnTxt}>Regresar</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-// -------------------------------------------------------
-// 🔥 COMPONENTE FLASHCARD con animación de FLIP (Sin cambios)
-// -------------------------------------------------------
-function FlashCard({ frente, atras }) {
+function FlashCard({ frente, atras, imagenFrente, imagenAtras }) {
   const flipAnim = useRef(new Animated.Value(0)).current;
-  const [ladoFrente, setLadoFrente] = useState(true);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-  const rotacionFrente = flipAnim.interpolate({
+  const frontRotate = flipAnim.interpolate({
     inputRange: [0, 180],
     outputRange: ["0deg", "180deg"],
   });
 
-  const rotacionAtras = flipAnim.interpolate({
+  const backRotate = flipAnim.interpolate({
     inputRange: [0, 180],
     outputRange: ["180deg", "360deg"],
   });
 
-  const flipCard = () => {
+  const flip = () => {
     Animated.timing(flipAnim, {
-      toValue: ladoFrente ? 180 : 0,
+      toValue: isFlipped ? 0 : 180,
       duration: 400,
       useNativeDriver: true,
-    }).start(() => {
-      setLadoFrente(!ladoFrente);
-    });
-  };
-
-  const estiloFrente = {
-    transform: [{ rotateY: rotacionFrente }, { perspective: 1000 }],
-    opacity: ladoFrente ? 1 : 0,
-  };
-
-  const estiloAtras = {
-    transform: [{ rotateY: rotacionAtras }, { perspective: 1000 }],
-    opacity: ladoFrente ? 0 : 1,
+    }).start(() => setIsFlipped(!isFlipped));
   };
 
   return (
-    <View style={styles.cardWrapper}>
-      <TouchableOpacity activeOpacity={1} onPress={flipCard}>
-        {/* Frente */}
-        {ladoFrente && (
-          <Animated.View
-            style={[
-              styles.card,
-              styles.cardFrente,
-              estiloFrente,
-            ]}
-          >
-            <Text style={styles.cardText}>{frente}</Text>
-          </Animated.View>
-        )}
+    <View style={styles.item}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={flip}
+        style={styles.touch}
+      >
+        {/* FRENTE */}
+        <Animated.View
+          style={[
+            styles.card,
+            {
+              transform: [{ perspective: 1000 }, { rotateY: frontRotate }],
+            },
+          ]}
+        >
+          <Image source={imagenFrente} style={styles.img} />
+          <Text style={styles.textFront}>{frente}</Text>
+        </Animated.View>
 
-        {/* Reverso */}
-        {!ladoFrente && (
-          <Animated.View
-            style={[
-              styles.card,
-              styles.cardAtras,
-              estiloAtras,
-              { position: 'absolute' },
-            ]}
-          >
-            {/* Ajuste de estilo para texto largo en el reverso */}
-            <Text style={styles.cardTextAtras}>{atras}</Text>
-          </Animated.View>
-        )}
+        {/* ATRÁS */}
+        <Animated.View
+          style={[
+            styles.card,
+            styles.back,
+            {
+              transform: [{ perspective: 1000 }, { rotateY: backRotate }],
+            },
+          ]}
+        >
+          <Image source={imagenAtras} style={styles.img} />
+          <Text style={styles.textBack}>{atras}</Text>
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );
 }
 
-// --------------------- ESTILOS --------------------- (Sin cambios)
+// ========================== ESTILOS ==========================
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0D1B2A",
-    justifyContent: "center",
-    alignItems: "center",
   },
 
-  cardWrapper: {
+  item: {
     width: width,
     justifyContent: "center",
     alignItems: "center",
   },
 
+  touch: {
+    width: width * 0.8,
+    height: 420,
+  },
+
   card: {
-    width: width * 0.85, // Un poco más ancho para que quepa bien el texto
-    height: 450, // Un poco más alto para la info detallada
-    borderRadius: 15,
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backfaceVisibility: "hidden",
-    position: "absolute",
+    backgroundColor: "#415A77",
   },
 
-  cardFrente: { backgroundColor: "#415A77" },
-  cardAtras: { backgroundColor: "#E0E1DD" },
+  back: {
+    backgroundColor: "#E0E1DD",
+  },
 
-  cardText: {
+  img: {
+    width: "100%",
+    height: 180,
+    resizeMode: "contain",
+    marginBottom: 16,
+  },
+
+  textFront: {
+    color: "#FFF",
+    fontSize: 22,
     textAlign: "center",
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#FFF"
   },
 
-  cardTextAtras: {
-    textAlign: "left", // Mejor lectura para listas
-    fontSize: 16, // Letra un poco más pequeña para que quepa todo
+  textBack: {
     color: "#000",
-    lineHeight: 22 // Espaciado para legibilidad
+    fontSize: 18,
+    textAlign: "center",
+  },
+
+  btnRegresar: {
+    position: "absolute",
+    bottom: 40,
+    alignSelf: "center",
+    backgroundColor: "#778DA9",
+    paddingHorizontal: 30,
+    paddingVertical: 12,
+    borderRadius: 10,
+  },
+
+  btnTxt: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 
   btnRepaso: {
     position: "absolute",
     bottom: 110,
+    alignSelf: "center",
     backgroundColor: "#1B263B",
     paddingHorizontal: 30,
     paddingVertical: 14,
@@ -254,18 +258,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  btnRegresar: {
-    position: "absolute",
-    bottom: 40,
-    paddingHorizontal: 25,
-    paddingVertical: 12,
-    backgroundColor: "#778DA9",
-    borderRadius: 10,
-  },
-
-  btnRegresarTxt: {
+  buttonText: {
     color: "#FFF",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
