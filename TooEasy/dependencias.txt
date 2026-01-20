@@ -1,5 +1,7 @@
 Dentro de bash instalen los siguiente:
 
+npm notice To update run: npm install -g npm@11.7.0
+
 npm install @react-navigation/native
 npm install @react-navigation/native-stack
 npx expo install react-native-screens react-native-safe-area-context
@@ -13,3 +15,4 @@ npm install dotenv
 npx expo install constants
 npm install bcryptjs
 npx expo install expo-crypto
+npm install --global expo-cli eas-cli
