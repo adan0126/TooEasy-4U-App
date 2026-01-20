@@ -324,7 +324,7 @@ export const agregarTransaccion = async (userId, tipo, datos) => {
     return true;
     
   } catch (error) {
-    console.error("❌ Error agregando transacción:", error);
+    console.error("Error agregando transacción:", error);
     throw error;
   }
 };
@@ -356,12 +356,104 @@ export const actualizarEgresoMensual = async (userId, año, mes, monto, descripc
     return true;
 
   } catch (error) {
-    console.error("❌ Error actualizando egreso:", error);
+    console.error("Error actualizando egreso:", error);
     throw error;
   }
 };
 
+// ======================================================================
+//  ACTUALIZAR PROGRESO DE LECCIONES
+// ======================================================================
+export const actualizarProgresoLeccion = async (userId, tema, nivel, aprobado) => {
+  try {
+    const userRef = doc(database, "usuarios", userId);
+    const userSnap = await getDoc(userRef);
+    
+    if (!userSnap.exists()) {
+      throw new Error("Usuario no encontrado");
+    }
 
+    const userData = userSnap.data();
+    const progresoActual = userData.progreso || {};
+
+    // Si no aprobó, no actualizamos nada
+    if (!aprobado) {
+      console.log("No se aprobó la lección, no se actualiza progreso");
+      return { exito: false, mensaje: "Debes aprobar todas las preguntas" };
+    }
+
+    // Actualizar el nivel específico
+    const nivelKey = `nivel${nivel}`;
+    const temaProgreso = progresoActual[tema] || {};
+    
+    // Solo actualizar si no estaba completado previamente
+    if (!temaProgreso[nivelKey]?.completado) {
+      await updateDoc(userRef, {
+        [`progreso.${tema}.${nivelKey}.completado`]: true,
+        [`progreso.${tema}.${nivelKey}.fechaCompletado`]: new Date().toISOString(),
+        [`progreso.${tema}.${nivelKey}.intentos`]: (temaProgreso[nivelKey]?.intentos || 0) + 1
+      });
+
+      return { 
+        exito: true, 
+        mensaje: "¡Nivel completado!",
+        primerVez: true 
+      };
+    } else {
+      // Ya estaba completado, solo incrementar intentos
+      await updateDoc(userRef, {
+        [`progreso.${tema}.${nivelKey}.intentos`]: (temaProgreso[nivelKey]?.intentos || 0) + 1
+      });
+
+      return { 
+        exito: true, 
+        mensaje: "Nivel ya completado anteriormente",
+        primerVez: false 
+      };
+    }
+
+  } catch (error) {
+    console.error("Error actualizando progreso:", error);
+    throw error;
+  }
+};
+
+// ======================================================================
+//  OBTENER PROGRESO DE UN TEMA
+// ======================================================================
+export const obtenerProgresoTema = async (userId, tema) => {
+  try {
+    const userRef = doc(database, "usuarios", userId);
+    const userSnap = await getDoc(userRef);
+    
+    if (!userSnap.exists()) {
+      return { nivel1: false, nivel2: false, nivel3: false };
+    }
+
+    const progreso = userSnap.data().progreso?.[tema] || {};
+    
+    return {
+      nivel1: progreso.nivel1?.completado || false,
+      nivel2: progreso.nivel2?.completado || false,
+      nivel3: progreso.nivel3?.completado || false,
+    };
+
+  } catch (error) {
+    console.error("Error obteniendo progreso:", error);
+    return { nivel1: false, nivel2: false, nivel3: false };
+  }
+};
+
+// ======================================================================
+//  CALCULAR PORCENTAJE DE PROGRESO
+// ======================================================================
+export const calcularPorcentajeProgreso = (progresoTema) => {
+  const niveles = Object.values(progresoTema);
+  const completados = niveles.filter(nivel => nivel === true).length;
+  const total = niveles.length;
+  
+  return Math.round((completados / total) * 100);
+};
 
 // ======================================================================
 //  ACTUALIZAR RACHA DIARIA
@@ -394,7 +486,7 @@ export const actualizarRacha = async (userId) => {
     return nuevaRacha;
 
   } catch (error) {
-    console.error("❌ Error al actualizar racha:", error);
+    console.error("Error al actualizar racha:", error);
     throw error;
   }
 };
