@@ -134,6 +134,7 @@ const preguntas = [
           Alert.alert(
             "¡Felicidades! 🎉",
             `Aprobaste todas las preguntas correctamente.\n\nRespuestas correctas: ${respuestasCorrectas}/${totalPreguntas}`,
+            `Ganaste ${resultado.monedasOtorgadas} 🪙 monedas`,
             [
               {
                 text: "Continuar",

@@ -10,7 +10,8 @@ import {
   query,
   collection,
   where,
-  getDocs
+  getDocs,
+  increment
 } from "firebase/firestore";
 
 import { database } from "../config/fb"; // ← Tu Firestore real
@@ -373,7 +374,12 @@ export const NIVELES_POR_TEMA = {
 };
 
 // ======================================================================
-//  ACTUALIZAR PROGRESO DE LECCIONES
+//  RECOMPENSAS
+// ======================================================================
+export const MONEDAS_POR_NIVEL = 30;
+
+// ======================================================================
+//  ACTUALIZAR PROGRESO DE LECCIONES + MONEDAS
 // ======================================================================
 export const actualizarProgresoLeccion = async (userId, tema, nivel, aprobado) => {
   try {
@@ -387,48 +393,63 @@ export const actualizarProgresoLeccion = async (userId, tema, nivel, aprobado) =
     const userData = userSnap.data();
     const progresoActual = userData.progreso || {};
 
-    // Si no aprobó, no actualizamos nada
+    // Si no aprobó, no hacemos nada
     if (!aprobado) {
-      return { exito: false, mensaje: "Debes aprobar todas las preguntas" };
+      return {
+        exito: false,
+        mensaje: "Debes aprobar todas las preguntas",
+        primerVez: false,
+        monedasOtorgadas: 0,
+      };
     }
 
     const totalNiveles = NIVELES_POR_TEMA[tema];
 
-    // Validación extra
     if (!totalNiveles || nivel > totalNiveles) {
       throw new Error(`Nivel inválido para el tema ${tema}`);
     }
 
     const nivelKey = `nivel${nivel}`;
     const temaProgreso = progresoActual[tema] || {};
+    const nivelCompletado = temaProgreso[nivelKey]?.completado;
 
-    // Solo actualizar si no estaba completado previamente
-    if (!temaProgreso[nivelKey]?.completado) {
+    // =====================================================
+    // PRIMERA VEZ QUE COMPLETA EL NIVEL → DAR MONEDAS
+    // =====================================================
+    if (!nivelCompletado) {
       await updateDoc(userRef, {
         [`progreso.${tema}.${nivelKey}.completado`]: true,
         [`progreso.${tema}.${nivelKey}.fechaCompletado`]: new Date().toISOString(),
         [`progreso.${tema}.${nivelKey}.intentos`]:
           (temaProgreso[nivelKey]?.intentos || 0) + 1,
+
+        // 🪙 SUMAR MONEDAS
+        monedas: increment(MONEDAS_POR_NIVEL),
       });
 
       return {
         exito: true,
         mensaje: "¡Nivel completado!",
         primerVez: true,
-      };
-    } else {
-      // Ya estaba completado, solo incrementar intentos
-      await updateDoc(userRef, {
-        [`progreso.${tema}.${nivelKey}.intentos`]:
-          (temaProgreso[nivelKey]?.intentos || 0) + 1,
-      });
-
-      return {
-        exito: true,
-        mensaje: "Nivel ya completado anteriormente",
-        primerVez: false,
+        monedasOtorgadas: MONEDAS_POR_NIVEL,
       };
     }
+
+    // =====================================================
+    // YA ESTABA COMPLETADO → SOLO SUMAR INTENTO
+    // =====================================================
+    await updateDoc(userRef, {
+      [`progreso.${tema}.${nivelKey}.intentos`]:
+        (temaProgreso[nivelKey]?.intentos || 0) + 1,
+    });
+
+    return {
+      exito: true,
+      mensaje: "Nivel ya completado anteriormente",
+      primerVez: false,
+      monedasOtorgadas: 0,
+    };
+
   } catch (error) {
     console.error("Error actualizando progreso:", error);
     throw error;
