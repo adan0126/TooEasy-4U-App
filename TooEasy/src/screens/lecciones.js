@@ -11,10 +11,11 @@ import {
 } from "react-native";
 import BottomNavigation from "../components/BottomNavigation";
 import { useUser } from "../context/UserContext";
-import { obtenerProgresoTema, calcularPorcentajeProgreso } from "../services/authService";
+import { obtenerProgresoTema, calcularPorcentajeProgreso, obtenerMonedasUsuario } from "../services/authService";
 
 export default function LeccionesScreen({ navigation }) {
   const { user } = useUser();
+  const [monedas, setMonedas] = useState(0);
   const [loading, setLoading] = useState(true);
   const [progreso, setProgreso] = useState({
     fundamentos: 0,
@@ -37,39 +38,43 @@ export default function LeccionesScreen({ navigation }) {
     return unsubscribe;
   }, [navigation]);
 
-  const cargarProgreso = async () => {
-    try {
-      setLoading(true);
+const cargarProgreso = async () => {
+  try {
+    setLoading(true);
 
-      // Cargar progreso de cada tema
-      const [
-        fundamentosData,
-        cuentasData,
-        adminData,
-        tarjetasData,
-        deudasData
-      ] = await Promise.all([
-        obtenerProgresoTema(user.id, 'fundamentos'),
-        obtenerProgresoTema(user.id, 'cuentasBancarias'),
-        obtenerProgresoTema(user.id, 'adminDinero'),
-        obtenerProgresoTema(user.id, 'tarjetas'),
-        obtenerProgresoTema(user.id, 'deudas'),
-      ]);
+    const [
+      fundamentosData,
+      cuentasData,
+      adminData,
+      tarjetasData,
+      deudasData,
+      monedasActuales
+    ] = await Promise.all([
+      obtenerProgresoTema(user.id, 'fundamentos'),
+      obtenerProgresoTema(user.id, 'cuentasBancarias'),
+      obtenerProgresoTema(user.id, 'adminDinero'),
+      obtenerProgresoTema(user.id, 'tarjetas'),
+      obtenerProgresoTema(user.id, 'deudas'),
+      obtenerMonedasUsuario(user.id),
+    ]);
 
-      setProgreso({
-        fundamentos: calcularPorcentajeProgreso(fundamentosData),
-        cuentasBancarias: calcularPorcentajeProgreso(cuentasData),
-        adminDinero: calcularPorcentajeProgreso(adminData),
-        tarjetas: calcularPorcentajeProgreso(tarjetasData),
-        deudas: calcularPorcentajeProgreso(deudasData),
-      });
+    setProgreso({
+      fundamentos: calcularPorcentajeProgreso(fundamentosData),
+      cuentasBancarias: calcularPorcentajeProgreso(cuentasData),
+      adminDinero: calcularPorcentajeProgreso(adminData),
+      tarjetas: calcularPorcentajeProgreso(tarjetasData),
+      deudas: calcularPorcentajeProgreso(deudasData),
+    });
 
-    } catch (error) {
-      console.error("Error cargando progreso:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setMonedas(monedasActuales);
+
+  } catch (error) {
+    console.error("Error cargando progreso:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const LeccionCard = ({ titulo, progresoPorcentaje, imagen, onPress, isDark = true }) => (
     <View>
@@ -117,7 +122,7 @@ export default function LeccionesScreen({ navigation }) {
 
         <View style={styles.coinContainer}>
           <Image source={require("../../assets/coin.png")} style={styles.coin} />
-          <Text style={styles.coinText}>{user?.monedas || 0}</Text>
+          <Text style={styles.coinText}>{monedas}</Text>
         </View>
 
         <ScrollView 

@@ -378,6 +378,15 @@ export const NIVELES_POR_TEMA = {
 // ======================================================================
 export const MONEDAS_POR_NIVEL = 30;
 
+export const obtenerMonedasUsuario = async (userId) => {
+  const ref = doc(database, "usuarios", userId);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return 0;
+
+  return snap.data().monedas || 0;
+};
+
 // ======================================================================
 //  ACTUALIZAR PROGRESO DE LECCIONES + MONEDAS
 // ======================================================================
