@@ -3,7 +3,7 @@ import 'dotenv/config';
 export default {
   expo: {
     name: "TooEasy",
-    slug: "TooEasy",
+    slug: "tooeasy",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -37,6 +37,9 @@ export default {
     },
 
     extra: {
+      "eas": {
+        "projectId": process.env.PROYECT_ID_EAS
+      },
       firebaseApiKey: process.env.FIREBASE_API_KEY,
       firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
       firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
