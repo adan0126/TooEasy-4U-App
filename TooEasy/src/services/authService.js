@@ -362,13 +362,24 @@ export const actualizarEgresoMensual = async (userId, año, mes, monto, descripc
 };
 
 // ======================================================================
+//  CONFIGURACIÓN DE NIVELES POR TEMA
+// ======================================================================
+export const NIVELES_POR_TEMA = {
+  fundamentos: 3,
+  cuentasBancarias: 3,
+  adminDinero: 3,
+  tarjetas: 4,
+  deudas: 4,
+};
+
+// ======================================================================
 //  ACTUALIZAR PROGRESO DE LECCIONES
 // ======================================================================
 export const actualizarProgresoLeccion = async (userId, tema, nivel, aprobado) => {
   try {
     const userRef = doc(database, "usuarios", userId);
     const userSnap = await getDoc(userRef);
-    
+
     if (!userSnap.exists()) {
       throw new Error("Usuario no encontrado");
     }
@@ -378,40 +389,46 @@ export const actualizarProgresoLeccion = async (userId, tema, nivel, aprobado) =
 
     // Si no aprobó, no actualizamos nada
     if (!aprobado) {
-      console.log("No se aprobó la lección, no se actualiza progreso");
       return { exito: false, mensaje: "Debes aprobar todas las preguntas" };
     }
 
-    // Actualizar el nivel específico
+    const totalNiveles = NIVELES_POR_TEMA[tema];
+
+    // Validación extra
+    if (!totalNiveles || nivel > totalNiveles) {
+      throw new Error(`Nivel inválido para el tema ${tema}`);
+    }
+
     const nivelKey = `nivel${nivel}`;
     const temaProgreso = progresoActual[tema] || {};
-    
+
     // Solo actualizar si no estaba completado previamente
     if (!temaProgreso[nivelKey]?.completado) {
       await updateDoc(userRef, {
         [`progreso.${tema}.${nivelKey}.completado`]: true,
         [`progreso.${tema}.${nivelKey}.fechaCompletado`]: new Date().toISOString(),
-        [`progreso.${tema}.${nivelKey}.intentos`]: (temaProgreso[nivelKey]?.intentos || 0) + 1
+        [`progreso.${tema}.${nivelKey}.intentos`]:
+          (temaProgreso[nivelKey]?.intentos || 0) + 1,
       });
 
-      return { 
-        exito: true, 
+      return {
+        exito: true,
         mensaje: "¡Nivel completado!",
-        primerVez: true 
+        primerVez: true,
       };
     } else {
       // Ya estaba completado, solo incrementar intentos
       await updateDoc(userRef, {
-        [`progreso.${tema}.${nivelKey}.intentos`]: (temaProgreso[nivelKey]?.intentos || 0) + 1
+        [`progreso.${tema}.${nivelKey}.intentos`]:
+          (temaProgreso[nivelKey]?.intentos || 0) + 1,
       });
 
-      return { 
-        exito: true, 
+      return {
+        exito: true,
         mensaje: "Nivel ya completado anteriormente",
-        primerVez: false 
+        primerVez: false,
       };
     }
-
   } catch (error) {
     console.error("Error actualizando progreso:", error);
     throw error;
@@ -419,28 +436,28 @@ export const actualizarProgresoLeccion = async (userId, tema, nivel, aprobado) =
 };
 
 // ======================================================================
-//  OBTENER PROGRESO DE UN TEMA
+//  OBTENER PROGRESO DE UN TEMA (DINÁMICO)
 // ======================================================================
 export const obtenerProgresoTema = async (userId, tema) => {
   try {
     const userRef = doc(database, "usuarios", userId);
     const userSnap = await getDoc(userRef);
-    
-    if (!userSnap.exists()) {
-      return { nivel1: false, nivel2: false, nivel3: false };
+
+    const totalNiveles = NIVELES_POR_TEMA[tema];
+    const progresoTema = userSnap.exists()
+      ? userSnap.data().progreso?.[tema] || {}
+      : {};
+
+    const resultado = {};
+
+    for (let i = 1; i <= totalNiveles; i++) {
+      resultado[`nivel${i}`] = progresoTema[`nivel${i}`]?.completado || false;
     }
 
-    const progreso = userSnap.data().progreso?.[tema] || {};
-    
-    return {
-      nivel1: progreso.nivel1?.completado || false,
-      nivel2: progreso.nivel2?.completado || false,
-      nivel3: progreso.nivel3?.completado || false,
-    };
-
+    return resultado;
   } catch (error) {
     console.error("Error obteniendo progreso:", error);
-    return { nivel1: false, nivel2: false, nivel3: false };
+    return {};
   }
 };
 
@@ -451,8 +468,8 @@ export const calcularPorcentajeProgreso = (progresoTema) => {
   const niveles = Object.values(progresoTema);
   const completados = niveles.filter(nivel => nivel === true).length;
   const total = niveles.length;
-  
-  return Math.round((completados / total) * 100);
+
+  return total === 0 ? 0 : Math.round((completados / total) * 100);
 };
 
 // ======================================================================
