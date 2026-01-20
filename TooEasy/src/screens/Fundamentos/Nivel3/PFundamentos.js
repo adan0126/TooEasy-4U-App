@@ -104,11 +104,10 @@ export default function PreguntasRepasoScreen({ navigation }) {
       
       try {
         // Actualizar progreso en Firebase
-        // IMPORTANTE: Cambiar 'fundamentos' y '1' según el tema y nivel
         const resultado = await actualizarProgresoLeccion(
           user.id,
-          'fundamentos', // tema: fundamentos, cuentasBancarias, adminDinero, tarjetas, deudas
-          3,             // nivel: 1, 2, 3
+          'fundamentos',
+          3,
           true
         );
 
