@@ -88,7 +88,7 @@ export default function PreguntasRepasoScreen({ navigation }) {
         const resultado = await actualizarProgresoLeccion(
           user.id,
           'fundamentos', // tema: fundamentos, cuentasBancarias, adminDinero, tarjetas, deudas
-          1,             // nivel: 1, 2, 3
+          2,             // nivel: 1, 2, 3
           true
         );
 
