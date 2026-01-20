@@ -38,7 +38,7 @@ const backImages = [
   require("../../../../assets/tarjetaDetras7.png"),
 ];
 
-  const baseTarjetas = [
+  const tarjetasBase = [
   {
     id: "1",
     frente: "¿Qué es una cuenta de ahorro?",
