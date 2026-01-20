@@ -118,7 +118,7 @@ export default function PreguntasRepasoScreen({ navigation }) {
             [
               {
                 text: "Continuar",
-                onPress: () => navigation.navigate("FMenu")
+                onPress: () => navigation.navigate("TMenu")
               }
             ]
           );
@@ -129,7 +129,7 @@ export default function PreguntasRepasoScreen({ navigation }) {
             [
               {
                 text: "Continuar",
-                onPress: () => navigation.navigate("FMenu")
+                onPress: () => navigation.navigate("TMenu")
               }
             ]
           );
@@ -158,7 +158,7 @@ export default function PreguntasRepasoScreen({ navigation }) {
           },
           {
             text: "Volver al menú",
-            onPress: () => navigation.navigate("FMenu")
+            onPress: () => navigation.navigate("TMenu")
           }
         ]
       );
