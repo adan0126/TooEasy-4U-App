@@ -113,13 +113,14 @@ export default function PreguntasRepasoScreen({ navigation }) {
         if (resultado.primerVez) {
           Alert.alert(
             "¡Felicidades! 🎉",
-            `Aprobaste todas las preguntas correctamente.\n\nRespuestas correctas: ${respuestasCorrectas}/${totalPreguntas}`,
+            `Aprobaste todas las preguntas correctamente.\n\n` +
+            `Respuestas correctas: ${respuestasCorrectas}/${totalPreguntas}\n\n` +
             `Ganaste ${resultado.monedasOtorgadas} 🪙 monedas`,
             [
               {
                 text: "Continuar",
-                onPress: () => navigation.navigate("TMenu")
-              }
+                onPress: () => navigation.navigate("FMenu"),
+              },
             ]
           );
         } else {
