@@ -1,4 +1,13 @@
 ﻿# TooEasy-4U-App
+Equipo 1 - 4U (ForYou)
+Faro Montes Leonardo
+Granados Luna Mario Adán
+Ramirez Díaz Luz Karen
+Vega Sandoval Julio Emiliano
+
+Problematica:
+En México, millones de personas toman decisiones financieras sin contar con los conocimientos básicos necesarios para administrar su dinero de forma responsable. Esta situación impacta directamente su estabilidad económica, bienestar emocional y calidad de vida. TooEasy surge como una respuesta digital a esta problemática, enfocada en aprender haciendo.
+
 Aquí se llevara acabo el desarrollo de la aplicación móvil
 
 Esperar indicaciones, si no estan seguro no hacer nada.
@@ -22,3 +31,4 @@ correo: algo3@algo.com
 contraseña: Prueba3.
 
 PORFAVOR REVISEN EL ARCHIVO DE dependencias.txt para hacer las instalaciones correctas
+
